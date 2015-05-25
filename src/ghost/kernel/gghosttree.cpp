@@ -163,6 +163,27 @@ void GGhostTreePrivate::terminate()
     dptr(childItems[0])->terminate();
 }
 
+void GGhostTreePrivate::onStatusChanged(Ghost::Status status)
+{
+    Q_Q(GGhostTree);
+
+    switch (status) {
+    case Ghost::Invalid:
+    case Ghost::StandBy:
+        break;
+    case Ghost::Running:
+        emit q->started();
+        break;
+    case Ghost::Success:
+    case Ghost::Failure:
+        emit q->finished();
+        // pass through
+    case Ghost::Stopped:
+        emit q->stopped();
+        break;
+    }
+}
+
 void GGhostTreePrivate::onChildStatusChanged(GGhostItem *child, Ghost::Status status)
 {
     Q_UNUSED(child);

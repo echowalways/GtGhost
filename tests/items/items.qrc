@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>SimpleGhostItems.qml</file>
+        <file>TestFrame.qml</file>
+    </qresource>
+</RCC>

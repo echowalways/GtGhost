@@ -26,6 +26,7 @@ public:
     virtual void terminate() Q_DECL_FINAL;
 
 public:
+    virtual void onStatusChanged(Ghost::Status status) Q_DECL_FINAL;
     virtual void onChildStatusChanged(GGhostItem *child, Ghost::Status status) Q_DECL_FINAL;
 
 private:

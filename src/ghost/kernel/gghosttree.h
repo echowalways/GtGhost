@@ -22,6 +22,11 @@ public:
     Q_INVOKABLE void set(const QString &key, const QJSValue &value);
     Q_INVOKABLE QJSValue get(const QString &key) const;
 
+Q_SIGNALS:
+    void started();
+    void finished();
+    void stopped();
+
 public Q_SLOTS:
     void start();
     void stop();
