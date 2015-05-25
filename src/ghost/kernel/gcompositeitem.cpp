@@ -112,29 +112,29 @@ void GCompositeItemPrivate::terminate()
     dptr(childItem)->terminate();
 }
 
-void GCompositeItemPrivate::onChildStatusChanged(GGhostItem *child, Ghost::Status status)
+void GCompositeItemPrivate::onChildStatusChanged(GGhostItem *child)
 {
-    Q_UNUSED(child);
-
-    if (Ghost::Invalid == this->status) {
+    if (Ghost::Invalid == status) {
         return;
     }
 
-    if (Ghost::Stopped == status) {
-        setStatus(status);
+    Ghost::Status childStatus = child->status();
+
+    if (Ghost::Stopped == childStatus) {
+        setStatus(childStatus);
         return;
     }
 
     if (linearMode == Sequence) {
-        if (Ghost::Success == status) {
+        if (Ghost::Success == childStatus) {
             executeNextChildItem();
-        } else if (Ghost::Failure == status) {
+        } else if (Ghost::Failure == childStatus) {
             setStatus(Ghost::Failure);
         }
     } else {
-        if (Ghost::Failure == status) {
+        if (Ghost::Failure == childStatus) {
             executeNextChildItem();
-        } else if (Ghost::Success == status) {
+        } else if (Ghost::Success == childStatus) {
             setStatus(Ghost::Success);
         }
     }

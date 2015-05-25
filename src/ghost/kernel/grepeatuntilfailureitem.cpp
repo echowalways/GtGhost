@@ -43,18 +43,18 @@ GRepeatUntilFailureItemPrivate::~GRepeatUntilFailureItemPrivate()
 {
 }
 
-void GRepeatUntilFailureItemPrivate::onChildStatusChanged(GGhostItem *child, Ghost::Status status)
+void GRepeatUntilFailureItemPrivate::onChildStatusChanged(GGhostItem *child)
 {
-    Q_UNUSED(child);
-
-    if (Ghost::Invalid == this->status) {
+    if (Ghost::Invalid == status) {
         return;
     }
 
     Q_CHECK_PTR(childItems[0]);
     Q_ASSERT(child == childItems[0]);
 
-    if (Ghost::Success == status) {
+    Ghost::Status childStatus = child->status();
+
+    if (Ghost::Success == childStatus) {
         ++loopCounter;
         if (loopCount && (loopCounter == loopCount)) {
             setStatus(Ghost::Failure);
@@ -62,9 +62,9 @@ void GRepeatUntilFailureItemPrivate::onChildStatusChanged(GGhostItem *child, Gho
         }
 
         setFailureIfPreconditionFalse();
-    } else if (Ghost::Failure == status) {
+    } else if (Ghost::Failure == childStatus) {
         setStatus(Ghost::Success);
-    } else if (Ghost::Stopped == status) {
+    } else if (Ghost::Stopped == childStatus) {
         setStatus(Ghost::Stopped);
     }
 }

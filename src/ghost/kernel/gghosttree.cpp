@@ -163,7 +163,7 @@ void GGhostTreePrivate::terminate()
     dptr(childItems[0])->terminate();
 }
 
-void GGhostTreePrivate::onStatusChanged(Ghost::Status status)
+void GGhostTreePrivate::onStatusChanged()
 {
     Q_Q(GGhostTree);
 
@@ -184,20 +184,20 @@ void GGhostTreePrivate::onStatusChanged(Ghost::Status status)
     }
 }
 
-void GGhostTreePrivate::onChildStatusChanged(GGhostItem *child, Ghost::Status status)
+void GGhostTreePrivate::onChildStatusChanged(GGhostItem *child)
 {
-    Q_UNUSED(child);
-
-    if (Ghost::Invalid == this->status) {
+    if (Ghost::Invalid == status) {
         return;
     }
 
     Q_CHECK_PTR(childItems[0]);
     Q_ASSERT(child == childItems[0]);
 
-    if ((Ghost::Success == status)
-            || (Ghost::Failure == status)
-            || (Ghost::Stopped == status)) {
-        setStatus(status);
+    Ghost::Status childStatus = child->status();
+
+    if ((Ghost::Success == childStatus)
+            || (Ghost::Failure == childStatus)
+            || (Ghost::Stopped == childStatus)) {
+        setStatus(childStatus);
     }
 }

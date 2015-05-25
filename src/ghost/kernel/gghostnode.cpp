@@ -173,25 +173,23 @@ void GGhostNodePrivate::setStatus(Ghost::Status status)
     if (status != this->status) {
         this->status = status;
 
-        this->onStatusChanged(status);
+        this->onStatusChanged();
         emit q->statusChanged(status);
 
         if (parentNode) {
             GGhostItem *item = reinterpret_cast<GGhostItem *>(q);
-            dptr(parentNode)->onChildStatusChanged(item, status);
+            dptr(parentNode)->onChildStatusChanged(item);
         }
     }
 }
 
-void GGhostNodePrivate::onStatusChanged(Ghost::Status status)
+void GGhostNodePrivate::onStatusChanged()
 {
-    Q_UNUSED(status);
 }
 
-void GGhostNodePrivate::onChildStatusChanged(GGhostItem *child, Ghost::Status status)
+void GGhostNodePrivate::onChildStatusChanged(GGhostItem *child)
 {
     Q_UNUSED(child);
-    Q_UNUSED(status);
 }
 
 // moc_gghostnode.cpp

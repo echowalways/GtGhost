@@ -26,8 +26,8 @@ public:
     virtual void terminate() Q_DECL_FINAL;
 
 public:
-    virtual void onStatusChanged(Ghost::Status status) Q_DECL_FINAL;
-    virtual void onChildStatusChanged(GGhostItem *child, Ghost::Status status) Q_DECL_FINAL;
+    virtual void onStatusChanged() Q_DECL_FINAL;
+    virtual void onChildStatusChanged(GGhostItem *child) Q_DECL_FINAL;
 
 private:
     QHash<QString, QJSValue> runtimeVariables;

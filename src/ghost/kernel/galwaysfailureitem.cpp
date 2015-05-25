@@ -22,21 +22,21 @@ GAlwaysFailureItemPrivate::~GAlwaysFailureItemPrivate()
 {
 }
 
-void GAlwaysFailureItemPrivate::onChildStatusChanged(GGhostItem *child, Ghost::Status status)
+void GAlwaysFailureItemPrivate::onChildStatusChanged(GGhostItem *child)
 {
-    Q_UNUSED(child);
-
-    if (Ghost::Invalid == this->status) {
+    if (Ghost::Invalid == status) {
         return;
     }
 
     Q_CHECK_PTR(childItems[0]);
     Q_ASSERT(child == childItems[0]);
 
-    if (Ghost::Stopped == status) {
+    Ghost::Status childStatus = child->status();
+
+    if (Ghost::Stopped == childStatus) {
         setStatus(Ghost::Stopped);
-    } else if ((Ghost::Success == status)
-               || (Ghost::Failure == status)) {
+    } else if ((Ghost::Success == childStatus)
+               || (Ghost::Failure == childStatus)) {
         setStatus(Ghost::Failure);
     } else {
         Q_UNREACHABLE();

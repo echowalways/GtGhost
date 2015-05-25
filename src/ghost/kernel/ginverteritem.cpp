@@ -22,22 +22,22 @@ GInverterItemPrivate::~GInverterItemPrivate()
 {
 }
 
-void GInverterItemPrivate::onChildStatusChanged(GGhostItem *child, Ghost::Status status)
+void GInverterItemPrivate::onChildStatusChanged(GGhostItem *child)
 {
-    Q_UNUSED(child);
-
-    if (Ghost::Invalid == this->status) {
+    if (Ghost::Invalid == status) {
         return;
     }
 
     Q_CHECK_PTR(childItems[0]);
     Q_ASSERT(child == childItems[0]);
 
-    if (Ghost::Stopped == status) {
+    Ghost::Status childStatus = child->status();
+
+    if (Ghost::Stopped == childStatus) {
         setStatus(Ghost::Stopped);
-    } else if (Ghost::Success == status) {
+    } else if (Ghost::Success == childStatus) {
         setStatus(Ghost::Failure);
-    } else if (Ghost::Failure == status) {
+    } else if (Ghost::Failure == childStatus) {
         setStatus(Ghost::Success);
     }
 }

@@ -41,8 +41,8 @@ public:
     virtual void terminate() = 0;
 
 public:
-    virtual void onStatusChanged(Ghost::Status status);
-    virtual void onChildStatusChanged(GGhostItem *child, Ghost::Status status);
+    virtual void onStatusChanged();
+    virtual void onChildStatusChanged(GGhostItem *child);
 
 public:
     QString description;
