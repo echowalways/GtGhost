@@ -17,7 +17,7 @@ class GGhostNode : public QObject, public QQmlParserStatus
     Q_OBJECT
     Q_DECLARE_PRIVATE(GGhostNode)
     Q_PROPERTY(Ghost::Status status READ status NOTIFY statusChanged)
-    Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY descriptionChanged)
+    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
     Q_PRIVATE_PROPERTY(GGhostNode::d_func(), QQmlListProperty<GGhostItem> childItems READ ghostItems DESIGNABLE false)
     Q_CLASSINFO("DefaultProperty", "childItems")
     Q_INTERFACES(QQmlParserStatus)
@@ -34,10 +34,10 @@ public:
     Ghost::Status status() const;
 
 Q_SIGNALS:
-    void descriptionChanged(const QString &value);
+    void commentChanged(const QString &value);
 public:
-    void setDescription(const QString &value);
-    QString description() const;
+    void setComment(const QString &value);
+    QString comment() const;
 };
 
 #endif // GGHOSTNODE_H

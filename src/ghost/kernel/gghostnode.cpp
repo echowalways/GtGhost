@@ -24,20 +24,20 @@ Ghost::Status GGhostNode::status() const
     return d->status;
 }
 
-void GGhostNode::setDescription(const QString &value)
+void GGhostNode::setComment(const QString &value)
 {
     Q_D(GGhostNode);
 
-    if (d->description != value) {
-        d->description = value;
-        emit descriptionChanged(value);
+    if (d->comment != value) {
+        d->comment = value;
+        emit commentChanged(value);
     }
 }
 
-QString GGhostNode::description() const
+QString GGhostNode::comment() const
 {
     Q_D(const GGhostNode);
-    return d->description;
+    return d->comment;
 }
 
 // class GGhostNodePrivate
