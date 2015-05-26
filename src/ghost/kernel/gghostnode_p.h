@@ -45,7 +45,7 @@ public:
     virtual void onChildStatusChanged(GGhostItem *child);
 
 public:
-    QString comment;
+    QString summarize;
 };
 
 #endif // GGHOSTNODE_P_H

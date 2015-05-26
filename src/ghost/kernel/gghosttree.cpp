@@ -40,23 +40,6 @@ void GGhostTree::componentComplete()
     }
 }
 
-void GGhostTree::set(const QString &key, const QJSValue &value)
-{
-    Q_D(GGhostTree);
-
-    if (value.isUndefined()) {
-        d->runtimeVariables.remove(key);
-    } else {
-        d->runtimeVariables.insert(key, value);
-    }
-}
-
-QJSValue GGhostTree::get(const QString &key) const
-{
-    Q_D(const GGhostTree);
-    return d->runtimeVariables.value(key);
-}
-
 void GGhostTree::start()
 {
     Q_D(GGhostTree);
@@ -85,6 +68,23 @@ void GGhostTree::reset()
             || (Ghost::Stopped == d->status)) {
         d->reset();
     }
+}
+
+void GGhostTree::set(const QString &key, const QJSValue &value)
+{
+    Q_D(GGhostTree);
+
+    if (value.isUndefined()) {
+        d->runtimeVariables.remove(key);
+    } else {
+        d->runtimeVariables.insert(key, value);
+    }
+}
+
+QJSValue GGhostTree::get(const QString &key) const
+{
+    Q_D(const GGhostTree);
+    return d->runtimeVariables.value(key);
 }
 
 // class GGhostTreePrivate
