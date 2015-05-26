@@ -31,6 +31,8 @@
 
 void GtGhostPlugin::registerTypes(const char *uri)
 {
+    // @uri GtGhost
+
     Q_ASSERT(qstrcmp(uri, "GtGhost") == 0);
 
     qRegisterMetaType<Ghost::Status>("Ghost::Status");
