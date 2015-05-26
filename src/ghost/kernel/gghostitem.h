@@ -10,8 +10,13 @@ class GGhostItem : public GGhostNode
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(GGhostItem)
+<<<<<<< HEAD
     Q_PROPERTY(GGhostTree *parentTree READ parentTree CONSTANT)
     Q_PROPERTY(GGhostItem *parentItem READ parentItem CONSTANT)
+=======
+    Q_PROPERTY(GGhostTree *parentTree READ parentTree)
+    Q_PROPERTY(GGhostItem *parentItem READ parentItem)
+>>>>>>> ff9177b6899cf233516544aeadac9c8df4ca6b81
     Q_PROPERTY(QJSValue precondition READ precondition WRITE setPrecondition NOTIFY preconditionChanged)
     Q_PROPERTY(QJSValue weight READ weight WRITE setWeight NOTIFY weightChanged)
 
