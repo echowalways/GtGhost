@@ -58,31 +58,31 @@ void GGhostUnitTest::onStatusChanged(Ghost::Status status)
 
     GGhostNode *node = qobject_cast<GGhostNode *>(QObject::sender());
 
-    if (node->comment().isEmpty()) {
+    if (node->summarize().isEmpty()) {
         qDebug() << GGhostNodePrivate::toString(status) << node->metaObject()->className();
     } else {
-        qDebug() << GGhostNodePrivate::toString(status) << node->comment().toUtf8().constData();
+        qDebug() << GGhostNodePrivate::toString(status) << node->summarize().toUtf8().constData();
     }
 
     if (d->expectedStatusNodes.isEmpty()) {
-        qDebug() << "unexpected object: " << node->comment().toUtf8().constData();
+        qDebug() << "unexpected object: " << node->summarize().toUtf8().constData();
         QVERIFY(!d->expectedStatusNodes.isEmpty());
     } else {
         GGhostNode *expectedNode = d->expectedStatusNodes.takeFirst();
         if (expectedNode != node) {
-            qDebug() << "\n  expected: " << expectedNode->comment().toUtf8().constData()
-                     << "\n  but  got: " << node->comment().toUtf8().constData();
+            qDebug() << "\n  expected: " << expectedNode->summarize().toUtf8().constData()
+                     << "\n  but  got: " << node->summarize().toUtf8().constData();
         }
         QVERIFY(expectedNode == node);
     }
 
     if (d->expectedStatusValues.isEmpty()) {
-        qDebug() << "unexpected object: " << node->comment().toUtf8().constData();
+        qDebug() << "unexpected object: " << node->summarize().toUtf8().constData();
         QVERIFY(!d->expectedStatusValues.isEmpty());
     } else {
         Ghost::Status expectedStatus = d->expectedStatusValues.takeFirst();
         if (expectedStatus != status) {
-            qDebug() << "object: " << node->comment().toUtf8().constData()
+            qDebug() << "object: " << node->summarize().toUtf8().constData()
                      << "\n  expected: " << GGhostNodePrivate::toString(expectedStatus)
                      << "\n  but  got: " << GGhostNodePrivate::toString(status);
         }

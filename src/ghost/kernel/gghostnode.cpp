@@ -24,20 +24,20 @@ Ghost::Status GGhostNode::status() const
     return d->status;
 }
 
-void GGhostNode::setComment(const QString &value)
+void GGhostNode::setSummarize(const QString &value)
 {
     Q_D(GGhostNode);
 
-    if (d->comment != value) {
-        d->comment = value;
-        emit commentChanged(value);
+    if (d->summarize != value) {
+        d->summarize = value;
+        emit summarizeChanged(value);
     }
 }
 
-QString GGhostNode::comment() const
+QString GGhostNode::summarize() const
 {
     Q_D(const GGhostNode);
-    return d->comment;
+    return d->summarize;
 }
 
 // class GGhostNodePrivate

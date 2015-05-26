@@ -38,7 +38,7 @@ Item {
 
         Text {
             anchors.centerIn: statusFrameItem
-            text: ghostItem.comment
+            text: ghostItem.summarize
             color: "white"
         }
     }

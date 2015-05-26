@@ -18,10 +18,6 @@ private:
     virtual void classBegin() Q_DECL_FINAL;
     virtual void componentComplete() Q_DECL_FINAL;
 
-public:
-    Q_INVOKABLE void set(const QString &key, const QJSValue &value);
-    Q_INVOKABLE QJSValue get(const QString &key) const;
-
 Q_SIGNALS:
     void started();
     void finished();
@@ -31,6 +27,10 @@ public Q_SLOTS:
     void start();
     void stop();
     void reset();
+
+public:
+    Q_INVOKABLE void set(const QString &key, const QJSValue &value);
+    Q_INVOKABLE QJSValue get(const QString &key) const;
 };
 
 #endif // GGHOSTTREE_H

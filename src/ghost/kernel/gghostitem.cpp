@@ -23,6 +23,18 @@ void GGhostItem::componentComplete()
 {
 }
 
+GGhostTree *GGhostItem::parentTree() const
+{
+    Q_D(const GGhostNode);
+    return d->parentTree;
+}
+
+GGhostItem *GGhostItem::parentItem() const
+{
+    Q_D(const GGhostNode);
+    return qobject_cast<GGhostItem *>(d->parentNode);
+}
+
 void GGhostItem::set(const QString &key, const QJSValue &value)
 {
     Q_D(GGhostItem);

@@ -51,7 +51,7 @@ Window {
             id: ghostTree
             SequenceItem {
                 ActionItem {
-                    comment: "test"
+                    summarize: "test"
                     onExecute: setSuccessStatus()
                 }
                 ActionItem {
