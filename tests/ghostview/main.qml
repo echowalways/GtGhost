@@ -57,6 +57,10 @@ Window {
                 ActionItem {
                     onExecute: setSuccessStatus()
                 }
+                IdleActionItem {
+                    duration: 1000
+                }
+
                 SequenceItem {
                     ActionItem {
                         onExecute: setSuccessStatus()
@@ -64,12 +68,18 @@ Window {
                     ActionItem {
                         onExecute: setSuccessStatus()
                     }
+                    IdleActionItem {
+                        duration: 1000
+                    }
                     SequenceItem {
                         ActionItem {
                             onExecute: setSuccessStatus()
                         }
                         ActionItem {
-                            onExecute: setFailureStatus()
+                            onExecute: setSuccessStatus()
+                        }
+                        IdleActionItem {
+                            duration: 1000
                         }
                         SequenceItem {
                             ActionItem {
@@ -77,6 +87,9 @@ Window {
                             }
                             ActionItem {
                                 onExecute: setSuccessStatus()
+                            }
+                            IdleActionItem {
+                                duration: 1000
                             }
                         }
                     }

@@ -23,7 +23,9 @@
 #include "galwaysfailureitem.h"
 
 #include "gconditionitem.h"
+
 #include "gactionitem.h"
+#include "gidleactionitem.h"
 
 #if defined(GT_GHOST_UNITTEST)
 #include "gghostunittest.h"
@@ -63,6 +65,7 @@ void GtGhostPlugin::registerTypes(const char *uri)
 
     qmlRegisterType<GConditionItem>(uri, 1, 0, "ConditionItem");
     qmlRegisterType<GActionItem>(uri, 1, 0, "ActionItem");
+    qmlRegisterType<GIdleActionItem>(uri, 1, 0, "IdleActionItem");
 
 #if defined(GT_GHOST_UNITTEST)
     qmlRegisterType<GGhostUnitTest>(uri, 1, 0, "GhostUnitTest");

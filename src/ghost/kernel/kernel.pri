@@ -41,7 +41,9 @@ HEADERS += \
     $$PWD/gconditionitem.h \
     $$PWD/gconditionitem_p.h \
     $$PWD/gactionitem.h \
-    $$PWD/gactionitem_p.h
+    $$PWD/gactionitem_p.h \
+    $$PWD/gidleactionitem.h \
+    $$PWD/gidleactionitem_p.h
 
 SOURCES += \
     $$PWD/gghostnode.cpp \
@@ -62,7 +64,8 @@ SOURCES += \
     $$PWD/grepeatuntilfailureitem.cpp \
     $$PWD/grepeatuntilsuccessitem.cpp \
     $$PWD/gconditionitem.cpp \
-    $$PWD/gactionitem.cpp
+    $$PWD/gactionitem.cpp \
+    $$PWD/gidleactionitem.cpp
 
 unittest {
 QT      += testlib
