@@ -27,6 +27,11 @@
 #include "gactionitem.h"
 #include "gidleactionitem.h"
 
+#if !defined(GT_NO_GHOSTVIEW)
+#include "gghostview.h"
+#include "gghostviewitem.h"
+#endif
+
 #if defined(GT_GHOST_UNITTEST)
 #include "gghostunittest.h"
 #endif
@@ -66,6 +71,11 @@ void GtGhostPlugin::registerTypes(const char *uri)
     qmlRegisterType<GConditionItem>(uri, 1, 0, "ConditionItem");
     qmlRegisterType<GActionItem>(uri, 1, 0, "ActionItem");
     qmlRegisterType<GIdleActionItem>(uri, 1, 0, "IdleActionItem");
+
+#if !defined(GT_NO_GHOSTVIEW)
+    qmlRegisterType<GGhostView>(uri, 1, 0, "GhostView");
+    qmlRegisterType<GGhostViewItem>(uri, 1, 0, "GhostViewItem");
+#endif
 
 #if defined(GT_GHOST_UNITTEST)
     qmlRegisterType<GGhostUnitTest>(uri, 1, 0, "GhostUnitTest");

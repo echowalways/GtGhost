@@ -1,28 +1,18 @@
 import QtQuick 2.2
 import GtGhost 1.0
 
-Item {
+GhostViewItem {
     id: item
+
+    width: 200
+    height: 120
 
     property var ghostItem: null
 
     Rectangle {
-        anchors.fill: parent
-
-        color: "transparent"
-
-        border.width: 3
-        border.color: "black"
-    }
-
-    Rectangle {
         id: statusFrameItem
 
-        anchors.horizontalCenter: item.horizontalCenter
-        anchors.top: item.top
-
-        width: 280
-        height: 150
+        anchors.fill: parent
 
         color: "#4A4849"
         radius: 6
@@ -67,8 +57,7 @@ Item {
                 anchors.left: statusItem.right
                 anchors.leftMargin: 5
 
-                font.pixelSize: 20
-                font.bold: true
+                font.pixelSize: 12
 
                 color: "white"
             }
@@ -79,16 +68,14 @@ Item {
                 anchors.right: nodeType.right
                 height: 80
 
-                text: ghostItem.summarize
+                text: item.target.summarize
                 color: "white"
             }
         }
-
-
     }
 
     Component.onCompleted: {
-        switch (ghostItem.nodeType) {
+        switch (item.target.nodeType) {
         case Ghost.CompositeNode:
             nodeType.color = "#03785D"
             break;
@@ -103,7 +90,7 @@ Item {
             break;
         }
 
-        switch (ghostItem.itemType) {
+        switch (target.itemType) {
         case Ghost.LinearSequenceItem:
             itemType.text = "LinearSequenceItem"
             break;
@@ -188,10 +175,10 @@ Item {
     ]
 
     Connections {
-        target: ghostItem
+        target: item.target
 
         onStatusChanged: {
-            switch (ghostItem.status) {
+            switch (item.target.status) {
             case Ghost.StandBy:
                 item.state = "standby"
                 break;

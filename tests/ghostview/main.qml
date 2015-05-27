@@ -17,110 +17,42 @@ Window {
     property int itemWidthSpacing: 10
     property int itemHeightSpacing: 10
 
-    Rectangle {
-        anchors.fill: parent
+    //    Rectangle {
+    //        anchors.fill: parent
 
-        color: "white"
-    }
+    //        color: "white"
+    //    }
+
+
 
     Flickable {
         id: flickable
 
         anchors.fill: parent
 
-        contentWidth: 2000
-        contentHeight: 600
+        //        contentWidth: ghostView.width
+        //        contentHeight: ghostView.height
 
-        Item {
-            id: view
+        // interactive: false
 
-            scale: 0.5
+        GhostView {
+            id: ghostView
 
-            GhostTree {
-                id: ghostTree
-                SequenceItem {
-                    ActionItem {
-                        summarize: "test"
-                        onExecute: setSuccessStatus()
-                    }
-                    ActionItem {
-                        onExecute: setSuccessStatus()
-                    }
-                    IdleActionItem {
-                        duration: 1000
-                    }
+            width: 3780
+            height: 920
 
-                    SequenceItem {
-                        ActionItem {
-                            onExecute: setSuccessStatus()
-                        }
-                        ActionItem {
-                            onExecute: setSuccessStatus()
-                        }
-                        IdleActionItem {
-                            duration: 1000
-                        }
-                        SequenceItem {
-                            ActionItem {
-                                onExecute: setSuccessStatus()
-                            }
-                            ActionItem {
-                                onExecute: setSuccessStatus()
-                            }
-                            IdleActionItem {
-                                duration: 1000
-                            }
-                            SequenceItem {
-                                ActionItem {
-                                    onExecute: setSuccessStatus()
-                                }
-                                ActionItem {
-                                    onExecute: setSuccessStatus()
-                                }
-                                IdleActionItem {
-                                    duration: 1000
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            anchors.fill: parent
 
-            Component.onCompleted: {
-                var component = Qt.createComponent("qrc:///VisibleGhostItem.qml")
-                if (component.status === Component.Ready) {
-                    var ghostItem = createGhostItems(ghostTree, view, component)
-                    ghostItem.x = 100
-                    ghostItem.y = 100
-                }
-            }
+            target: ghostTree
 
-            function createGhostItems(item, parentItem, component) {
-                var ghostItem = component.createObject(parentItem, { "ghostItem": item })
-                var twidth = 0;
-                var theight = 0;
-                for (var i = 0; i < item.childItems.length; ++i) {
-                    var childItem = item.childItems[i]
-                    var childGhostItem = createGhostItems(childItem, ghostItem, component)
-                    childGhostItem.x = twidth
-                    childGhostItem.y = itemHeight + itemHeightSpacing
-                    twidth += childGhostItem.width + itemWidthSpacing
-                }
-                if (item.childItems.length > 0) {
-                    ghostItem.x = 0
-                    ghostItem.y = itemHeight + itemHeightSpacing
+            itemDelegate: VisibleGhostItem {}
+        }
 
-                    ghostItem.width = twidth - itemWidthSpacing
-                    ghostItem.height = itemHeightSpacing + itemHeight * 2
-                } else {
-                    ghostItem.x = 0
-                    ghostItem.y = 0
-                    ghostItem.width = itemWidth
-                    ghostItem.height = itemHeight
-                }
+        Component.onCompleted: {
+            contentWidth = 3780
+            contentHeight = 920
 
-                return ghostItem
-            }
+            console.debug(contentWidth)
         }
     }
 
@@ -143,6 +75,93 @@ Window {
             text: "Reset"
             onClicked: {
                 ghostTree.reset()
+            }
+        }
+    }
+
+    GhostTree {
+        id: ghostTree
+        SequenceItem {
+            ActionItem {
+                summarize: "test"
+                onExecute: setSuccessStatus()
+            }
+            ActionItem {
+                onExecute: setSuccessStatus()
+            }
+
+            SequenceItem {
+                ActionItem {
+                    onExecute: setSuccessStatus()
+                }
+                ActionItem {
+                    onExecute: setSuccessStatus()
+                }
+                IdleActionItem {
+                    duration: 1000
+                }
+                SequenceItem {
+                    ActionItem {
+                        onExecute: setSuccessStatus()
+                    }
+                    ActionItem {
+                        onExecute: setSuccessStatus()
+                    }
+                    InverterItem {
+                        IdleActionItem {
+                            duration: 1000
+                        }
+                    }
+                    SequenceItem {
+                        ActionItem {
+                            onExecute: setSuccessStatus()
+                        }
+                        ActionItem {
+                            onExecute: setSuccessStatus()
+                        }
+                        IdleActionItem {
+                            duration: 1000
+                        }
+                    }
+                }
+            }
+
+            IdleActionItem {
+                duration: 1000
+            }
+
+            SequenceItem {
+                ActionItem {
+                    onExecute: setSuccessStatus()
+                }
+                ActionItem {
+                    onExecute: setSuccessStatus()
+                }
+                IdleActionItem {
+                    duration: 1000
+                }
+                SequenceItem {
+                    ActionItem {
+                        onExecute: setSuccessStatus()
+                    }
+                    ActionItem {
+                        onExecute: setSuccessStatus()
+                    }
+                    IdleActionItem {
+                        duration: 1000
+                    }
+                    SequenceItem {
+                        ActionItem {
+                            onExecute: setSuccessStatus()
+                        }
+                        ActionItem {
+                            onExecute: setSuccessStatus()
+                        }
+                        IdleActionItem {
+                            duration: 1000
+                        }
+                    }
+                }
             }
         }
     }
