@@ -10,6 +10,8 @@ class GGhostItem : public GGhostNode
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(GGhostItem)
+    Q_PROPERTY(Ghost::NodeType nodeType READ nodeType CONSTANT)
+    Q_PROPERTY(Ghost::ItemType itemType READ itemType CONSTANT)
     Q_PROPERTY(GGhostTree *parentTree READ parentTree CONSTANT)
     Q_PROPERTY(GGhostItem *parentItem READ parentItem CONSTANT)
     Q_PROPERTY(QJSValue precondition READ precondition WRITE setPrecondition NOTIFY preconditionChanged)
@@ -21,6 +23,10 @@ protected:
 private:
     virtual void classBegin() Q_DECL_FINAL;
     virtual void componentComplete() Q_DECL_FINAL;
+
+public:
+    virtual Ghost::NodeType nodeType() const = 0;
+    virtual Ghost::ItemType itemType() const = 0;
 
 public:
     GGhostTree *parentTree() const;

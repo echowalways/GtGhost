@@ -12,6 +12,9 @@ class GWeightSelectorItem : public GCompositeItem
 
 public:
     explicit GWeightSelectorItem(QObject *parent = 0);
+
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
 };
 
 #endif // GWEIGHTSELECTORITEM_H

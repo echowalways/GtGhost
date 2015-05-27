@@ -12,6 +12,11 @@ GAlwaysSuccessItem::GAlwaysSuccessItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GAlwaysSuccessItem::itemType() const
+{
+    return Ghost::AlwaysSuccessItem;
+}
+
 // class GAlwaysSuccessItemPrivate
 
 GAlwaysSuccessItemPrivate::GAlwaysSuccessItemPrivate()

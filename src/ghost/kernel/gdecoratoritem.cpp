@@ -12,6 +12,11 @@ GDecoratorItem::GDecoratorItem(GDecoratorItemPrivate &dd, QObject *parent)
 {
 }
 
+Ghost::NodeType GDecoratorItem::nodeType() const
+{
+    return Ghost::DecoratorNode;
+}
+
 // class GDecoratorItemPrivate
 
 GDecoratorItemPrivate::GDecoratorItemPrivate()

@@ -8,6 +8,11 @@ GWeightSelectorItem::GWeightSelectorItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GWeightSelectorItem::itemType() const
+{
+    return Ghost::WeightSelectorItem;
+}
+
 // class GWeightSelectorItemPrivate
 
 GWeightSelectorItemPrivate::GWeightSelectorItemPrivate()

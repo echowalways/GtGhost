@@ -12,6 +12,9 @@ class GCompositeItem : public GGhostItem
 protected:
     GCompositeItem(GCompositeItemPrivate &dd, QObject *parent);
 
+private:
+    virtual Ghost::NodeType nodeType() const Q_DECL_FINAL;
+
 public:
     void setUpdateMode(Ghost::UpdateMode mode);
     Ghost::UpdateMode updateMode() const;

@@ -13,6 +13,9 @@ class GRepeatUntilSuccessItem : public GDecoratorItem
 public:
     explicit GRepeatUntilSuccessItem(QObject *parent = 0);
 
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
+
 Q_SIGNALS:
     void loopCountChanged(int value);
 public:

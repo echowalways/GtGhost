@@ -11,6 +11,9 @@ class GInverterItem : public GDecoratorItem
 
 public:
     explicit GInverterItem(QObject *parent = 0);
+
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
 };
 
 #endif // GINVERTERITEM_H

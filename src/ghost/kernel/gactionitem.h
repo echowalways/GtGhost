@@ -12,6 +12,10 @@ class GActionItem : public GGhostItem
 public:
     explicit GActionItem(QObject *parent = 0);
 
+private:
+    virtual Ghost::NodeType nodeType() const Q_DECL_FINAL;
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
+
 Q_SIGNALS:
     void reset();
     void execute();

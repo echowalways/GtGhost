@@ -11,6 +11,9 @@ class GDecoratorItem : public GGhostItem
 
 protected:
     GDecoratorItem(GDecoratorItemPrivate &dd, QObject *parent);
+
+private:
+    virtual Ghost::NodeType nodeType() const Q_DECL_FINAL;
 };
 
 #endif // GDECORATORITEM_H

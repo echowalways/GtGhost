@@ -8,6 +8,11 @@ GLinearSequenceItem::GLinearSequenceItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GLinearSequenceItem::itemType() const
+{
+    return Ghost::LinearSequenceItem;
+}
+
 // class GLinearSequenceItemPrivate
 
 GLinearSequenceItemPrivate::GLinearSequenceItemPrivate()

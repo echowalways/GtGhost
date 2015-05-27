@@ -9,6 +9,8 @@ class Ghost : public QObject
     Q_ENUMS(Status)
     Q_ENUMS(UpdateMode)
     Q_ENUMS(RandomMode)
+    Q_ENUMS(NodeType)
+    Q_ENUMS(ItemType)
 
 public:
     enum Status {
@@ -28,6 +30,34 @@ public:
     enum RandomMode {
         Parity,
         Weight
+    };
+
+    enum NodeType {
+        CompositeNode,
+        DecoratorNode,
+        ConditionNode,
+        ActionNode
+    };
+
+    enum ItemType {
+        LinearSequenceItem,
+        LinearSelectorItem,
+        WeightSequenceItem,
+        WeightSelectorItem,
+        RandomSequenceItem,
+        RandomSelectorItem,
+
+        InverterItem,
+        RepeaterItem,
+        RepeatUntilSuccessItem,
+        RepeatUntilFailureItem,
+        AlwaysSuccessItem,
+        AlwaysFailureItem,
+
+        ConditionItem,
+
+        ActionItem,
+        IdleActionItem
     };
 };
 

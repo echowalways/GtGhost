@@ -14,6 +14,9 @@ class GRandomSelectorItem : public GCompositeItem
 public:
     explicit GRandomSelectorItem(QObject *parent = 0);
 
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
+
 public:
     void setRandomMode(Ghost::RandomMode mode);
     Ghost::RandomMode randomMode() const;

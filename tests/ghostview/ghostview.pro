@@ -1,6 +1,7 @@
 TEMPLATE = app
 
 QT      += qml quick
+CONFIG  -= app_bundle
 
 SOURCES += main.cpp
 

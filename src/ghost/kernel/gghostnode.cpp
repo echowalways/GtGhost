@@ -155,7 +155,7 @@ void GGhostNodePrivate::setStatus(Ghost::Status status)
         break;
     }
 
-    if (description.isEmpty()) {
+    if (summarize.isEmpty()) {
         qCDebug(qlcGhostNode,
                 "Status: '%s' ==> '%s' : %s(%p)",
                 toString(this->status), toString(status),
@@ -165,7 +165,7 @@ void GGhostNodePrivate::setStatus(Ghost::Status status)
                 << "Status: '" << toString(this->status)
                 << "' ==> '" << toString(status)
                 << "' : " << q->metaObject()->className()
-                << "\n  " << description.toUtf8().constData();
+                << "\n  " << summarize.toUtf8().constData();
     }
 
 #endif // QT_NO_DEBUG

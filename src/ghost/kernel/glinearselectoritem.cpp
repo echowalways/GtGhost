@@ -8,6 +8,11 @@ GLinearSelectorItem::GLinearSelectorItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GLinearSelectorItem::itemType() const
+{
+    return Ghost::LinearSelectorItem;
+}
+
 // class GLinearSelectorItemPrivate
 
 GLinearSelectorItemPrivate::GLinearSelectorItemPrivate()

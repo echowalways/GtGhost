@@ -11,6 +11,9 @@ class GLinearSequenceItem : public GCompositeItem
 
 public:
     explicit GLinearSequenceItem(QObject *parent = 0);
+
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
 };
 
 #endif // GLINEARSEQUENCEITEM_H

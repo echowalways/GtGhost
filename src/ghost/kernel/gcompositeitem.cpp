@@ -12,6 +12,11 @@ GCompositeItem::GCompositeItem(GCompositeItemPrivate &dd, QObject *parent)
 {
 }
 
+Ghost::NodeType GCompositeItem::nodeType() const
+{
+    return Ghost::CompositeNode;
+}
+
 void GCompositeItem::setUpdateMode(Ghost::UpdateMode mode)
 {
     d_func()->updateMode = mode;

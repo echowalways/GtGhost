@@ -14,6 +14,9 @@ class GRandomSequenceItem : public GCompositeItem
 public:
     explicit GRandomSequenceItem(QObject *parent = 0);
 
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
+
 public:
     void setRandomMode(Ghost::RandomMode mode);
     Ghost::RandomMode randomMode() const;

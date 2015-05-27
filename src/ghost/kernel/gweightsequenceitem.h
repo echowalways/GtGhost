@@ -12,6 +12,9 @@ class GWeightSequenceItem : public GCompositeItem
 
 public:
     explicit GWeightSequenceItem(QObject *parent = 0);
+
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
 };
 
 #endif // GWEIGHTSEQUENCEITEM_H

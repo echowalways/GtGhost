@@ -12,6 +12,11 @@ GRepeaterItem::GRepeaterItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GRepeaterItem::itemType() const
+{
+    return Ghost::RepeaterItem;
+}
+
 void GRepeaterItem::setLoopCount(int value)
 {
     Q_D(GRepeaterItem);

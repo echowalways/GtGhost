@@ -11,6 +11,9 @@ class GAlwaysSuccessItem : public GDecoratorItem
 
 public:
     explicit GAlwaysSuccessItem(QObject *parent = 0);
+
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
 };
 
 #endif // GALWAYSSUCCESSITEM_H

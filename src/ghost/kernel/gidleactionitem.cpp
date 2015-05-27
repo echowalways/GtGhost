@@ -12,6 +12,16 @@ GIdleActionItem::GIdleActionItem(QObject *parent)
 {
 }
 
+Ghost::NodeType GIdleActionItem::nodeType() const
+{
+    return Ghost::ActionNode;
+}
+
+Ghost::ItemType GIdleActionItem::itemType() const
+{
+    return Ghost::IdleActionItem;
+}
+
 void GIdleActionItem::setDuration(int value)
 {
     Q_D(GIdleActionItem);

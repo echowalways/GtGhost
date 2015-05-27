@@ -12,6 +12,16 @@ GActionItem::GActionItem(QObject *parent)
 {
 }
 
+Ghost::NodeType GActionItem::nodeType() const
+{
+    return Ghost::ActionNode;
+}
+
+Ghost::ItemType GActionItem::itemType() const
+{
+    return Ghost::ActionItem;
+}
+
 void GActionItem::setSuccessStatus()
 {
     d_func()->setStatus(Ghost::Success);

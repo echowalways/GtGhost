@@ -13,6 +13,10 @@ class GIdleActionItem : public GGhostItem
 public:
     explicit GIdleActionItem(QObject *parent = 0);
 
+private:
+    virtual Ghost::NodeType nodeType() const Q_DECL_FINAL;
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
+
 Q_SIGNALS:
     void durationChanged(int value);
 public:

@@ -12,6 +12,11 @@ GRepeatUntilFailureItem::GRepeatUntilFailureItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GRepeatUntilFailureItem::itemType() const
+{
+    return Ghost::RepeatUntilFailureItem;
+}
+
 void GRepeatUntilFailureItem::setLoopCount(int value)
 {
     Q_D(GRepeatUntilFailureItem);

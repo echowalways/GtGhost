@@ -12,6 +12,16 @@ GConditionItem::GConditionItem(QObject *parent)
 {
 }
 
+Ghost::NodeType GConditionItem::nodeType() const
+{
+    return Ghost::ConditionNode;
+}
+
+Ghost::ItemType GConditionItem::itemType() const
+{
+    return Ghost::ConditionItem;
+}
+
 void GConditionItem::setCondition(const QJSValue &value)
 {
     Q_D(GConditionItem);

@@ -11,6 +11,9 @@ class GLinearSelectorItem : public GCompositeItem
 
 public:
     explicit GLinearSelectorItem(QObject *parent = 0);
+
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
 };
 
 #endif // GLINEARSELECTORITEM_H

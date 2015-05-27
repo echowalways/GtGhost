@@ -13,6 +13,10 @@ class GConditionItem : public GGhostItem
 public:
     explicit GConditionItem(QObject *parent = 0);
 
+private:
+    virtual Ghost::NodeType nodeType() const Q_DECL_FINAL;
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
+
 Q_SIGNALS:
     void conditionChanged(const QJSValue &value);
 public:

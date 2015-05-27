@@ -8,6 +8,11 @@ GRandomSequenceItem::GRandomSequenceItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GRandomSequenceItem::itemType() const
+{
+    return Ghost::RandomSequenceItem;
+}
+
 void GRandomSequenceItem::setRandomMode(Ghost::RandomMode mode)
 {
     d_func()->randomMode = mode;

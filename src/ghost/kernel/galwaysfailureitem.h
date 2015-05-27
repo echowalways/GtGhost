@@ -11,6 +11,9 @@ class GAlwaysFailureItem : public GDecoratorItem
 
 public:
     explicit GAlwaysFailureItem(QObject *parent = 0);
+
+private:
+    virtual Ghost::ItemType itemType() const Q_DECL_FINAL;
 };
 
 #endif // GALWAYSFAILUREITEM_H

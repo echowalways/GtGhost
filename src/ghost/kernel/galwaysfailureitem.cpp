@@ -12,6 +12,11 @@ GAlwaysFailureItem::GAlwaysFailureItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GAlwaysFailureItem::itemType() const
+{
+    return Ghost::AlwaysFailureItem;
+}
+
 // class GAlwaysFailureItemPrivate
 
 GAlwaysFailureItemPrivate::GAlwaysFailureItemPrivate()

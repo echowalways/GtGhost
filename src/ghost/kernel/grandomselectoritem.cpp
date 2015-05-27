@@ -8,6 +8,11 @@ GRandomSelectorItem::GRandomSelectorItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GRandomSelectorItem::itemType() const
+{
+    return Ghost::RandomSelectorItem;
+}
+
 void GRandomSelectorItem::setRandomMode(Ghost::RandomMode mode)
 {
     d_func()->randomMode = mode;

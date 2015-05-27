@@ -8,6 +8,11 @@ GWeightSequenceItem::GWeightSequenceItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GWeightSequenceItem::itemType() const
+{
+    return Ghost::WeightSequenceItem;
+}
+
 // class GWeightSequenceItemPrivate
 
 GWeightSequenceItemPrivate::GWeightSequenceItemPrivate()

@@ -6,40 +6,149 @@ Item {
 
     property var ghostItem: null
 
-//    Rectangle {
-//        anchors.fill: parent
+    Rectangle {
+        anchors.fill: parent
 
-//        color: "transparent"
+        color: "transparent"
 
-//        border.width: 3
-//        border.color: "black"
-//    }
+        border.width: 3
+        border.color: "black"
+    }
 
     Rectangle {
         id: statusFrameItem
 
-        width: 140
-        height: 80
-
         anchors.horizontalCenter: item.horizontalCenter
         anchors.top: item.top
 
-        color: "#7A7A7A"
-        radius: 10
+        width: 280
+        height: 150
+
+        color: "#4A4849"
+        radius: 6
+
+        border.color: "#36234E"
+        border.width: 1
 
         Rectangle {
-            id: statusItem
+            id: nodeType
 
             anchors.centerIn: parent
 
             width: parent.width - 20
             height: parent.height - 20
+
+            color: "#03785D"
+            radius: 3
+
+            border.color: "#36234E"
+            border.width: 1
+
+            Rectangle {
+                id: statusItem
+
+                x: 5
+                y: 5
+
+                width: 30
+                height: 30
+
+                color: "#03785D"
+                radius: 2
+
+                border.color: "#36234E"
+                border.width: 1
+            }
+
+            Text {
+                id: itemType
+
+                anchors.verticalCenter: statusItem.verticalCenter
+                anchors.left: statusItem.right
+                anchors.leftMargin: 5
+
+                font.pixelSize: 20
+                font.bold: true
+
+                color: "white"
+            }
+
+            Text {
+                anchors.top: statusItem.bottom
+                anchors.left: statusItem.left
+                anchors.right: nodeType.right
+                height: 80
+
+                text: ghostItem.summarize
+                color: "white"
+            }
         }
 
-        Text {
-            anchors.centerIn: statusFrameItem
-            text: ghostItem.summarize
-            color: "white"
+
+    }
+
+    Component.onCompleted: {
+        switch (ghostItem.nodeType) {
+        case Ghost.CompositeNode:
+            nodeType.color = "#03785D"
+            break;
+        case Ghost.DecoratorNode:
+            nodeType.color = "#083975"
+            break;
+        case Ghost.ConditionNode:
+            nodeType.color = "#4A4849"
+            break;
+        case Ghost.ActionNode:
+            nodeType.color = "#683FAA"
+            break;
+        }
+
+        switch (ghostItem.itemType) {
+        case Ghost.LinearSequenceItem:
+            itemType.text = "LinearSequenceItem"
+            break;
+        case Ghost.LinearSelectorItem:
+            itemType.text = "LinearSelectorItem"
+            break;
+        case Ghost.WeightSequenceItem:
+            itemType.text = "WeightSequenceItem"
+            break;
+        case Ghost.WeightSelectorItem:
+            itemType.text = "WeightSelectorItem"
+            break;
+        case Ghost.RandomSequenceItem:
+            itemType.text = "RandomSequenceItem"
+            break;
+        case Ghost.RandomSelectorItem:
+            itemType.text = "RandomSelectorItem"
+            break;
+        case Ghost.InverterItem:
+            itemType.text = "InverterItem"
+            break;
+        case Ghost.RepeaterItem:
+            itemType.text = "RepeaterItem"
+            break;
+        case Ghost.RepeatUntilSuccessItem:
+            itemType.text = "RepeatUntilSuccessItem"
+            break;
+        case Ghost.RepeatUntilFailureItem:
+            itemType.text = "RepeatUntilFailureItem"
+            break;
+        case Ghost.AlwaysSuccessItem:
+            itemType.text = "AlwaysSuccessItem"
+            break;
+        case Ghost.AlwaysFailureItem:
+            itemType.text = "AlwaysFailureItem"
+            break;
+        case Ghost.ConditionItem:
+            itemType.text = "ConditionItem"
+            break;
+        case Ghost.ActionItem:
+            itemType.text = "ActionItem"
+            break;
+        case Ghost.IdleActionItem:
+            itemType.text = "IdleActionItem"
+            break;
         }
     }
 

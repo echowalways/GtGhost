@@ -12,6 +12,11 @@ GInverterItem::GInverterItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GInverterItem::itemType() const
+{
+    return Ghost::InverterItem;
+}
+
 // class GInverterItemPrivate
 
 GInverterItemPrivate::GInverterItemPrivate()

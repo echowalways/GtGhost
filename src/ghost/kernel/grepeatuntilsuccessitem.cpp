@@ -12,6 +12,11 @@ GRepeatUntilSuccessItem::GRepeatUntilSuccessItem(QObject *parent)
 {
 }
 
+Ghost::ItemType GRepeatUntilSuccessItem::itemType() const
+{
+    return Ghost::RepeatUntilSuccessItem;
+}
+
 void GRepeatUntilSuccessItem::setLoopCount(int value)
 {
     Q_D(GRepeatUntilSuccessItem);
