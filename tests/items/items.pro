@@ -10,12 +10,6 @@ TEMPLATE = app
 
 DESTDIR  = $$PWD/../../bin
 
-HEADERS += \
-    testengine.h
-
-SOURCES += \
-    testengine.cpp
-
 SOURCES += tst_itemstest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 

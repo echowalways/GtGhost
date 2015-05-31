@@ -1,43 +1,27 @@
-#include "gghosttree.h"
 #include "gghosttree_p.h"
+#include "gghosttree_p_p.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QLoggingCategory>
 
-#include "gghostitem.h"
-#include "gghostitem_p.h"
+#include "gghostdata_p.h"
 
 Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
 
 // class GGhostTree
 
 GGhostTree::GGhostTree(QObject *parent)
-    : GGhostNode(*new GGhostTreePrivate(), parent)
-{
-}
-
-void GGhostTree::classBegin()
+    : GGhostSourceNode(*new GGhostTreePrivate(), parent)
 {
     Q_D(GGhostTree);
 
-    qsrand(QDateTime::currentMSecsSinceEpoch());
-
-    d->parentTree = this;
+    d->extraData = new GGhostData(this);
 }
 
-void GGhostTree::componentComplete()
+GGhostNodeList GGhostTree::childNodes() const
 {
-    Q_D(GGhostTree);
-
-    Q_FOREACH (GGhostItem *childItem, d->childItems) {
-        GGhostItemPrivate *childptr
-                = GGhostItemPrivate::dptr(childItem);
-        childptr->sync(this, this);
-    }
-
-    if (d->initialize()) {
-        d->setStatus(Ghost::StandBy);
-    }
+    Q_D(const GGhostTree);
+    return d->childNodes;
 }
 
 void GGhostTree::start()
@@ -70,21 +54,19 @@ void GGhostTree::reset()
     }
 }
 
-void GGhostTree::set(const QString &key, const QJSValue &value)
+void GGhostTree::classBegin()
+{
+}
+
+void GGhostTree::componentComplete()
 {
     Q_D(GGhostTree);
 
-    if (value.isUndefined()) {
-        d->runtimeVariables.remove(key);
-    } else {
-        d->runtimeVariables.insert(key, value);
-    }
-}
+    qsrand(QDateTime::currentMSecsSinceEpoch());
 
-QJSValue GGhostTree::get(const QString &key) const
-{
-    Q_D(const GGhostTree);
-    return d->runtimeVariables.value(key);
+    if (d->initialize()) {
+        d->setStatus(Ghost::StandBy);
+    }
 }
 
 // class GGhostTreePrivate
@@ -97,73 +79,7 @@ GGhostTreePrivate::~GGhostTreePrivate()
 {
 }
 
-GGhostItemPrivate *GGhostTreePrivate::dptr(GGhostItem *item)
-{
-    return GGhostItemPrivate::dptr(item);
-}
-
-const GGhostItemPrivate *GGhostTreePrivate::dptr(const GGhostItem *item)
-{
-    return GGhostItemPrivate::dptr(item);
-}
-
-bool GGhostTreePrivate::initialize()
-{
-    if (childItems.count() != 1) {
-        qDebug(qlcGhostTree)
-                << "Allows only one child node.";
-        return false;
-    }
-
-    bool hasError = false;
-    Q_FOREACH (GGhostItem *childItem, childItems) {
-        GGhostItemPrivate *childptr
-                = GGhostItemPrivate::dptr(childItem);
-        if (!childptr->initialize()) {
-            hasError = true;
-        }
-    }
-    return !hasError;
-}
-
-void GGhostTreePrivate::reset()
-{
-    Q_CHECK_PTR(childItems[0]);
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    dptr(childItems[0])->reset();
-    runtimeVariables.clear();
-
-    setStatus(Ghost::StandBy);
-}
-
-void GGhostTreePrivate::execute()
-{
-    Q_CHECK_PTR(childItems[0]);
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    setStatus(Ghost::Running);
-
-    GGhostItemPrivate *rootptr = dptr(childItems[0]);
-    if (rootptr->callPrecondition()) {
-        rootptr->execute();
-    } else {
-        setStatus(Ghost::Failure);
-    }
-}
-
-void GGhostTreePrivate::terminate()
-{
-    Q_CHECK_PTR(childItems[0]);
-    Q_ASSERT(Ghost::Running == status);
-
-    dptr(childItems[0])->terminate();
-}
-
-void GGhostTreePrivate::onStatusChanged()
+void GGhostTreePrivate::onStatusChanged(Ghost::Status status)
 {
     Q_Q(GGhostTree);
 
@@ -184,16 +100,14 @@ void GGhostTreePrivate::onStatusChanged()
     }
 }
 
-void GGhostTreePrivate::onChildStatusChanged(GGhostItem *child)
+void GGhostTreePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
 {
-    if (Ghost::Invalid == status) {
-        return;
-    }
+    Q_ASSERT(Ghost::Invalid != status);
 
-    Q_CHECK_PTR(childItems[0]);
-    Q_ASSERT(child == childItems[0]);
+    Q_CHECK_PTR(childNodes[0]);
+    Q_ASSERT(childNode == childNodes[0]);
 
-    Ghost::Status childStatus = child->status();
+    Ghost::Status childStatus = childNode->status();
 
     if ((Ghost::Success == childStatus)
             || (Ghost::Failure == childStatus)
@@ -201,3 +115,77 @@ void GGhostTreePrivate::onChildStatusChanged(GGhostItem *child)
         setStatus(childStatus);
     }
 }
+
+bool GGhostTreePrivate::initialize()
+{
+    Q_Q(GGhostTree);
+
+    bool hasError = false;
+
+    foreach (GGhostNode *childNode, childNodes) {
+        GGhostNodePrivate *childptr = cast(childNode);
+        // 初始化子节点数据
+        childptr->masterTree = q;
+        childptr->extraData = extraData;
+        // 开始初始化子节点
+        if (childptr->initialize()) {
+            childptr->parentSourceNode = q;
+        } else {
+            hasError = true;
+        }
+    }
+
+    if (childNodes.count() != 1) {
+        qCWarning(qlcGhostTree)
+                << "Allows only one child node.";
+        hasError = true;
+    }
+
+    if (!hasError) {
+        emit q->initialized();
+    }
+
+    return !hasError;
+}
+
+void GGhostTreePrivate::reset()
+{
+    Q_CHECK_PTR(childNodes[0]);
+    Q_ASSERT(Ghost::Invalid != status);
+    Q_ASSERT(Ghost::StandBy != status);
+    Q_ASSERT(Ghost::Running != status);
+
+    if (extraData) {
+        extraData->reset();
+    }
+    cast(childNodes[0])->reset();
+
+    setStatus(Ghost::StandBy);
+}
+
+void GGhostTreePrivate::execute()
+{
+    Q_CHECK_PTR(childNodes[0]);
+    Q_ASSERT(Ghost::Invalid != status);
+    Q_ASSERT(Ghost::Running != status);
+
+    setStatus(Ghost::Running);
+
+    GGhostNodePrivate *rootptr = cast(childNodes[0]);
+    if (rootptr->callPrecondition()) {
+        rootptr->execute();
+    } else {
+        setStatus(Ghost::Failure);
+    }
+}
+
+void GGhostTreePrivate::terminate()
+{
+    Q_CHECK_PTR(childNodes[0]);
+    Q_ASSERT(Ghost::Running == status);
+
+    cast(childNodes[0])->terminate();
+}
+
+// moc_gghosttree_p.cpp
+#include "moc_gghosttree_p.cpp"

@@ -2,39 +2,31 @@
 
 #include <QtQml/QtQml>
 
-#include "gghostnode.h"
-#include "gghosttree.h"
-#include "gghostitem.h"
-
-#include "gcompositeitem.h"
-#include "glinearsequenceitem.h"
-#include "glinearselectoritem.h"
-#include "gweightsequenceitem.h"
-#include "gweightselectoritem.h"
-#include "grandomsequenceitem.h"
-#include "grandomselectoritem.h"
-
-#include "gdecoratoritem.h"
-#include "ginverteritem.h"
-#include "grepeateritem.h"
-#include "grepeatuntilsuccessitem.h"
-#include "grepeatuntilfailureitem.h"
-#include "galwayssuccessitem.h"
-#include "galwaysfailureitem.h"
-
-#include "gconditionitem.h"
-
-#include "gactionitem.h"
-#include "gidleactionitem.h"
-
-#if !defined(GT_NO_GHOSTVIEW)
-#include "gghostview.h"
-#include "gghostviewitem.h"
-#endif
-
-#if defined(GT_GHOST_UNITTEST)
-#include "gghostunittest.h"
-#endif
+#include "gghostnamespace.h"
+#include "gghostsourcenode_p.h"
+#include "gghostnode_p.h"
+#include "gghosttree_p.h"
+#include "gghostdata_p.h"
+#include "gcompositenode_p.h"
+#include "gdecoratornode_p.h"
+#include "gleafnode_p.h"
+#include "gsequencenode_p.h"
+#include "gselectornode_p.h"
+#include "gparallelnode_p.h"
+#include "gprioritysequencenode_p.h"
+#include "gpriorityselectornode_p.h"
+#include "grandomsequencenode_p.h"
+#include "grandomselectornode_p.h"
+#include "ginverternode_p.h"
+#include "grepeaternode_p.h"
+#include "grepeatuntilsuccessnode_p.h"
+#include "grepeatuntilfailurenode_p.h"
+#include "gforcesuccessnode_p.h"
+#include "gforcefailurenode_p.h"
+#include "gconditionnode_p.h"
+#include "gcooldownnode_p.h"
+#include "gtimeoutnode_p.h"
+#include "gactionnode_p.h"
 
 void GtGhostPlugin::registerTypes(const char *uri)
 {
@@ -45,41 +37,34 @@ void GtGhostPlugin::registerTypes(const char *uri)
     qRegisterMetaType<Ghost::Status>("Ghost::Status");
 
     qmlRegisterUncreatableType<Ghost>(uri, 1, 0, "Ghost", "Ghost is an abstract class.");
-
+    qmlRegisterUncreatableType<GGhostSourceNode>(uri, 1, 0, "GhostSourceNode", "GhostSourceNode is an abstract class.");
     qmlRegisterUncreatableType<GGhostNode>(uri, 1, 0, "GhostNode", "GhostNode is an abstract class.");
+    qmlRegisterUncreatableType<GGhostData>(uri, 1, 0, "GhostData", "GhostData is an abstract class.");
+    qmlRegisterUncreatableType<GCompositeNode>(uri, 1, 0, "CompositeNode", "CompositeNode is an abstract class.");
+    qmlRegisterUncreatableType<GDecoratorNode>(uri, 1, 0, "DecoratorNode", "DecoratorNode is an abstract class.");
+    qmlRegisterUncreatableType<GLeafNode>(uri, 1, 0, "LeafNode", "LeafNode is an abstract class.");
+
     qmlRegisterType<GGhostTree>(uri, 1, 0, "GhostTree");
-    qmlRegisterUncreatableType<GGhostItem>(uri, 1, 0, "GhostItem", "GhostItem is an abstract class.");
 
-    qmlRegisterUncreatableType<GCompositeItem>(uri, 1, 0, "CompositeItem", "CompositeItem is an abstract class.");
-    qmlRegisterType<GLinearSequenceItem>(uri, 1, 0, "LinearSequenceItem");
-    qmlRegisterType<GLinearSelectorItem>(uri, 1, 0, "LinearSelectorItem");
-    qmlRegisterType<GWeightSequenceItem>(uri, 1, 0, "WeightSequenceItem");
-    qmlRegisterType<GWeightSelectorItem>(uri, 1, 0, "WeightSelectorItem");
-    qmlRegisterType<GRandomSequenceItem>(uri, 1, 0, "RandomSequenceItem");
-    qmlRegisterType<GRandomSelectorItem>(uri, 1, 0, "RandomSelectorItem");
-    qmlRegisterType<GLinearSequenceItem>(uri, 1, 0, "SequenceItem");
-    qmlRegisterType<GLinearSelectorItem>(uri, 1, 0, "SelectorItem");
+    qmlRegisterType<GSequenceNode>(uri, 1, 0, "SequenceNode");
+    qmlRegisterType<GSelectorNode>(uri, 1, 0, "SelectorNode");
+    qmlRegisterType<GParallelNode>(uri, 1, 0, "ParallelNode");
+    qmlRegisterType<GPrioritySequenceNode>(uri, 1, 0, "PrioritySequenceNode");
+    qmlRegisterType<GPrioritySelectorNode>(uri, 1, 0, "PrioritySelectorNode");
+    qmlRegisterType<GRandomSequenceNode>(uri, 1, 0, "RandomSequenceNode");
+    qmlRegisterType<GRandomSelectorNode>(uri, 1, 0, "RandomSelectorNode");
 
-    qmlRegisterUncreatableType<GDecoratorItem>(uri, 1, 0, "DecoratorItem", "DecoratorItem is an abstract class.");
-    qmlRegisterType<GInverterItem>(uri, 1, 0, "InverterItem");
-    qmlRegisterType<GRepeaterItem>(uri, 1, 0, "RepeaterItem");
-    qmlRegisterType<GRepeatUntilSuccessItem>(uri, 1, 0, "RepeatUntilSuccessItem");
-    qmlRegisterType<GRepeatUntilFailureItem>(uri, 1, 0, "RepeatUntilFailureItem");
-    qmlRegisterType<GAlwaysSuccessItem>(uri, 1, 0, "AlwaysSuccessItem");
-    qmlRegisterType<GAlwaysFailureItem>(uri, 1, 0, "AlwaysFailureItem");
+    qmlRegisterType<GInverterNode>(uri, 1, 0, "InverterNode");
+    qmlRegisterType<GRepeaterNode>(uri, 1, 0, "RepeaterNode");
+    qmlRegisterType<GRepeatUntilSuccessNode>(uri, 1, 0, "RepeatUntilSuccessNode");
+    qmlRegisterType<GRepeatUntilFailureNode>(uri, 1, 0, "RepeatUntilFailureNode");
+    qmlRegisterType<GForceSuccessNode>(uri, 1, 0, "ForceSuccessNode");
+    qmlRegisterType<GForceFailureNode>(uri, 1, 0, "ForceFailureNode");
 
-    qmlRegisterType<GConditionItem>(uri, 1, 0, "ConditionItem");
-    qmlRegisterType<GActionItem>(uri, 1, 0, "ActionItem");
-    qmlRegisterType<GIdleActionItem>(uri, 1, 0, "IdleActionItem");
-
-#if !defined(GT_NO_GHOSTVIEW)
-    qmlRegisterType<GGhostView>(uri, 1, 0, "GhostView");
-    qmlRegisterType<GGhostViewItem>(uri, 1, 0, "GhostViewItem");
-#endif
-
-#if defined(GT_GHOST_UNITTEST)
-    qmlRegisterType<GGhostUnitTest>(uri, 1, 0, "GhostUnitTest");
-#endif
+    qmlRegisterType<GConditionNode>(uri, 1, 0, "ConditionNode");
+    qmlRegisterType<GCooldownNode>(uri, 1, 0, "CooldownNode");
+    qmlRegisterType<GTimeoutNode>(uri, 1, 0, "TimeoutNode");
+    qmlRegisterType<GActionNode>(uri, 1, 0, "ActionNode");
 }
 
 

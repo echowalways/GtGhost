@@ -1,52 +1,57 @@
 #ifndef GGHOSTNODE_P_H
 #define GGHOSTNODE_P_H
 
-#include <private/qobject_p.h>
-#include <QtQml/QQmlListProperty>
+#include <QtQml/QJSValue>
+#include <QtQml/QQmlParserStatus>
 
-#include "gghostnode.h"
+#include "gghostsourcenode_p.h"
 
-class GGhostNodePrivate : public QObjectPrivate
+class GGhostNode;
+typedef QList<GGhostNode *> GGhostNodeList;
+class GGhostTree;
+
+class GGhostData;
+
+class GGhostNodePrivate;
+class GGhostNode : public GGhostSourceNode, public QQmlParserStatus
 {
-    Q_DECLARE_PUBLIC(GGhostNode)
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(GGhostNode)
+    Q_PROPERTY(GGhostTree* masterTree READ masterTree CONSTANT)
+    Q_PROPERTY(GGhostNode* parentNode READ parentNode CONSTANT)
+    Q_PROPERTY(Ghost::BaseType baseType READ baseType CONSTANT)
+    Q_PROPERTY(Ghost::NodeType nodeType READ nodeType CONSTANT)
+    Q_PRIVATE_PROPERTY(d_func(), QQmlListProperty<GGhostNode> childNodes READ _q_childNodes CONSTANT DESIGNABLE false)
+    Q_PROPERTY(QJSValue precondition READ precondition WRITE setPrecondition NOTIFY preconditionChanged)
+    Q_PROPERTY(QJSValue weight READ weight WRITE setWeight NOTIFY weightChanged)
+    Q_PRIVATE_PROPERTY(d_func(), GGhostData* data READ _q_data CONSTANT)
+    Q_INTERFACES(QQmlParserStatus)
+    Q_CLASSINFO("DefaultProperty", "childNodes")
 
-public:
-    GGhostNodePrivate();
-    virtual ~GGhostNodePrivate();
+protected:
+    GGhostNode(GGhostNodePrivate &dd, QObject *parent);
 
+Q_SIGNALS:
+    void initialized();
 public:
-    static GGhostNodePrivate *dptr(GGhostNode *node) { return node->d_func(); }
-    static const GGhostNodePrivate *dptr(const GGhostNode *node) { return node->d_func(); }
+    GGhostTree *masterTree() const;
+    GGhostNode *parentNode() const;
+    Ghost::BaseType baseType() const;
+    Ghost::NodeType nodeType() const;
+    GGhostNodeList childNodes() const;
 
+Q_SIGNALS:
+    void preconditionChanged(const QJSValue &value);
+    void weightChanged(const QJSValue &value);
 public:
-    GGhostTree *parentTree;
-    GGhostNode *parentNode;
+    void setPrecondition(const QJSValue &value);
+    void setWeight(const QJSValue &value);
+    QJSValue precondition() const;
+    QJSValue weight() const;
 
-public:
-    QQmlListProperty<GGhostItem> ghostItems();
-public:
-    GGhostItemList childItems;
-
-public:
-    static const char *toString(Ghost::Status status);
-    void setStatus(Ghost::Status status);
-public:
-    Ghost::Status status;
-
-public:
-    virtual bool initialize() = 0;
-
-    virtual void reset() = 0;
-    virtual void execute() = 0;
-    virtual void terminate() = 0;
-
-public:
-    virtual void onStatusChanged();
-    virtual void onChildStatusChanged(GGhostItem *child);
-
-public:
-    QString summarize;
+protected:
+    virtual void classBegin() Q_DECL_OVERRIDE;
+    virtual void componentComplete() Q_DECL_OVERRIDE;
 };
 
 #endif // GGHOSTNODE_P_H
-

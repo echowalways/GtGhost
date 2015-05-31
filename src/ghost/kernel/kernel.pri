@@ -1,81 +1,81 @@
 INCLUDEPATH += $$PWD
 
-CONFIG  += unittest
+QT      *= core core-private qml qml-private
+CONFIG  += c++11 no_private_qt_headers_warning
 
 HEADERS += \
-    $$PWD/gtghostnamespace.h \
-    $$PWD/gghostnode.h \
+    $$PWD/gghostnamespace.h \
     $$PWD/gghostnode_p.h \
-    $$PWD/gghosttree.h \
+    $$PWD/gghostnode_p_p.h \
     $$PWD/gghosttree_p.h \
-    $$PWD/gghostitem.h \
-    $$PWD/gghostitem_p.h \
-    $$PWD/gcompositeitem.h \
-    $$PWD/gcompositeitem_p.h \
-    $$PWD/glinearselectoritem.h \
-    $$PWD/glinearselectoritem_p.h \
-    $$PWD/glinearsequenceitem.h \
-    $$PWD/glinearsequenceitem_p.h \
-    $$PWD/gweightselectoritem.h \
-    $$PWD/gweightselectoritem_p.h \
-    $$PWD/gweightsequenceitem.h \
-    $$PWD/gweightsequenceitem_p.h \
-    $$PWD/grandomselectoritem.h \
-    $$PWD/grandomselectoritem_p.h \
-    $$PWD/grandomsequenceitem.h \
-    $$PWD/grandomsequenceitem_p.h \
-    $$PWD/gdecoratoritem.h \
-    $$PWD/gdecoratoritem_p.h \
-    $$PWD/ginverteritem.h \
-    $$PWD/ginverteritem_p.h \
-    $$PWD/grepeateritem.h \
-    $$PWD/grepeateritem_p.h \
-    $$PWD/galwaysfailureitem.h \
-    $$PWD/galwaysfailureitem_p.h \
-    $$PWD/galwayssuccessitem.h \
-    $$PWD/galwayssuccessitem_p.h \
-    $$PWD/grepeatuntilfailureitem.h \
-    $$PWD/grepeatuntilfailureitem_p.h \
-    $$PWD/grepeatuntilsuccessitem.h \
-    $$PWD/grepeatuntilsuccessitem_p.h \
-    $$PWD/gconditionitem.h \
-    $$PWD/gconditionitem_p.h \
-    $$PWD/gactionitem.h \
-    $$PWD/gactionitem_p.h \
-    $$PWD/gidleactionitem.h \
-    $$PWD/gidleactionitem_p.h
+    $$PWD/gghosttree_p_p.h \
+    $$PWD/gcompositenode_p.h \
+    $$PWD/gcompositenode_p_p.h \
+    $$PWD/gdecoratornode_p.h \
+    $$PWD/gdecoratornode_p_p.h \
+    $$PWD/gleafnode_p.h \
+    $$PWD/gleafnode_p_p.h \
+    $$PWD/gsequencenode_p.h \
+    $$PWD/gsequencenode_p_p.h \
+    $$PWD/gselectornode_p.h \
+    $$PWD/gselectornode_p_p.h \
+    $$PWD/gparallelnode_p.h \
+    $$PWD/gparallelnode_p_p.h  \
+    $$PWD/ginverternode_p.h \
+    $$PWD/ginverternode_p_p.h \
+    $$PWD/grepeaternode_p.h \
+    $$PWD/grepeaternode_p_p.h \
+    $$PWD/grepeatuntilsuccessnode_p.h \
+    $$PWD/grepeatuntilsuccessnode_p_p.h \
+    $$PWD/grepeatuntilfailurenode_p.h \
+    $$PWD/grepeatuntilfailurenode_p_p.h \
+    $$PWD/gforcesuccessnode_p.h \
+    $$PWD/gforcesuccessnode_p_p.h \
+    $$PWD/gforcefailurenode_p.h \
+    $$PWD/gforcefailurenode_p_p.h \
+    $$PWD/gconditionnode_p.h \
+    $$PWD/gconditionnode_p_p.h \
+    $$PWD/gcooldownnode_p.h \
+    $$PWD/gcooldownnode_p_p.h \
+    $$PWD/gtimeoutnode_p.h \
+    $$PWD/gtimeoutnode_p_p.h \
+    $$PWD/gactionnode_p.h \
+    $$PWD/gactionnode_p_p.h \
+    $$PWD/gprioritysequencenode_p.h \
+    $$PWD/gprioritysequencenode_p_p.h \
+    $$PWD/gpriorityselectornode_p.h \
+    $$PWD/gpriorityselectornode_p_p.h \
+    $$PWD/grandomsequencenode_p.h \
+    $$PWD/grandomsequencenode_p_p.h \
+    $$PWD/grandomselectornode_p.h \
+    $$PWD/grandomselectornode_p_p.h \
+    $$PWD/gghostsourcenode_p_p.h \
+    $$PWD/gghostsourcenode_p.h \
+    $$PWD/gghostdata_p.h \
+    $$PWD/gghostdata_p_p.h
 
 SOURCES += \
     $$PWD/gghostnode.cpp \
     $$PWD/gghosttree.cpp \
-    $$PWD/gghostitem.cpp \
-    $$PWD/gcompositeitem.cpp \
-    $$PWD/glinearselectoritem.cpp \
-    $$PWD/glinearsequenceitem.cpp \
-    $$PWD/gweightselectoritem.cpp \
-    $$PWD/gweightsequenceitem.cpp \
-    $$PWD/grandomselectoritem.cpp \
-    $$PWD/grandomsequenceitem.cpp \
-    $$PWD/gdecoratoritem.cpp \
-    $$PWD/ginverteritem.cpp \
-    $$PWD/grepeateritem.cpp \
-    $$PWD/galwaysfailureitem.cpp \
-    $$PWD/galwayssuccessitem.cpp \
-    $$PWD/grepeatuntilfailureitem.cpp \
-    $$PWD/grepeatuntilsuccessitem.cpp \
-    $$PWD/gconditionitem.cpp \
-    $$PWD/gactionitem.cpp \
-    $$PWD/gidleactionitem.cpp
-
-unittest {
-QT      += testlib
-
-DEFINES += GT_GHOST_UNITTEST
-
-HEADERS += \
-    $$PWD/gghostunittest.h \
-    $$PWD/gghostunittest_p.h
-
-SOURCES +=  \
-    $$PWD/gghostunittest.cpp
-}
+    $$PWD/gcompositenode.cpp \
+    $$PWD/gdecoratornode.cpp \
+    $$PWD/gleafnode.cpp \
+    $$PWD/gsequencenode.cpp \
+    $$PWD/gselectornode.cpp \
+    $$PWD/gparallelnode.cpp \
+    $$PWD/ginverternode.cpp \
+    $$PWD/grepeaternode.cpp \
+    $$PWD/grepeatuntilsuccessnode.cpp \
+    $$PWD/grepeatuntilfailurenode.cpp \
+    $$PWD/gforcesuccessnode.cpp \
+    $$PWD/gforcefailurenode.cpp \
+    $$PWD/gconditionnode.cpp \
+    $$PWD/gcooldownnode.cpp \
+    $$PWD/gtimeoutnode.cpp \
+    $$PWD/gactionnode.cpp \
+    $$PWD/gprioritysequencenode.cpp \
+    $$PWD/gpriorityselectornode.cpp \
+    $$PWD/grandomsequencenode.cpp \
+    $$PWD/grandomselectornode.cpp \
+    $$PWD/gghostsourcenode.cpp \
+    $$PWD/gghostdata.cpp
