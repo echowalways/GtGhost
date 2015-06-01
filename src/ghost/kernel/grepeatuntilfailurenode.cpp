@@ -66,7 +66,7 @@ void GRepeatUntilFailureNodePrivate::onChildStatusChanged(GGhostSourceNode *chil
         }
 
         if (Ghost::Failure == childStatus) {
-            setStatus(Ghost::Success);
+            setStatus(Ghost::Failure);
             return;
         }
 
