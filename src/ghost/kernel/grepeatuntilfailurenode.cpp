@@ -60,12 +60,12 @@ void GRepeatUntilFailureNodePrivate::onChildStatusChanged(GGhostSourceNode *chil
         setStatus(Ghost::Stopped);
     } else if ((Ghost::Success == childStatus)
                || (Ghost::Failure == childStatus)) {
-        if ((++loopCounter >= loopCount) && (0 != loopCount)) {
+        if (Ghost::Failure == childStatus) {
             setStatus(Ghost::Success);
             return;
         }
 
-        if (Ghost::Failure == childStatus) {
+        if ((++loopCounter >= loopCount) && (0 != loopCount)) {
             setStatus(Ghost::Failure);
             return;
         }
