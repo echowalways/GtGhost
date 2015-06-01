@@ -26,7 +26,6 @@ void GActionNode::setStoppedStatus()
     d->setStatus(Ghost::Stopped);
 }
 
-
 // class GActionNodePrivate
 
 GActionNodePrivate::GActionNodePrivate()
