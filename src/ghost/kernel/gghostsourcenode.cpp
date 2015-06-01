@@ -142,10 +142,19 @@ void GGhostSourceNodePrivate::setStatus(Ghost::Status status)
         break;
     }
 
-    qCDebug(qlcGhostSourceNode,
-            "Status: '%s' ==> '%s' : %s(%p)",
-            toString(this->status), toString(status),
-            q->metaObject()->className(), q);
+    if (summary.isEmpty()) {
+        qCDebug(qlcGhostSourceNode,
+                "Status: '%s' ==> '%s' : %s %s(%p)",
+                toString(this->status), toString(status),
+                ((Ghost::Running == status) ? "-->" : "<--"),
+                q->metaObject()->className(), q);
+    } else {
+        qCDebug(qlcGhostSourceNode).nospace()
+                << "Status: '" << toString(this->status)
+                << "' ==> '" << toString(status)
+                << "' :" << ((Ghost::Running == status) ? " --> " : " <-- ")
+                << summary.toUtf8().constData();
+    }
 
 #endif // QT_NO_DEBUG
 
