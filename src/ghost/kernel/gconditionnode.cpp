@@ -35,17 +35,6 @@ GConditionNodePrivate::~GConditionNodePrivate()
 {
 }
 
-void GConditionNodePrivate::onStatusChanged(Ghost::Status status)
-{
-    Q_Q(GConditionNode);
-
-    if (Ghost::Success == status) {
-        emit q->passed();
-    } else if (Ghost::Failure == status) {
-        emit q->unpassed();
-    }
-}
-
 void GConditionNodePrivate::reset()
 {
     Q_ASSERT(Ghost::Invalid != status);

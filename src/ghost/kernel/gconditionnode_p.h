@@ -18,10 +18,6 @@ Q_SIGNALS:
 public:
     void setCondition(const QJSValue &value);
     QJSValue condition() const;
-
-Q_SIGNALS:
-    void passed();
-    void unpassed();
 };
 
 #endif // GCONDITIONNODE_H

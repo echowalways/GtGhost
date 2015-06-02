@@ -12,9 +12,6 @@ public:
     GConditionNodePrivate();
     virtual ~GConditionNodePrivate();
 
-protected:
-    virtual void onStatusChanged(Ghost::Status status) Q_DECL_FINAL;
-
 public:
     virtual void reset() Q_DECL_FINAL;
     virtual void execute() Q_DECL_FINAL;
