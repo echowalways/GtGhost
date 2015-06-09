@@ -18,7 +18,7 @@ public:
 
 Q_SIGNALS:
     void statusChanged(Ghost::Status);
-public Q_SLOTS:
+public:
     Ghost::Status status() const;
 
 Q_SIGNALS:
