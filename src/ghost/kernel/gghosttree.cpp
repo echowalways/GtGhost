@@ -16,6 +16,9 @@ GGhostTree::GGhostTree(QObject *parent)
     Q_D(GGhostTree);
 
     d->extraData = new GGhostData(this);
+
+    connect(this, &GGhostSourceNode::statusChanged,
+            this, &GGhostTree::onStatusChanged);
 }
 
 GGhostNodeList GGhostTree::childNodes() const
@@ -69,6 +72,25 @@ void GGhostTree::componentComplete()
     }
 }
 
+void GGhostTree::onStatusChanged(Ghost::Status status)
+{
+    switch (status) {
+    case Ghost::Invalid:
+    case Ghost::StandBy:
+        break;
+    case Ghost::Running:
+        emit started();
+        break;
+    case Ghost::Success:
+    case Ghost::Failure:
+        emit finished();
+        // pass through
+    case Ghost::Stopped:
+        emit stopped();
+        break;
+    }
+}
+
 // class GGhostTreePrivate
 
 GGhostTreePrivate::GGhostTreePrivate()
@@ -77,27 +99,6 @@ GGhostTreePrivate::GGhostTreePrivate()
 
 GGhostTreePrivate::~GGhostTreePrivate()
 {
-}
-
-void GGhostTreePrivate::onStatusChanged(Ghost::Status status)
-{
-    Q_Q(GGhostTree);
-
-    switch (status) {
-    case Ghost::Invalid:
-    case Ghost::StandBy:
-        break;
-    case Ghost::Running:
-        emit q->started();
-        break;
-    case Ghost::Success:
-    case Ghost::Failure:
-        emit q->finished();
-        // pass through
-    case Ghost::Stopped:
-        emit q->stopped();
-        break;
-    }
 }
 
 void GGhostTreePrivate::onChildStatusChanged(GGhostSourceNode *childNode)

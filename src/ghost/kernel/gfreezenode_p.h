@@ -24,7 +24,8 @@ Q_SIGNALS:
     void finished();
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void onTimeout())
+    void onTimeout();
+    void onStatusChanged(Ghost::Status);
 };
 
 #endif // GFREEZENODE_P_H

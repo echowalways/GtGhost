@@ -10,6 +10,8 @@ Q_LOGGING_CATEGORY(qlcFreezeNode, "GtGhost.FreezeNode")
 GFreezeNode::GFreezeNode(QObject *parent)
     : GLeafNode(*new GFreezeNodePrivate(), parent)
 {
+    connect(this, &GGhostSourceNode::statusChanged,
+            this, &GFreezeNode::onStatusChanged);
 }
 
 void GFreezeNode::setDuration(int value)
@@ -34,6 +36,24 @@ int GFreezeNode::duration() const
     return d->duration;
 }
 
+void GFreezeNode::onTimeout()
+{
+    Q_D(GFreezeNode);
+
+    Q_ASSERT(Ghost::Running == d->status);
+
+    d->setStatus(Ghost::Success);
+}
+
+void GFreezeNode::onStatusChanged(Ghost::Status status)
+{
+    if (Ghost::Running == status) {
+        emit started();
+    } else if (Ghost::Success == status) {
+        emit finished();
+    }
+}
+
 // class GFreezeNodePrivate
 
 GFreezeNodePrivate::GFreezeNodePrivate()
@@ -44,17 +64,6 @@ GFreezeNodePrivate::GFreezeNodePrivate()
 
 GFreezeNodePrivate::~GFreezeNodePrivate()
 {
-}
-
-void GFreezeNodePrivate::onStatusChanged(Ghost::Status status)
-{
-    Q_Q(GFreezeNode);
-
-    if (Ghost::Running == status) {
-        emit q->started();
-    } else if (Ghost::Success == status) {
-        emit q->finished();
-    }
 }
 
 void GFreezeNodePrivate::reset()
@@ -97,13 +106,3 @@ void GFreezeNodePrivate::terminate()
 
     setStatus(Ghost::Stopped);
 }
-
-void GFreezeNodePrivate::onTimeout()
-{
-    Q_ASSERT(Ghost::Running == status);
-
-    setStatus(Ghost::Success);
-}
-
-// moc_gfreezenode_p.cpp
-#include "moc_gfreezenode_p.cpp"

@@ -106,8 +106,8 @@ void GActionNodePrivate::execute()
             timer = new QTimer(q);
             timer->setSingleShot(true);
 
-            QObject::connect(timer.data(), SIGNAL(timeout()),
-                             q, SLOT(setFailureStatus()));
+            QObject::connect(timer.data(), &QTimer::timeout,
+                             q, &GActionNode::setFailureStatus);
         }
 
         timer->setInterval(timeout);

@@ -14,9 +14,6 @@ public:
     GFreezeNodePrivate();
     virtual ~GFreezeNodePrivate();
 
-protected:
-    virtual void onStatusChanged(Ghost::Status status) Q_DECL_FINAL;
-
 public:
     virtual void reset() Q_DECL_FINAL;
     virtual void execute() Q_DECL_FINAL;
@@ -27,6 +24,9 @@ public:
     QPointer<QTimer> timer;
 private:
     void onTimeout();
+
+private:
+    void onStatusChanged(Ghost::Status status);
 };
 
 #endif // GFREEZENODE_P_P_H
