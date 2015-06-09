@@ -1,23 +1,23 @@
-#include "gcooldownnode_p.h"
-#include "gcooldownnode_p_p.h"
+#include "gfreezenode_p.h"
+#include "gfreezenode_p_p.h"
 
 #include <QtCore/QLoggingCategory>
 
-Q_LOGGING_CATEGORY(qlcCooldownNode, "GtGhost.CooldownNode")
+Q_LOGGING_CATEGORY(qlcFreezeNode, "GtGhost.FreezeNode")
 
-// class GCooldownNode
+// class GFreezeNode
 
-GCooldownNode::GCooldownNode(QObject *parent)
-    : GLeafNode(*new GCooldownNodePrivate(), parent)
+GFreezeNode::GFreezeNode(QObject *parent)
+    : GLeafNode(*new GFreezeNodePrivate(), parent)
 {
 }
 
-void GCooldownNode::setDuration(int value)
+void GFreezeNode::setDuration(int value)
 {
-    Q_D(GCooldownNode);
+    Q_D(GFreezeNode);
 
     if (value < 1) {
-        qCWarning(qlcCooldownNode)
+        qCWarning(qlcFreezeNode)
                 << "Value is too small, reset to 1.";
         value = 1;
     }
@@ -28,27 +28,27 @@ void GCooldownNode::setDuration(int value)
     }
 }
 
-int GCooldownNode::duration() const
+int GFreezeNode::duration() const
 {
-    Q_D(const GCooldownNode);
+    Q_D(const GFreezeNode);
     return d->duration;
 }
 
-// class GCooldownNodePrivate
+// class GFreezeNodePrivate
 
-GCooldownNodePrivate::GCooldownNodePrivate()
-    : GLeafNodePrivate(Ghost::CooldownNode)
+GFreezeNodePrivate::GFreezeNodePrivate()
+    : GLeafNodePrivate(Ghost::FreezeNode)
     , duration(1)
 {
 }
 
-GCooldownNodePrivate::~GCooldownNodePrivate()
+GFreezeNodePrivate::~GFreezeNodePrivate()
 {
 }
 
-void GCooldownNodePrivate::onStatusChanged(Ghost::Status status)
+void GFreezeNodePrivate::onStatusChanged(Ghost::Status status)
 {
-    Q_Q(GCooldownNode);
+    Q_Q(GFreezeNode);
 
     if (Ghost::Running == status) {
         emit q->started();
@@ -57,7 +57,7 @@ void GCooldownNodePrivate::onStatusChanged(Ghost::Status status)
     }
 }
 
-void GCooldownNodePrivate::reset()
+void GFreezeNodePrivate::reset()
 {
     Q_ASSERT(Ghost::Invalid != status);
     Q_ASSERT(Ghost::StandBy != status);
@@ -66,9 +66,9 @@ void GCooldownNodePrivate::reset()
     setStatus(Ghost::StandBy);
 }
 
-void GCooldownNodePrivate::execute()
+void GFreezeNodePrivate::execute()
 {
-    Q_Q(GCooldownNode);
+    Q_Q(GFreezeNode);
 
     Q_ASSERT(Ghost::Invalid != status);
     Q_ASSERT(Ghost::Running != status);
@@ -87,7 +87,7 @@ void GCooldownNodePrivate::execute()
     setStatus(Ghost::Running);
 }
 
-void GCooldownNodePrivate::terminate()
+void GFreezeNodePrivate::terminate()
 {
     Q_ASSERT(Ghost::Running == status);
 
@@ -98,12 +98,12 @@ void GCooldownNodePrivate::terminate()
     setStatus(Ghost::Stopped);
 }
 
-void GCooldownNodePrivate::onTimeout()
+void GFreezeNodePrivate::onTimeout()
 {
     Q_ASSERT(Ghost::Running == status);
 
     setStatus(Ghost::Success);
 }
 
-// moc_gcooldownnode_p.cpp
-#include "moc_gcooldownnode_p.cpp"
+// moc_gfreezenode_p.cpp
+#include "moc_gfreezenode_p.cpp"

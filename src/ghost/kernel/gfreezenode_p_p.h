@@ -1,18 +1,18 @@
-#ifndef GCOOLDOWNNODE_P_P_H
-#define GCOOLDOWNNODE_P_P_H
+#ifndef GFREEZENODE_P_P_H
+#define GFREEZENODE_P_P_H
 
 #include <QtCore/QTimer>
 
 #include "gleafnode_p_p.h"
-#include "gcooldownnode_p.h"
+#include "gfreezenode_p.h"
 
-class GCooldownNodePrivate : GLeafNodePrivate
+class GFreezeNodePrivate : GLeafNodePrivate
 {
-    Q_DECLARE_PUBLIC(GCooldownNode)
+    Q_DECLARE_PUBLIC(GFreezeNode)
 
 public:
-    GCooldownNodePrivate();
-    virtual ~GCooldownNodePrivate();
+    GFreezeNodePrivate();
+    virtual ~GFreezeNodePrivate();
 
 protected:
     virtual void onStatusChanged(Ghost::Status status) Q_DECL_FINAL;
@@ -29,4 +29,4 @@ private:
     void onTimeout();
 };
 
-#endif // GCOOLDOWNNODE_P_P_H
+#endif // GFREEZENODE_P_P_H

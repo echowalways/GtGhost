@@ -33,12 +33,12 @@ HEADERS += \
     $$PWD/gforcesuccessnode_p_p.h \
     $$PWD/gforcefailurenode_p.h \
     $$PWD/gforcefailurenode_p_p.h \
-    $$PWD/gconditionnode_p.h \
-    $$PWD/gconditionnode_p_p.h \
-    $$PWD/gcooldownnode_p.h \
-    $$PWD/gcooldownnode_p_p.h \
     $$PWD/gactionnode_p.h \
     $$PWD/gactionnode_p_p.h \
+    $$PWD/gconditionnode_p.h \
+    $$PWD/gconditionnode_p_p.h \
+    $$PWD/gfreezenode_p.h \
+    $$PWD/gfreezenode_p_p.h \
     $$PWD/gprioritysequencenode_p.h \
     $$PWD/gprioritysequencenode_p_p.h \
     $$PWD/gpriorityselectornode_p.h \
@@ -67,9 +67,9 @@ SOURCES += \
     $$PWD/grepeatuntilfailurenode.cpp \
     $$PWD/gforcesuccessnode.cpp \
     $$PWD/gforcefailurenode.cpp \
-    $$PWD/gconditionnode.cpp \
-    $$PWD/gcooldownnode.cpp \
     $$PWD/gactionnode.cpp \
+    $$PWD/gconditionnode.cpp \
+    $$PWD/gfreezenode.cpp \
     $$PWD/gprioritysequencenode.cpp \
     $$PWD/gpriorityselectornode.cpp \
     $$PWD/grandomsequencenode.cpp \

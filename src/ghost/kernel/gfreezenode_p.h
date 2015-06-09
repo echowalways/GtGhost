@@ -1,17 +1,17 @@
-#ifndef GCOOLDOWNNODE_P_H
-#define GCOOLDOWNNODE_P_H
+#ifndef GFREEZENODE_P_H
+#define GFREEZENODE_P_H
 
 #include "gleafnode_p.h"
 
-class GCooldownNodePrivate;
-class GCooldownNode : public GLeafNode
+class GFreezeNodePrivate;
+class GFreezeNode : public GLeafNode
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(GCooldownNode)
+    Q_DECLARE_PRIVATE(GFreezeNode)
     Q_PROPERTY(int duration READ duration WRITE setDuration NOTIFY durationChanged)
 
 public:
-    explicit GCooldownNode(QObject *parent = 0);
+    explicit GFreezeNode(QObject *parent = 0);
 
 Q_SIGNALS:
     void durationChanged(int value);
@@ -27,4 +27,4 @@ private:
     Q_PRIVATE_SLOT(d_func(), void onTimeout())
 };
 
-#endif // GCOOLDOWNNODE_P_H
+#endif // GFREEZENODE_P_H
