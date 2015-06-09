@@ -25,7 +25,6 @@
 #include "gforcefailurenode_p.h"
 #include "gconditionnode_p.h"
 #include "gcooldownnode_p.h"
-#include "gtimeoutnode_p.h"
 #include "gactionnode_p.h"
 
 void GtGhostPlugin::registerTypes(const char *uri)
@@ -63,7 +62,6 @@ void GtGhostPlugin::registerTypes(const char *uri)
 
     qmlRegisterType<GConditionNode>(uri, 1, 0, "ConditionNode");
     qmlRegisterType<GCooldownNode>(uri, 1, 0, "CooldownNode");
-    qmlRegisterType<GTimeoutNode>(uri, 1, 0, "TimeoutNode");
     qmlRegisterType<GActionNode>(uri, 1, 0, "ActionNode");
 }
 

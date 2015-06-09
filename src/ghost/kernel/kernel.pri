@@ -37,8 +37,6 @@ HEADERS += \
     $$PWD/gconditionnode_p_p.h \
     $$PWD/gcooldownnode_p.h \
     $$PWD/gcooldownnode_p_p.h \
-    $$PWD/gtimeoutnode_p.h \
-    $$PWD/gtimeoutnode_p_p.h \
     $$PWD/gactionnode_p.h \
     $$PWD/gactionnode_p_p.h \
     $$PWD/gprioritysequencenode_p.h \
@@ -71,7 +69,6 @@ SOURCES += \
     $$PWD/gforcefailurenode.cpp \
     $$PWD/gconditionnode.cpp \
     $$PWD/gcooldownnode.cpp \
-    $$PWD/gtimeoutnode.cpp \
     $$PWD/gactionnode.cpp \
     $$PWD/gprioritysequencenode.cpp \
     $$PWD/gpriorityselectornode.cpp \
