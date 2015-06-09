@@ -49,7 +49,7 @@ void GSequenceNodePrivate::reset()
     i.toBack();
     while (i.hasPrevious()) {
         GGhostNode *childNode = i.previous();
-        if (cast(childNode)->status != Ghost::StandBy) {
+        if (Ghost::StandBy != cast(childNode)->status) {
             cast(childNode)->reset();
         }
     }

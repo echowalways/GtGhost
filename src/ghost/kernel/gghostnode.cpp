@@ -127,19 +127,19 @@ bool GGhostNodePrivate::initialize(const GGhostNodeList &childNodes)
         }
     }
 
-    if (baseType == Ghost::CompositeNode) {
+    if (Ghost::CompositeNode == baseType) {
         if (childNodes.isEmpty()) {
             qCWarning(qlcGhostNode)
                     << "Must have at least one child item.";
             hasError = true;
         }
-    } else if (baseType == Ghost::DecoratorNode) {
+    } else if (Ghost::DecoratorNode == baseType) {
         if (childNodes.count() != 1) {
             qCWarning(qlcGhostNode)
                     << "Allows only one child node.";
             hasError = true;
         }
-    } else if (baseType == Ghost::LeafNode) {
+    } else if (Ghost::LeafNode == baseType) {
         if (!childNodes.isEmpty()) {
             qCWarning(qlcGhostNode)
                     << "Does not allow any child items.";
