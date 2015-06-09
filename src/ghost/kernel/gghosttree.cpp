@@ -18,7 +18,23 @@ GGhostTree::GGhostTree(QObject *parent)
     d->extraData = new GGhostData(this);
 
     connect(this, &GGhostSourceNode::statusChanged,
-            this, &GGhostTree::onStatusChanged);
+            [this](Ghost::Status status) {
+        switch (status) {
+        case Ghost::Invalid:
+        case Ghost::StandBy:
+            break;
+        case Ghost::Running:
+            emit started();
+            break;
+        case Ghost::Success:
+        case Ghost::Failure:
+            emit finished();
+            // pass through
+        case Ghost::Stopped:
+            emit stopped();
+            break;
+        }
+    });
 }
 
 GGhostNodeList GGhostTree::childNodes() const
@@ -69,25 +85,6 @@ void GGhostTree::componentComplete()
 
     if (d->initialize()) {
         d->setStatus(Ghost::StandBy);
-    }
-}
-
-void GGhostTree::onStatusChanged(Ghost::Status status)
-{
-    switch (status) {
-    case Ghost::Invalid:
-    case Ghost::StandBy:
-        break;
-    case Ghost::Running:
-        emit started();
-        break;
-    case Ghost::Success:
-    case Ghost::Failure:
-        emit finished();
-        // pass through
-    case Ghost::Stopped:
-        emit stopped();
-        break;
     }
 }
 

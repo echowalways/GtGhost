@@ -29,9 +29,6 @@ public:
     virtual void execute() Q_DECL_FINAL;
     virtual void terminate() Q_DECL_FINAL;
 
-private:
-    void onStatusChanged(Ghost::Status status);
-
     // core datas
 public:
     QQmlListProperty<GGhostNode> _q_childNodes();

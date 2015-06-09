@@ -11,7 +11,13 @@ GFreezeNode::GFreezeNode(QObject *parent)
     : GLeafNode(*new GFreezeNodePrivate(), parent)
 {
     connect(this, &GGhostSourceNode::statusChanged,
-            this, &GFreezeNode::onStatusChanged);
+            [this](Ghost::Status status) {
+        if (Ghost::Running == status) {
+            emit started();
+        } else if (Ghost::Success == status) {
+            emit finished();
+        }
+    });
 }
 
 void GFreezeNode::setDuration(int value)
@@ -34,24 +40,6 @@ int GFreezeNode::duration() const
 {
     Q_D(const GFreezeNode);
     return d->duration;
-}
-
-void GFreezeNode::onTimeout()
-{
-    Q_D(GFreezeNode);
-
-    Q_ASSERT(Ghost::Running == d->status);
-
-    d->setStatus(Ghost::Success);
-}
-
-void GFreezeNode::onStatusChanged(Ghost::Status status)
-{
-    if (Ghost::Running == status) {
-        emit started();
-    } else if (Ghost::Success == status) {
-        emit finished();
-    }
 }
 
 // class GFreezeNodePrivate
@@ -86,8 +74,11 @@ void GFreezeNodePrivate::execute()
         timer = new QTimer(q);
         timer->setSingleShot(true);
 
-        QObject::connect(timer.data(), SIGNAL(timeout()),
-                         q, SLOT(onTimeout()));
+        QObject::connect(timer.data(), &QTimer::timeout,
+                         [this]() {
+            Q_ASSERT(Ghost::Running == this->status);
+            this->setStatus(Ghost::Success);
+        });
     }
 
     timer->setInterval(duration);

@@ -22,10 +22,6 @@ public:
 Q_SIGNALS:
     void started();
     void finished();
-
-private:
-    void onTimeout();
-    void onStatusChanged(Ghost::Status);
 };
 
 #endif // GFREEZENODE_P_H

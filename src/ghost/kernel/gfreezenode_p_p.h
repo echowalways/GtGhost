@@ -24,9 +24,6 @@ public:
     QPointer<QTimer> timer;
 private:
     void onTimeout();
-
-private:
-    void onStatusChanged(Ghost::Status status);
 };
 
 #endif // GFREEZENODE_P_P_H
