@@ -160,19 +160,12 @@ void GGhostSourceNodePrivate::setStatus(Ghost::Status status)
 
     if (status != this->status) {
         this->status = status;
-
-        onStatusChanged(status);
         emit q->statusChanged(status);
 
         if (parentSourceNode) {
             cast(parentSourceNode)->onChildStatusChanged(q);
         }
     }
-}
-
-void GGhostSourceNodePrivate::onStatusChanged(Ghost::Status status)
-{
-    Q_UNUSED(status);
 }
 
 void GGhostSourceNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)

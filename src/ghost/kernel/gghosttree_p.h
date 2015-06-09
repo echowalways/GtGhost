@@ -36,6 +36,9 @@ public Q_SLOTS:
 protected:
     virtual void classBegin() Q_DECL_OVERRIDE;
     virtual void componentComplete() Q_DECL_OVERRIDE;
+
+private:
+    void onStatusChanged(Ghost::Status);
 };
 
 #endif // GGHOSTTREE_P_H

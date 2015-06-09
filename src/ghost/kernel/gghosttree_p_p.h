@@ -20,8 +20,6 @@ public:
     static GGhostNodePrivate *cast(GGhostNode *node) { return GGhostNodePrivate::cast(node); }
     static const GGhostNodePrivate *cast(const GGhostNode *node) { return GGhostNodePrivate::cast(node); }
 
-protected:
-    virtual void onStatusChanged(Ghost::Status status) Q_DECL_FINAL;
     virtual void onChildStatusChanged(GGhostSourceNode *childNode) Q_DECL_FINAL;
 
 public:
@@ -30,6 +28,9 @@ public:
     virtual void reset() Q_DECL_FINAL;
     virtual void execute() Q_DECL_FINAL;
     virtual void terminate() Q_DECL_FINAL;
+
+private:
+    void onStatusChanged(Ghost::Status status);
 
     // core datas
 public:

@@ -18,6 +18,13 @@ Q_SIGNALS:
 public:
     void setCondition(const QJSValue &value);
     QJSValue condition() const;
+
+Q_SIGNALS:
+    void passed();
+    void unpassed();
+
+private:
+    void onStatusChanged(Ghost::Status);
 };
 
 #endif // GCONDITIONNODE_H

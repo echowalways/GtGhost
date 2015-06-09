@@ -21,6 +21,9 @@ public:
     bool callCondition();
 private:
     QJSValue condition;
+
+private:
+    void onStatusChanged(Ghost::Status status);
 };
 
 #endif // GCONDITIONNODE_P_P_H

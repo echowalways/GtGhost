@@ -57,9 +57,8 @@ public:
         RepeatUntilFailureNode,
 
         ActionNode,
-        TimeoutNode,
-        CooldownNode,
         ConditionNode,
+        FreezeNode
     };
 };
 

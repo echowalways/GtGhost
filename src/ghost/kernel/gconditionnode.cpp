@@ -6,6 +6,8 @@
 GConditionNode::GConditionNode(QObject *parent)
     : GLeafNode(*new GConditionNodePrivate(), parent)
 {
+    connect(this, &GGhostSourceNode::statusChanged,
+            this, &GConditionNode::onStatusChanged);
 }
 
 void GConditionNode::setCondition(const QJSValue &value)
@@ -22,6 +24,15 @@ QJSValue GConditionNode::condition() const
 {
     Q_D(const GConditionNode);
     return d->condition;
+}
+
+void GConditionNode::onStatusChanged(Ghost::Status status)
+{
+    if (Ghost::Success == status) {
+        emit passed();
+    } else if (Ghost::Failure == status) {
+        emit unpassed();
+    }
 }
 
 // class GConditionNodePrivate

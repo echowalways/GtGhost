@@ -23,7 +23,6 @@ public:
     Ghost::Status status;
 
 protected:
-    virtual void onStatusChanged(Ghost::Status status);
     virtual void onChildStatusChanged(GGhostSourceNode *childNode);
 
 public:

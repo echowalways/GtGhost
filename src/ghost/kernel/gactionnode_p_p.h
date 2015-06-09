@@ -1,6 +1,8 @@
 #ifndef GACTIONNODE_P_P_H
 #define GACTIONNODE_P_P_H
 
+#include <QtCore/QTimer>
+
 #include "gleafnode_p_p.h"
 #include "gactionnode_p.h"
 
@@ -16,6 +18,10 @@ public:
     virtual void reset() Q_DECL_FINAL;
     virtual void execute() Q_DECL_FINAL;
     virtual void terminate() Q_DECL_FINAL;
+
+public:
+    int timeout;
+    QPointer<QTimer> timer;
 };
 
 #endif // GACTIONNODE_P_P_H
