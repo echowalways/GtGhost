@@ -1,26 +1,3 @@
-#include <QtCore>
-#include <QtQml>
-#include <QtTest>
+#include <QtQuickTest>
 
-class ItemsTest : public QObject
-{
-    Q_OBJECT
-
-public:
-    ItemsTest();
-
-private Q_SLOTS:
-    void testCase();
-};
-
-ItemsTest::ItemsTest()
-{
-}
-
-void ItemsTest::testCase()
-{
-}
-
-QTEST_MAIN(ItemsTest)
-
-#include "tst_itemstest.moc"
+QUICK_TEST_MAIN(ItemsTest)

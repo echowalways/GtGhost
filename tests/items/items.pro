@@ -1,9 +1,9 @@
 
-QT      += qml testlib
+QT      += qml quick
 QT      -= gui
 
 TARGET   = tst_itemstest
-CONFIG  += console
+CONFIG  += console qmltestcase
 CONFIG  -= app_bundle
 
 TEMPLATE = app
@@ -11,7 +11,6 @@ TEMPLATE = app
 DESTDIR  = $$PWD/../../bin
 
 SOURCES += tst_itemstest.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
-RESOURCES += \
-    items.qrc
+DISTFILES += \
+    cases/tst_ActionNode.qml
