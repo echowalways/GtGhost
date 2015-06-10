@@ -1,4 +1,0 @@
-module GtGhost
-plugin gtghostplugin
-typeinfo plugins.qmltypes
-classname GtGhostPlugin
