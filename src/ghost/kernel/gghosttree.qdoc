@@ -1,0 +1,39 @@
+/*!
+    \qmltype GhostTree
+    \instantiates GGhostTree
+    \inqmlmodule GtGhost
+    \inherits GhostSourceNode
+    \brief GhostTree 是一个灵魂树类型
+ */
+
+/*!
+    \qmlproperty list<GhostNode> GtGhost::GhostTree::childNodes
+ */
+
+/*!
+    \qmlsignal GtGhost::GhostTree::started()
+ */
+
+/*!
+    \qmlsignal GtGhost::GhostTree::finished()
+ */
+
+/*!
+    \qmlsignal GtGhost::GhostTree::stopped()
+ */
+
+/*!
+    \qmlmethod void GtGhost::GhostTree::start()
+ */
+
+/*!
+    \qmlmethod void GtGhost::GhostTree::stop()
+ */
+
+/*!
+    \qmlmethod void GtGhost::GhostTree::reset()
+ */
+
+/*!
+    \qmlproperty GhostData GtGhost::GhostTree::data
+ */

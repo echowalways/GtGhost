@@ -1,20 +1,12 @@
 #include "gghostnode_p.h"
 #include "gghostnode_p_p.h"
+#include "gghostnode.qdoc"
 
 #include <QtCore/QLoggingCategory>
 
 Q_LOGGING_CATEGORY(qlcGhostNode, "GtGhost.GhostNode")
 
 // class GGhostNode
-
-/*!
-    \qmltype GhostNode
-    \instantiates GGhostNode
-    \inqmlmodule GtGhost
-    \inherits GhostSourceNode
-
-    fff
- */
 
 GGhostNode::GGhostNode(GGhostNodePrivate &dd, QObject *parent)
     : GGhostSourceNode(dd, parent)

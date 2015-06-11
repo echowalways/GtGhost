@@ -31,6 +31,11 @@ Ghost::Status GGhostSourceNode::status() const
     return d->status;
 }
 
+/*!
+    \qmlproperty string GtGhost::GhostSourceNode::summary
+
+    fff
+ */
 void GGhostSourceNode::setSummary(const QString &value)
 {
     Q_D(GGhostSourceNode);

@@ -1,5 +1,6 @@
 #include "gghosttree_p.h"
 #include "gghosttree_p_p.h"
+#include "gghosttree.qdoc"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QLoggingCategory>
@@ -9,15 +10,6 @@
 Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
 
 // class GGhostTree
-
-/*!
-    \qmltype GhostTree
-    \instantiates GGhostTree
-    \inqmlmodule GtGhost
-    \inherits GhostSourceNode
-
-    fff
- */
 
 GGhostTree::GGhostTree(QObject *parent)
     : GGhostSourceNode(*new GGhostTreePrivate(), parent)

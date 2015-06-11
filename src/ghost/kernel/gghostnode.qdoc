@@ -1,0 +1,185 @@
+/*!
+    \qmltype GhostNode
+    \instantiates GGhostNode
+    \inqmlmodule GtGhost
+    \inherits GhostSourceNode
+    \brief GhostNode 是 Gt Ghost 中的基本灵魂节点。
+
+    GhostNode 是 Gt Ghost 中的基本灵魂节点。只有继承自 GhostNode 的对象才可以添加到灵魂树中。
+ */
+
+/*!
+    \qmlproperty GhostTree GtGhost::GhostNode::masterTree
+
+    这个属性掌握着当前节点所属的主灵魂树。
+
+    \note 这个属性是只读属性。
+ */
+
+/*!
+    \qmlproperty GhostNode GtGhost::GhostNode::parentNode
+
+    这个属性掌握着父节点。
+
+    \note 这个属性是只读属性。
+ */
+
+/*!
+    \qmlproperty enumeration GtGhost::GhostNode::baseType
+
+    这个属性掌握着当前节点的基本类型。
+
+    在 Gt Ghost 中，节点可分为三种基本类型：
+
+    \list
+    \li Ghost.CompositeNode - 组合型节点类型
+    \li Ghost.DecoratorNode - 修饰型节点类型
+    \li Ghost.LeafNode - 子叶型节点类型
+    \endlist
+
+    \note 这个属性是只读属性。
+ */
+
+/*!
+    \qmlproperty enumeration GtGhost::GhostNode::nodeType
+
+    这个属性掌握着当前节点的具体节点类型。
+
+    下面罗列出了所有可能的节点类型：
+
+    \list
+    \li Ghost.SequenceNode
+    \li Ghost.SelectorNode
+    \li Ghost.ParallelNode
+    \li Ghost.PrioritySequenceNode
+    \li Ghost.PrioritySelectorNode
+    \li Ghost.RandomSequenceNode
+    \li Ghost.RandomSelectorNode
+    \li Ghost.ParallelSequenceNode
+    \li Ghost.ParallelSelectorNode
+    \li Ghost.InverterNode
+    \li Ghost.RepeaterNode
+    \li Ghost.ForceSuccessNode
+    \li Ghost.ForceFailureNode
+    \li Ghost.RepeatUntilSuccessNode
+    \li Ghost.RepeatUntilFailureNode
+    \li Ghost.ActionNode
+    \li Ghost.ConditionNode
+    \li Ghost.FreezeNode
+    \endlist
+
+    \note 这个属性是只读属性。
+ */
+
+/*!
+    \qmlproperty list<GhostNode> GtGhost::GhostNode::childNodes
+
+    这个属性掌握着子节点的列表。
+ */
+
+/*!
+    \qmlproperty var GtGhost::GhostNode::precondition
+
+    这个属性掌握着当前节点执行的前置条件。
+
+    前置条件是判断节点是否执行的先决条件。默认值是 true。如果前置条件的结果为 false，节点直接跳过，不会执行。
+
+    目前接受两种类型作为前置条件：
+    \list
+    \li 布尔类型 - 接受一个布尔值作为前置条件。
+        \code
+        import GtGhost 1.0
+
+        GhostTree {
+            objectName: "Radar"
+
+            ActionNode {
+                objectName: "Missile"
+
+                precondition: Missile.isPowerOn
+
+                onExecute: {
+                    Missile.launch()
+                }
+            }
+        }
+        \endcode
+    \li 函数类型 - 接受一个返回布尔值的函数作为前置条件。
+        \code
+        import GtGhost 1.0
+
+        GhostTree {
+            objectName: "Radar"
+
+            ActionNode {
+                objectName: "Missile"
+
+                precondition: function() {
+                    return EnemyAircraft.distance < 50km
+                }
+
+                onExecute: {
+                    Missile.launch()
+                }
+            }
+        }
+        \endcode
+    \endlist
+ */
+
+/*!
+    \qmlproperty var GtGhost::GhostNode::weight
+
+    这个属性掌握着当前节点的权重值。
+
+    在某些组合型节点中，子节点的执行顺序是可以动态调整的。而这取决于这些子节点的权重值。
+权重值越大，越可能优先执行。反之，权重值越小，越可能推迟执行。权重值的默认值是 1。
+
+    目前接受两种类型作为前置条件：
+    \list
+    \li 整型类型 - 接受一个整型值作为权重值。
+        \code
+        import GtGhost 1.0
+
+        GhostTree {
+            objectName: "Radar"
+
+            ActionNode {
+                objectName: "Missile"
+
+                precondition: Missile.isPowerOn
+
+                onExecute: {
+                    Missile.launch()
+                }
+            }
+        }
+        \endcode
+    \li 函数类型 - 接受一个返回整型值的函数作为权重值。
+        \code
+        import GtGhost 1.0
+
+        GhostTree {
+            objectName: "McDonald's"
+
+            PrioritySelectorNode {
+                objectName: "Which Sandwich?"
+
+                ActionNode {
+                    objectName: ""
+
+                    weight: function() {
+                        return EnemyAircraft.distance < 50km
+                    }
+                }
+            }
+        }
+        \endcode
+    \endlist
+
+    \note 当权重值的计算结果小于 1 的时候，结果将会被重置到 1。
+ */
+
+/*!
+    \qmlproperty GhostData GtGhost::GhostNode::data
+ */
