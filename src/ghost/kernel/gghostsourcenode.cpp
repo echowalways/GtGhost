@@ -7,11 +7,24 @@ Q_LOGGING_CATEGORY(qlcGhostSourceNode, "GtGhost.GhostSourceNode")
 
 // class GGhostSourceNode
 
+/*!
+    \qmltype GhostSourceNode
+    \instantiates GGhostSourceNode
+    \inqmlmodule GtGhost
+
+    fff
+ */
+
 GGhostSourceNode::GGhostSourceNode(GGhostSourceNodePrivate &dd, QObject *parent)
     : QObject(dd, parent)
 {
 }
 
+/*!
+    \qmlproperty Ghost.Status GtGhost::GhostSourceNode::status
+
+    fff
+ */
 Ghost::Status GGhostSourceNode::status() const
 {
     Q_D(const GGhostSourceNode);

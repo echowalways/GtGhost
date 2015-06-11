@@ -3,6 +3,15 @@
 
 // class GForceFailureNode
 
+/*!
+    \qmltype ForceFailureNode
+    \instantiates GForceFailureNode
+    \inqmlmodule GtGhost
+    \inherits DecoratorNode
+
+    fff
+ */
+
 GForceFailureNode::GForceFailureNode(QObject *parent)
     : GDecoratorNode(*new GForceFailureNodePrivate(), parent)
 {

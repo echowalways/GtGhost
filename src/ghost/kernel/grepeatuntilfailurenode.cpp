@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcRepeatUntilFailureNode, "GtGhost.RepeatUntilFailureNode")
 
 // class GRepeatUntilFailureNode
 
+/*!
+    \qmltype RepeatUntilFailureNode
+    \instantiates GRepeatUntilFailureNode
+    \inqmlmodule GtGhost
+    \inherits DecoratorNode
+
+    fff
+ */
+
 GRepeatUntilFailureNode::GRepeatUntilFailureNode(QObject *parent)
     : GDecoratorNode(*new GRepeatUntilFailureNodePrivate(), parent)
 {

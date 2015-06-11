@@ -3,6 +3,15 @@
 
 // class GInverterNode
 
+/*!
+    \qmltype InverterNode
+    \instantiates GInverterNode
+    \inqmlmodule GtGhost
+    \inherits DecoratorNode
+
+    fff
+ */
+
 GInverterNode::GInverterNode(QObject *parent)
     : GDecoratorNode(*new GInverterNodePrivate(), parent)
 {

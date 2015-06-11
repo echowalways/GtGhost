@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcCompositeNode, "GtGhost.CompositeNode")
 
 // class GCompositeNode
 
+/*!
+    \qmltype CompositeNode
+    \instantiates GCompositeNode
+    \inqmlmodule GtGhost
+    \inherits GhostNode
+
+    fff
+ */
+
 GCompositeNode::GCompositeNode(GCompositeNodePrivate &dd, QObject *parent)
     : GGhostNode(dd, parent)
 {

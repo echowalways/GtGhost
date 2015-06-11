@@ -3,6 +3,15 @@
 
 // class GSequenceNode
 
+/*!
+    \qmltype SequenceNode
+    \instantiates GSequenceNode
+    \inqmlmodule GtGhost
+    \inherits CompositeNode
+
+    fff
+ */
+
 GSequenceNode::GSequenceNode(QObject *parent)
     : GCompositeNode(*new GSequenceNodePrivate(), parent)
 {

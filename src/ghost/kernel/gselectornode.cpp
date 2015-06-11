@@ -3,6 +3,15 @@
 
 // class GSelectorNode
 
+/*!
+    \qmltype SelectorNode
+    \instantiates GSelectorNode
+    \inqmlmodule GtGhost
+    \inherits CompositeNode
+
+    fff
+ */
+
 GSelectorNode::GSelectorNode(QObject *parent)
     : GCompositeNode(*new GSelectorNodePrivate(), parent)
 {

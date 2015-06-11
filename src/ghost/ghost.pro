@@ -10,6 +10,10 @@ SOURCES += $$PWD/gtghostplugin.cpp
 
 include(kernel/kernel.pri)
 
+OTHER_FILES += \
+    $$PWD/doc/gtghost.qdocconf \
+    $$PWD/doc/src/gtghost.qdoc
+
 !win {
     QMAKE_POST_LINK += $$PWD/scripts/make_other_files.sh
 }

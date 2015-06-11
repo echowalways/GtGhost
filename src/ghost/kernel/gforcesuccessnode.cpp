@@ -3,6 +3,15 @@
 
 // class GForceSuccessNode
 
+/*!
+    \qmltype ForceSuccessNode
+    \instantiates GForceSuccessNode
+    \inqmlmodule GtGhost
+    \inherits DecoratorNode
+
+    fff
+ */
+
 GForceSuccessNode::GForceSuccessNode(QObject *parent)
     : GDecoratorNode(*new GForceSuccessNodePrivate(), parent)
 {

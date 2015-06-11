@@ -3,6 +3,15 @@
 
 // class GConditionNode
 
+/*!
+    \qmltype ConditionNode
+    \instantiates GConditionNode
+    \inqmlmodule GtGhost
+    \inherits LeafNode
+
+    fff
+ */
+
 GConditionNode::GConditionNode(QObject *parent)
     : GLeafNode(*new GConditionNodePrivate(), parent)
 {

@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcRandomSelectorNode, "GtGhost.RandomSelectorNode")
 
 // class GRandomSelectorNode
 
+/*!
+    \qmltype RandomSelectorNode
+    \instantiates GRandomSelectorNode
+    \inqmlmodule GtGhost
+    \inherits CompositeNode
+
+    fff
+ */
+
 GRandomSelectorNode::GRandomSelectorNode(QObject *parent)
     : GCompositeNode(*new GRandomSelectorNodePrivate(), parent)
 {

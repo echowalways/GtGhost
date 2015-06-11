@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcRepeaterNode, "GtGhost.RepeaterNode")
 
 // class GRepeaterNode
 
+/*!
+    \qmltype RepeaterNode
+    \instantiates GRepeaterNode
+    \inqmlmodule GtGhost
+    \inherits DecoratorNode
+
+    fff
+ */
+
 GRepeaterNode::GRepeaterNode(QObject *parent)
     : GDecoratorNode(*new GRepeaterNodePrivate(), parent)
 {

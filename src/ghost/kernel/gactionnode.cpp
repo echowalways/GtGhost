@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcActionNode, "GtGhost.ActionNode")
 
 // class GActionNode
 
+/*!
+    \qmltype ActionNode
+    \instantiates GActionNode
+    \inqmlmodule GtGhost
+    \inherits LeafNode
+
+    fff
+ */
+
 GActionNode::GActionNode(QObject *parent)
     : GLeafNode(*new GActionNodePrivate(), parent)
 {

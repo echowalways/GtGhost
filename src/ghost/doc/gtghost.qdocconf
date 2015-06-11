@@ -1,0 +1,24 @@
+project     = GtGhost
+description = Gt Ghost Reference Documentation
+url         = http://qt-devs.org/
+version     = 1.0.1
+
+outputdir = ../../../doc/gtghost
+
+headerdirs = ../kernel
+headers.fileextensions = *.h
+
+sourcedirs = src ../kernel
+sources.fileextensions = *.cpp *.qdoc
+
+HTML.stylesheets = style/offline.css
+
+HTML.headerstyles = \
+    "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style/offline.css\" />\n"
+
+HTML.endheader = \
+    "</head>\n" \
+    "<body>\n"
+
+sourceencoding = UTF-8
+outputencoding = UTF-8

@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcFreezeNode, "GtGhost.FreezeNode")
 
 // class GFreezeNode
 
+/*!
+    \qmltype FreezeNode
+    \instantiates GFreezeNode
+    \inqmlmodule GtGhost
+    \inherits LeafNode
+
+    fff
+ */
+
 GFreezeNode::GFreezeNode(QObject *parent)
     : GLeafNode(*new GFreezeNodePrivate(), parent)
 {

@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcRepeatUntilSuccessNode, "GtGhost.RepeatUntilSuccessNode")
 
 // class GRepeatUntilSuccessNode
 
+/*!
+    \qmltype RepeatUntilSuccessNode
+    \instantiates GRepeatUntilSuccessNode
+    \inqmlmodule GtGhost
+    \inherits DecoratorNode
+
+    fff
+ */
+
 GRepeatUntilSuccessNode::GRepeatUntilSuccessNode(QObject *parent)
     : GDecoratorNode(*new GRepeatUntilSuccessNodePrivate(), parent)
 {

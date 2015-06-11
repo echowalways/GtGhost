@@ -3,6 +3,15 @@
 
 // class GParallelNode
 
+/*!
+    \qmltype ParallelNode
+    \instantiates GParallelNode
+    \inqmlmodule GtGhost
+    \inherits CompositeNode
+
+    fff
+ */
+
 GParallelNode::GParallelNode(QObject *parent)
     : GCompositeNode(*new GParallelNodePrivate(), parent)
 {

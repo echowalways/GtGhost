@@ -10,6 +10,15 @@ Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
 
 // class GGhostTree
 
+/*!
+    \qmltype GhostTree
+    \instantiates GGhostTree
+    \inqmlmodule GtGhost
+    \inherits GhostSourceNode
+
+    fff
+ */
+
 GGhostTree::GGhostTree(QObject *parent)
     : GGhostSourceNode(*new GGhostTreePrivate(), parent)
 {

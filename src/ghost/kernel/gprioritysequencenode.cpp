@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcPrioritySequenceNode, "GtGhost.PrioritySequenceNode")
 
 // class GPrioritySequenceNode
 
+/*!
+    \qmltype PrioritySequenceNode
+    \instantiates GPrioritySequenceNode
+    \inqmlmodule GtGhost
+    \inherits CompositeNode
+
+    fff
+ */
+
 GPrioritySequenceNode::GPrioritySequenceNode(QObject *parent)
     : GCompositeNode(*new GPrioritySequenceNodePrivate(), parent)
 {

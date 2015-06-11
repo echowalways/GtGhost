@@ -7,6 +7,15 @@ Q_LOGGING_CATEGORY(qlcDecoratorNode, "GtGhost.DecoratorNode")
 
 // class GDecoratorNode
 
+/*!
+    \qmltype DecoratorNode
+    \instantiates GDecoratorNode
+    \inqmlmodule GtGhost
+    \inherits GhostNode
+
+    fff
+ */
+
 GDecoratorNode::GDecoratorNode(GDecoratorNodePrivate &dd, QObject *parent)
     : GGhostNode(dd, parent)
 {
