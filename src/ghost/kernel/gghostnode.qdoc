@@ -91,12 +91,10 @@
         import GtGhost 1.0
 
         GhostTree {
-            objectName: "Radar"
+            objectName: "Missile Launcher"
 
             ActionNode {
-                objectName: "Missile"
-
-                precondition: Missile.isPowerOn
+                precondition: Radar.isPowerOn
 
                 onExecute: {
                     Missile.launch()
@@ -109,13 +107,11 @@
         import GtGhost 1.0
 
         GhostTree {
-            objectName: "Radar"
+            objectName: "Missile Launcher"
 
             ActionNode {
-                objectName: "Missile"
-
                 precondition: function() {
-                    return EnemyAircraft.distance < 50km
+                    return Radar.isPowerOn && EnemyAircraft.distance < 50km
                 }
 
                 onExecute: {
@@ -142,15 +138,19 @@
         import GtGhost 1.0
 
         GhostTree {
-            objectName: "Radar"
+            objectName: "Missile Launcher"
 
-            ActionNode {
-                objectName: "Missile"
+            PrioritySelectorNode {
+                ActionNode {
+                    objectName: "Short-range Missile"
 
-                precondition: Missile.isPowerOn
+                    weight: 50
+                }
 
-                onExecute: {
-                    Missile.launch()
+                ActionNode {
+                    objectName: "Medium-range Missile"
+
+                    weight: 60
                 }
             }
         }
@@ -160,22 +160,30 @@
         import GtGhost 1.0
 
         GhostTree {
-            objectName: "McDonald's"
+            objectName: "Missile Launcher"
 
             PrioritySelectorNode {
-                objectName: "Which Sandwich?"
-
                 ActionNode {
-                    objectName: ""
+                    objectName: "Short-range Missile"
 
                     weight: function() {
-                        return EnemyAircraft.distance < 50km
+                        return 50 - EnemyAircraft.distance
+                    }
+                }
+
+                ActionNode {
+                    objectName: "Medium-range Missile"
+
+                    weight: function() {
+                        return EnemyAircraft.distance - 30
                     }
                 }
             }
         }
         \endcode
     \endlist
+
+    \sa PrioritySelectorNode, PrioritySequenceNode, RandomSelectorNode, RandomSequenceNode
 
     \note 当权重值的计算结果小于 1 的时候，结果将会被重置到 1。
  */
