@@ -8,16 +8,16 @@ class GActionNode : public GLeafNode
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(GActionNode)
-    Q_PROPERTY(int timeout READ timeout WRITE setTimeout NOTIFY timeoutChanged)
+    Q_PROPERTY(int duration READ duration WRITE setDuration NOTIFY durationChanged)
 
 public:
     explicit GActionNode(QObject *parent = 0);
 
 Q_SIGNALS:
-    void timeoutChanged(int value);
+    void durationChanged(int value);
 public:
-    void setTimeout(int value);
-    int timeout() const;
+    void setDuration(int value);
+    int duration() const;
 
 Q_SIGNALS:
     void reset();

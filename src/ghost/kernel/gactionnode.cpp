@@ -12,7 +12,7 @@ GActionNode::GActionNode(QObject *parent)
 {
 }
 
-void GActionNode::setTimeout(int value)
+void GActionNode::setDuration(int value)
 {
     Q_D(GActionNode);
 
@@ -22,16 +22,16 @@ void GActionNode::setTimeout(int value)
         value = 0;
     }
 
-    if (value != d->timeout) {
-        d->timeout = value;
-        emit timeoutChanged(value);
+    if (value != d->duration) {
+        d->duration = value;
+        emit durationChanged(value);
     }
 }
 
-int GActionNode::timeout() const
+int GActionNode::duration() const
 {
     Q_D(const GActionNode);
-    return d->timeout;
+    return d->duration;
 }
 
 void GActionNode::setSuccessStatus()
@@ -71,7 +71,7 @@ void GActionNode::setStoppedStatus()
 
 GActionNodePrivate::GActionNodePrivate()
     : GLeafNodePrivate(Ghost::ActionNode)
-    , timeout(0)
+    , duration(0)
 {
 }
 
@@ -101,7 +101,7 @@ void GActionNodePrivate::execute()
 
     setStatus(Ghost::Running);
 
-    if (timeout > 0) {
+    if (duration > 0) {
         if (!timer) {
             timer = new QTimer(q);
             timer->setSingleShot(true);
@@ -110,7 +110,7 @@ void GActionNodePrivate::execute()
                              q, &GActionNode::setFailureStatus);
         }
 
-        timer->setInterval(timeout);
+        timer->setInterval(duration);
         timer->start();
     }
 

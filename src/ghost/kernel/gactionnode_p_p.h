@@ -20,7 +20,7 @@ public:
     virtual void terminate() Q_DECL_FINAL;
 
 public:
-    int timeout;
+    int duration;
     QPointer<QTimer> timer;
 };
 
