@@ -3,6 +3,8 @@
 
 #include <QtCore/QLoggingCategory>
 
+#include "gghostevent.h"
+
 Q_LOGGING_CATEGORY(qlcPrioritySequenceNode, "GtGhost.PrioritySequenceNode")
 
 // class GPrioritySequenceNode
@@ -40,17 +42,15 @@ GPrioritySequenceNodePrivate::~GPrioritySequenceNodePrivate()
 {
 }
 
-void GPrioritySequenceNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GPrioritySequenceNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    Ghost::Status sourceStatus = event->status();
 
-    Ghost::Status childStatus = childNode->status();
-
-    if (Ghost::Stopped == childStatus) {
+    if (Ghost::Stopped == sourceStatus) {
         setStatus(Ghost::Stopped);
-    } else if (Ghost::Success == childStatus) {
+    } else if (Ghost::Success == sourceStatus) {
         executeNextChildNode();
-    } else if (Ghost::Failure == childStatus) {
+    } else if (Ghost::Failure == sourceStatus) {
         if (++unmatchCounter >= unmatchCount) {
             setStatus(Ghost::Failure);
         } else {
@@ -130,7 +130,7 @@ void GPrioritySequenceNodePrivate::executeNextChildNode()
         GGhostNodePrivate *dptr = cast(childNode);
         if (dptr->callPrecondition()) {
             ++executeCounter;
-            dptr->execute();
+            postExecuteEvent(childNode);
             r = false;
             break;
         }

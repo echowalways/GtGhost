@@ -5,10 +5,11 @@ CONFIG  += c++11 no_private_qt_headers_warning
 
 HEADERS += \
     $$PWD/gghostnamespace.h \
-    $$PWD/gghostnode_p.h \
-    $$PWD/gghostnode_p_p.h \
+    $$PWD/gghostevent.h \
     $$PWD/gghosttree_p.h \
     $$PWD/gghosttree_p_p.h \
+    $$PWD/gghostnode_p.h \
+    $$PWD/gghostnode_p_p.h \
     $$PWD/gcompositenode_p.h \
     $$PWD/gcompositenode_p_p.h \
     $$PWD/gdecoratornode_p.h \
@@ -47,14 +48,13 @@ HEADERS += \
     $$PWD/grandomsequencenode_p_p.h \
     $$PWD/grandomselectornode_p.h \
     $$PWD/grandomselectornode_p_p.h \
-    $$PWD/gghostsourcenode_p_p.h \
-    $$PWD/gghostsourcenode_p.h \
     $$PWD/gghostdata_p.h \
     $$PWD/gghostdata_p_p.h
 
 SOURCES += \
-    $$PWD/gghostnode.cpp \
+    $$PWD/gghostevent.cpp \
     $$PWD/gghosttree.cpp \
+    $$PWD/gghostnode.cpp \
     $$PWD/gcompositenode.cpp \
     $$PWD/gdecoratornode.cpp \
     $$PWD/gleafnode.cpp \
@@ -74,5 +74,4 @@ SOURCES += \
     $$PWD/gpriorityselectornode.cpp \
     $$PWD/grandomsequencenode.cpp \
     $$PWD/grandomselectornode.cpp \
-    $$PWD/gghostsourcenode.cpp \
     $$PWD/gghostdata.cpp

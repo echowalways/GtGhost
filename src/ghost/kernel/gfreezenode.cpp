@@ -10,7 +10,7 @@ Q_LOGGING_CATEGORY(qlcFreezeNode, "GtGhost.FreezeNode")
 GFreezeNode::GFreezeNode(QObject *parent)
     : GLeafNode(*new GFreezeNodePrivate(), parent)
 {
-    connect(this, &GGhostSourceNode::statusChanged,
+    connect(this, &GGhostNode::statusChanged,
             [this](Ghost::Status status) {
         if (Ghost::Running == status) {
             emit started();

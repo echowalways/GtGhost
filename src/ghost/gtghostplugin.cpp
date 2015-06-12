@@ -3,7 +3,6 @@
 #include <QtQml/QtQml>
 
 #include "gghostnamespace.h"
-#include "gghostsourcenode_p.h"
 #include "gghostnode_p.h"
 #include "gghosttree_p.h"
 #include "gghostdata_p.h"
@@ -36,7 +35,6 @@ void GtGhostPlugin::registerTypes(const char *uri)
     qRegisterMetaType<Ghost::Status>("Ghost::Status");
 
     qmlRegisterUncreatableType<Ghost>(uri, 1, 0, "Ghost", "Ghost is an abstract class.");
-    qmlRegisterUncreatableType<GGhostSourceNode>(uri, 1, 0, "GhostSourceNode", "GhostSourceNode is an abstract class.");
     qmlRegisterUncreatableType<GGhostNode>(uri, 1, 0, "GhostNode", "GhostNode is an abstract class.");
     qmlRegisterUncreatableType<GGhostData>(uri, 1, 0, "GhostData", "GhostData is an abstract class.");
     qmlRegisterUncreatableType<GCompositeNode>(uri, 1, 0, "CompositeNode", "CompositeNode is an abstract class.");

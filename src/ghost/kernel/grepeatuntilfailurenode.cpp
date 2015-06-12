@@ -3,6 +3,8 @@
 
 #include <QtCore/QLoggingCategory>
 
+#include "gghostevent.h"
+
 Q_LOGGING_CATEGORY(qlcRepeatUntilFailureNode, "GtGhost.RepeatUntilFailureNode")
 
 // class GRepeatUntilFailureNode
@@ -47,20 +49,18 @@ GRepeatUntilFailureNodePrivate::~GRepeatUntilFailureNodePrivate()
 {
 }
 
-void GRepeatUntilFailureNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GRepeatUntilFailureNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    Q_CHECK_PTR(event->source());
+    Q_ASSERT(event->source() == childNodes[0]);
 
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(childNode == childNodes[0]);
+    Ghost::Status sourceStatus = event->status();
 
-    Ghost::Status childStatus = childNode->status();
-
-    if (Ghost::Stopped == childStatus) {
+    if (Ghost::Stopped == sourceStatus) {
         setStatus(Ghost::Stopped);
-    } else if ((Ghost::Success == childStatus)
-               || (Ghost::Failure == childStatus)) {
-        if (Ghost::Failure == childStatus) {
+    } else if ((Ghost::Success == sourceStatus)
+               || (Ghost::Failure == sourceStatus)) {
+        if (Ghost::Failure == sourceStatus) {
             setStatus(Ghost::Success);
             return;
         }
@@ -72,7 +72,7 @@ void GRepeatUntilFailureNodePrivate::onChildStatusChanged(GGhostSourceNode *chil
 
         GGhostNodePrivate *childptr = cast(childNodes[0]);
         if (childptr->callPrecondition()) {
-            childptr->execute();
+            postExecuteEvent(childNodes[0]);
         } else {
             setStatus(breakStatus);
         }

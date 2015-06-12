@@ -12,8 +12,8 @@ public:
     GRepeatUntilSuccessNodePrivate();
     virtual ~GRepeatUntilSuccessNodePrivate();
 
-protected:
-    virtual void onChildStatusChanged(GGhostSourceNode *childNode) Q_DECL_FINAL;
+private:
+    virtual void confirmEvent(GGhostConfirmEvent *event) Q_DECL_FINAL;
 
 private:
     int loopCount;

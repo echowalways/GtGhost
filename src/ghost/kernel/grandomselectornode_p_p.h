@@ -12,8 +12,8 @@ public:
     GRandomSelectorNodePrivate();
     virtual ~GRandomSelectorNodePrivate();
 
-protected:
-    virtual void onChildStatusChanged(GGhostSourceNode *childNode) Q_DECL_FINAL;
+private:
+    virtual void confirmEvent(GGhostConfirmEvent *event) Q_DECL_FINAL;
 
 public:
     virtual bool initialize() Q_DECL_FINAL;

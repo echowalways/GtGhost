@@ -1,14 +1,20 @@
 #ifndef GGHOSTTREE_P_P_H
 #define GGHOSTTREE_P_P_H
 
+#include <private/qobject_p.h>
+
+#include <QtCore/QQueue>
 #include <QtQml/QQmlListProperty>
 
-#include "gghostsourcenode_p_p.h"
 #include "gghosttree_p.h"
-#include "gghostnode_p.h"
-#include "gghostnode_p_p.h"
 
-class GGhostTreePrivate : public GGhostSourceNodePrivate
+class GGhostNodePrivate;
+
+class GGhostEvent;
+class GGhostExecuteEvent;
+class GGhostConfirmEvent;
+
+class GGhostTreePrivate : public QObjectPrivate
 {
     Q_DECLARE_PUBLIC(GGhostTree)
 
@@ -17,11 +23,35 @@ public:
     virtual ~GGhostTreePrivate();
 
 public:
-    static GGhostNodePrivate *cast(GGhostNode *node) { return GGhostNodePrivate::cast(node); }
-    static const GGhostNodePrivate *cast(const GGhostNode *node) { return GGhostNodePrivate::cast(node); }
+    static GGhostTreePrivate *cast(GGhostTree *tree);
+    static const GGhostTreePrivate *cast(const GGhostTree *tree);
 
-    virtual void onChildStatusChanged(GGhostSourceNode *childNode) Q_DECL_FINAL;
+    static GGhostNodePrivate *cast(GGhostNode *node);
+    static const GGhostNodePrivate *cast(const GGhostNode *node);
 
+    // Status
+public:
+    static const char *toString(Ghost::Status status);
+    void setStatus(Ghost::Status status);
+public:
+    Ghost::Status status;
+
+    // Event Queue
+private:
+    void postEvent(GGhostEvent *event);
+    void _q_processEvents();
+private:
+    QQueue<GGhostEvent *> eventQueue;
+    bool eventsProcessing;
+
+public:
+    void postExecuteEvent(GGhostNode *target);
+    void postConfirmEvent(GGhostNode *source);
+private:
+    void executeEvent(GGhostExecuteEvent *event);
+    void confirmEvent(GGhostConfirmEvent *event);
+
+    //
 public:
     virtual bool initialize() Q_DECL_FINAL;
 
@@ -41,6 +71,18 @@ public:
 public:
     GGhostData *extraData;
 };
+
+inline GGhostTreePrivate *GGhostTreePrivate::cast(GGhostTree *tree)
+{
+    Q_CHECK_PTR(tree);
+    return tree->d_func();
+}
+
+inline const GGhostTreePrivate *GGhostTreePrivate::cast(const GGhostTree *tree)
+{
+    Q_CHECK_PTR(tree);
+    return tree->d_func();
+}
 
 inline QQmlListProperty<GGhostNode> GGhostTreePrivate::_q_childNodes()
 {

@@ -62,4 +62,10 @@ public:
     };
 };
 
+class GGhostNode;
+typedef QList<GGhostNode *> GGhostNodeList;
+class GGhostTree;
+
+class GGhostData;
+
 #endif // GGHOSTNAMESPACE_H

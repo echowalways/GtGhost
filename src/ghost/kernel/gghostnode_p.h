@@ -4,19 +4,14 @@
 #include <QtQml/QJSValue>
 #include <QtQml/QQmlParserStatus>
 
-#include "gghostsourcenode_p.h"
-
-class GGhostNode;
-typedef QList<GGhostNode *> GGhostNodeList;
-class GGhostTree;
-
-class GGhostData;
+#include "gghostnamespace.h"
 
 class GGhostNodePrivate;
-class GGhostNode : public GGhostSourceNode, public QQmlParserStatus
+class GGhostNode : public QObject, public QQmlParserStatus
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(GGhostNode)
+    Q_PROPERTY(Ghost::Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(GGhostTree* masterTree READ masterTree CONSTANT)
     Q_PROPERTY(GGhostNode* parentNode READ parentNode CONSTANT)
     Q_PROPERTY(Ghost::BaseType baseType READ baseType CONSTANT)
@@ -30,6 +25,11 @@ class GGhostNode : public GGhostSourceNode, public QQmlParserStatus
 
 protected:
     GGhostNode(GGhostNodePrivate &dd, QObject *parent);
+
+Q_SIGNALS:
+    void statusChanged(Ghost::Status);
+public:
+    Ghost::Status status() const;
 
 Q_SIGNALS:
     void initialized();

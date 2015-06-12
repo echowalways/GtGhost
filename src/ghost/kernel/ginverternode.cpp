@@ -1,6 +1,8 @@
 #include "ginverternode_p.h"
 #include "ginverternode_p_p.h"
 
+#include "gghostevent.h"
+
 // class GInverterNode
 
 GInverterNode::GInverterNode(QObject *parent)
@@ -19,20 +21,18 @@ GInverterNodePrivate::~GInverterNodePrivate()
 {
 }
 
-void GInverterNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GInverterNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    Q_CHECK_PTR(event->source());
+    Q_ASSERT(event->source() == childNodes[0]);
 
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(childNode == childNodes[0]);
+    Ghost::Status sourceStatus = event->status();
 
-    Ghost::Status childStatus = childNode->status();
-
-    if (Ghost::Stopped == childStatus) {
+    if (Ghost::Stopped == sourceStatus) {
         setStatus(Ghost::Stopped);
-    } else if (Ghost::Success == childStatus) {
+    } else if (Ghost::Success == sourceStatus) {
         setStatus(Ghost::Failure);
-    } else if (Ghost::Failure == childStatus) {
+    } else if (Ghost::Failure == sourceStatus) {
         setStatus(Ghost::Success);
     }
 }

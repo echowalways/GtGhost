@@ -1,6 +1,8 @@
 #include "gparallelnode_p.h"
 #include "gparallelnode_p_p.h"
 
+#include "gghostevent.h"
+
 // class GParallelNode
 
 GParallelNode::GParallelNode(QObject *parent)
@@ -21,16 +23,13 @@ GParallelNodePrivate::~GParallelNodePrivate()
 {
 }
 
-void GParallelNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GParallelNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_UNUSED(childNode);
-    Q_ASSERT(Ghost::Invalid != status);
+    Ghost::Status sourceStatus = event->status();
 
-    Ghost::Status childStatus = childNode->status();
-
-    if ((Ghost::Success == childStatus)
-            || (Ghost::Failure == childStatus)
-            || (Ghost::Stopped == childStatus)) {
+    if ((Ghost::Success == sourceStatus)
+            || (Ghost::Failure == sourceStatus)
+            || (Ghost::Stopped == sourceStatus)) {
         if ((0 == --executeCounter) && !executeState) {
             if (terminateState) {
                 setStatus(Ghost::Stopped);
@@ -79,7 +78,7 @@ void GParallelNodePrivate::execute()
         GGhostNodePrivate *dptr = cast(childNode);
         if (dptr->callPrecondition()) {
             executeCounter += 1;
-            dptr->execute();
+            postExecuteEvent(childNode);
             r = false;
         }
     }
