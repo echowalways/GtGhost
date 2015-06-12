@@ -22,21 +22,20 @@ public:
     GGhostTreePrivate();
     virtual ~GGhostTreePrivate();
 
+    // 快捷转换方法
 public:
     static GGhostTreePrivate *cast(GGhostTree *tree);
     static const GGhostTreePrivate *cast(const GGhostTree *tree);
-
     static GGhostNodePrivate *cast(GGhostNode *node);
     static const GGhostNodePrivate *cast(const GGhostNode *node);
 
-    // Status
+    // 状态
 public:
-    static const char *toString(Ghost::Status status);
     void setStatus(Ghost::Status status);
 public:
     Ghost::Status status;
 
-    // Event Queue
+    // 事件队列
 private:
     void postEvent(GGhostEvent *event);
     void _q_processEvents();
@@ -48,28 +47,28 @@ public:
     void postExecuteEvent(GGhostNode *target);
     void postConfirmEvent(GGhostNode *source);
 private:
-    void executeEvent(GGhostExecuteEvent *event);
-    void confirmEvent(GGhostConfirmEvent *event);
+    void processExecuteEvent(GGhostExecuteEvent *event);
+    void processConfirmEvent(GGhostConfirmEvent *event);
 
-    //
-public:
-    virtual bool initialize() Q_DECL_FINAL;
-
-    virtual void reset() Q_DECL_FINAL;
-    virtual void execute() Q_DECL_FINAL;
-    virtual void terminate() Q_DECL_FINAL;
-
-    // core datas
+    // 核心数据
 public:
     QQmlListProperty<GGhostNode> _q_childNodes();
 public:
     GGhostNodeList childNodes;
 
-    // extra datas
+    // 扩展数据
 public:
     GGhostData *_q_data() const;
 public:
     GGhostData *extraData;
+
+    //
+public:
+    bool initialize();
+
+    void reset();
+    void execute();
+    void terminate();
 };
 
 inline GGhostTreePrivate *GGhostTreePrivate::cast(GGhostTree *tree)

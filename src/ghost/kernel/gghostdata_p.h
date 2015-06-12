@@ -14,12 +14,10 @@ public:
     explicit GGhostData(QObject *parent = 0);
 
 public:
-    void reset();
-
-public:
     Q_INVOKABLE void set(const QString &key, const QJSValue &value);
     Q_INVOKABLE QJSValue get(const QString &key) const;
 
+    Q_INVOKABLE void reset();
 };
 
 #endif // GGHOSTDATA_H

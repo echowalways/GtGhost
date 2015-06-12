@@ -134,15 +134,9 @@ void GGhostTreePrivate::_q_processEvents()
     while (!eventQueue.isEmpty()) {
         GGhostEvent *event = eventQueue.dequeue();
         if (event->type() == GGhostEvent::Execute) {
-            qDebug("executeEvent(%s *%p)",
-                   static_cast<GGhostExecuteEvent *>(event)->target()->metaObject()->className(),
-                   static_cast<GGhostExecuteEvent *>(event)->target());
-            executeEvent(static_cast<GGhostExecuteEvent *>(event));
+            processExecuteEvent(static_cast<GGhostExecuteEvent *>(event));
         } else if (event->type() == GGhostEvent::Confirm) {
-            qDebug("confirmEvent(%s *%p)",
-                   static_cast<GGhostConfirmEvent *>(event)->source()->metaObject()->className(),
-                   static_cast<GGhostConfirmEvent *>(event)->source());
-            confirmEvent(static_cast<GGhostConfirmEvent *>(event));
+            processConfirmEvent(static_cast<GGhostConfirmEvent *>(event));
         } else {
             Q_UNREACHABLE();
         }
@@ -152,26 +146,27 @@ void GGhostTreePrivate::_q_processEvents()
 
 void GGhostTreePrivate::postExecuteEvent(GGhostNode *target)
 {
-    qDebug("postExecuteEvent(%s *%p)", target->metaObject()->className(), target);
-
     Q_CHECK_PTR(target);
-    postEvent(new GGhostExecuteEvent(target));
+    if (target) {
+        postEvent(new GGhostExecuteEvent(target));
+    }
 }
 
 void GGhostTreePrivate::postConfirmEvent(GGhostNode *source)
 {
-    qDebug("postConfirmEvent(%s *%p)", source->metaObject()->className(), source);
-
-    postEvent(new GGhostConfirmEvent(source, source->status()));
+    Q_CHECK_PTR(source);
+    if (source) {
+        postEvent(new GGhostConfirmEvent(source, source->status()));
+    }
 }
 
-void GGhostTreePrivate::executeEvent(GGhostExecuteEvent *event)
+void GGhostTreePrivate::processExecuteEvent(GGhostExecuteEvent *event)
 {
     Q_CHECK_PTR(event->target());
     cast(event->target())->executeEvent(event);
 }
 
-void GGhostTreePrivate::confirmEvent(GGhostConfirmEvent *event)
+void GGhostTreePrivate::processConfirmEvent(GGhostConfirmEvent *event)
 {
     Q_ASSERT(Ghost::Invalid != event->status());
     Q_ASSERT(Ghost::StandBy != event->status());
@@ -186,40 +181,6 @@ void GGhostTreePrivate::confirmEvent(GGhostConfirmEvent *event)
     } else {
         setStatus(event->status());
     }
-}
-
-const char *GGhostTreePrivate::toString(Ghost::Status status)
-{
-    static const char s_invalid[] = "Invalid";
-    static const char s_standBy[] = "StandBy";
-    static const char s_running[] = "Running";
-    static const char s_success[] = "Success";
-    static const char s_failure[] = "Failure";
-    static const char s_stopped[] = "Stopped";
-
-    switch (status) {
-    case Ghost::Invalid:
-        return s_invalid;
-        break;
-    case Ghost::StandBy:
-        return s_standBy;
-        break;
-    case Ghost::Running:
-        return s_running;
-        break;
-    case Ghost::Success:
-        return s_success;
-        break;
-    case Ghost::Failure:
-        return s_failure;
-        break;
-    case Ghost::Stopped:
-        return s_stopped;
-        break;
-    }
-
-    Q_UNREACHABLE();
-    return 0;
 }
 
 void GGhostTreePrivate::setStatus(Ghost::Status status)
@@ -286,23 +247,9 @@ void GGhostTreePrivate::setStatus(Ghost::Status status)
 
     qCDebug(qlcGhostTree,
             "Status: '%s' ==> '%s' : %s %s(%p)",
-            toString(this->status), toString(status),
+            Ghost::toString(this->status), Ghost::toString(status),
             ((Ghost::Running == status) ? "-->" : "<--"),
             q->metaObject()->className(), q);
-
-//    if (summary.isEmpty()) {
-//        qCDebug(qlcGhostNode,
-//                "Status: '%s' ==> '%s' : %s %s(%p)",
-//                toString(this->status), toString(status),
-//                ((Ghost::Running == status) ? "-->" : "<--"),
-//                q->metaObject()->className(), q);
-//    } else {
-//        qCDebug(qlcGhostNode).nospace()
-//                << "Status: '" << toString(this->status)
-//                << "' ==> '" << toString(status)
-//                << "' :" << ((Ghost::Running == status) ? " --> " : " <-- ")
-//                << summary.toUtf8().constData();
-//    }
 
 #endif // QT_NO_DEBUG
 
@@ -324,9 +271,7 @@ bool GGhostTreePrivate::initialize()
         childptr->masterTree = q;
         childptr->extraData = extraData;
         // 开始初始化子节点
-        if (childptr->initialize()) {
-            childptr->parentNode = 0;
-        } else {
+        if (!childptr->initialize()) {
             hasError = true;
         }
     }

@@ -4,7 +4,7 @@ QT      *= core core-private qml qml-private
 CONFIG  += c++11 no_private_qt_headers_warning
 
 HEADERS += \
-    $$PWD/gghostnamespace.h \
+    $$PWD/gghostglobal.h \
     $$PWD/gghostevent.h \
     $$PWD/gghosttree_p.h \
     $$PWD/gghosttree_p_p.h \
@@ -52,6 +52,7 @@ HEADERS += \
     $$PWD/gghostdata_p_p.h
 
 SOURCES += \
+    $$PWD/gghostglobal.cpp \
     $$PWD/gghostevent.cpp \
     $$PWD/gghosttree.cpp \
     $$PWD/gghostnode.cpp \

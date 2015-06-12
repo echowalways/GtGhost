@@ -1,9 +1,7 @@
 #ifndef GGHOSTTREE_P_H
 #define GGHOSTTREE_P_H
 
-#include <QtQml/QQmlParserStatus>
-
-#include "gghostnamespace.h"
+#include "gghostglobal.h"
 
 class GGhostTreePrivate;
 class GGhostTree : public QObject, public QQmlParserStatus
@@ -13,8 +11,8 @@ class GGhostTree : public QObject, public QQmlParserStatus
     Q_PROPERTY(Ghost::Status status READ status NOTIFY statusChanged)
     Q_PRIVATE_PROPERTY(d_func(), QQmlListProperty<GGhostNode> childNodes READ _q_childNodes CONSTANT DESIGNABLE false)
     Q_PRIVATE_PROPERTY(d_func(), GGhostData* Data READ _q_data CONSTANT)
-    Q_INTERFACES(QQmlParserStatus)
     Q_CLASSINFO("DefaultProperty", "childNodes")
+    Q_INTERFACES(QQmlParserStatus)
 
 public:
     explicit GGhostTree(QObject *parent = 0);
@@ -38,9 +36,9 @@ public Q_SLOTS:
     void stop();
     void reset();
 
-protected:
-    virtual void classBegin() Q_DECL_OVERRIDE;
-    virtual void componentComplete() Q_DECL_OVERRIDE;
+private:
+    virtual void classBegin() Q_DECL_FINAL;
+    virtual void componentComplete() Q_DECL_FINAL;
 };
 
 #endif // GGHOSTTREE_P_H

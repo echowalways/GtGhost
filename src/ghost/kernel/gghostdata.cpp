@@ -8,12 +8,6 @@ GGhostData::GGhostData(QObject *parent)
 {
 }
 
-void GGhostData::reset()
-{
-    Q_D(GGhostData);
-    d->values.clear();
-}
-
 void GGhostData::set(const QString &key, const QJSValue &value)
 {
     Q_D(GGhostData);
@@ -29,6 +23,12 @@ QJSValue GGhostData::get(const QString &key) const
 {
     Q_D(const GGhostData);
     return d->values.value(key);
+}
+
+void GGhostData::reset()
+{
+    Q_D(GGhostData);
+    d->values.clear();
 }
 
 // class GGhostDataPrivate

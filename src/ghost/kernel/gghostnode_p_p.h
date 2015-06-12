@@ -20,21 +20,20 @@ public:
     GGhostNodePrivate(Ghost::BaseType baseType, Ghost::NodeType nodeType);
     virtual ~GGhostNodePrivate();
 
+    // 快捷转换方法
 public:
-    static GGhostNodePrivate *cast(GGhostNode *node) { Q_CHECK_PTR(node); return node->d_func(); }
-    static const GGhostNodePrivate *cast(const GGhostNode *node) { Q_CHECK_PTR(node); return node->d_func(); }
-
+    static GGhostNodePrivate *cast(GGhostNode *node);
+    static const GGhostNodePrivate *cast(const GGhostNode *node);
     static GGhostTreePrivate *cast(GGhostTree *tree);
     static const GGhostTreePrivate *cast(const GGhostTree *tree);
 
-    // Status
+    // 状态
 public:
-    static const char *toString(Ghost::Status status);
     void setStatus(Ghost::Status status);
 public:
     Ghost::Status status;
 
-    // Event
+    // 事件队列
 public:
     void postExecuteEvent(GGhostNode *target);
     void postConfirmEvent(GGhostNode *source);
@@ -42,19 +41,7 @@ public:
     virtual void executeEvent(GGhostExecuteEvent *event);
     virtual void confirmEvent(GGhostConfirmEvent *event);
 
-    //
-public:
-    virtual bool initialize();
-
-public:
-    virtual void reset() = 0;
-    virtual void execute() = 0;
-    virtual void terminate() = 0;
-
-public:
-    bool initialize(const GGhostNodeList &childNodes);
-
-    // core datas
+    // 核心数据
 public:
     QQmlListProperty<GGhostNode> _q_childNodes();
 public:
@@ -71,18 +58,44 @@ private:
     QJSValue precondition;
     QJSValue weight;
 
-    // extra datas
+    // 扩展数据
 public:
     GGhostData *_q_data() const;
 public:
     GGhostData *extraData;
+    QString comment;
 
+    // 节点排序
 public:
     static bool greatThan(GGhostNode *leftChildNode, GGhostNode *rightChildNode);
     static void sort(GGhostNodeList &childNodes);
 public:
     uint sortIndex;
+
+    //
+public:
+    virtual bool initialize();
+
+public:
+    virtual void reset() = 0;
+    virtual void execute() = 0;
+    virtual void terminate() = 0;
+
+public:
+    bool initialize(const GGhostNodeList &childNodes);
 };
+
+inline GGhostNodePrivate *GGhostNodePrivate::cast(GGhostNode *node)
+{
+    Q_CHECK_PTR(node);
+    return node->d_func();
+}
+
+inline const GGhostNodePrivate *GGhostNodePrivate::cast(const GGhostNode *node)
+{
+    Q_CHECK_PTR(node);
+    return node->d_func();
+}
 
 inline QQmlListProperty<GGhostNode> GGhostNodePrivate::_q_childNodes()
 {

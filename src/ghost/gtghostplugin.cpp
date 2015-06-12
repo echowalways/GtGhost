@@ -2,7 +2,7 @@
 
 #include <QtQml/QtQml>
 
-#include "gghostnamespace.h"
+#include "gghostglobal.h"
 #include "gghostnode_p.h"
 #include "gghosttree_p.h"
 #include "gghostdata_p.h"

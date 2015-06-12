@@ -1,9 +1,7 @@
 #ifndef GGHOSTEVENT_H
 #define GGHOSTEVENT_H
 
-#include "gghostnamespace.h"
-
-class GGhostNode;
+#include "gghostglobal.h"
 
 // class GGhostEvent
 
