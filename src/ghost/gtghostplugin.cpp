@@ -26,6 +26,8 @@
 #include "gconditionnode_p.h"
 #include "gfreezenode_p.h"
 
+#include "gghostinspector_p.h"
+
 void GtGhostPlugin::registerTypes(const char *uri)
 {
     // @uri GtGhost
@@ -61,6 +63,8 @@ void GtGhostPlugin::registerTypes(const char *uri)
     qmlRegisterType<GActionNode>(uri, 1, 0, "ActionNode");
     qmlRegisterType<GConditionNode>(uri, 1, 0, "ConditionNode");
     qmlRegisterType<GFreezeNode>(uri, 1, 0, "FreezeNode");
+
+    qmlRegisterType<GGhostInspector>("GtGhost.UnitTest", 1, 0, "GhostInspector");
 }
 
 

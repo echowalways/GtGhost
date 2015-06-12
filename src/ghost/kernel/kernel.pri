@@ -1,8 +1,5 @@
 INCLUDEPATH += $$PWD
 
-QT      *= core core-private qml qml-private
-CONFIG  += c++11 no_private_qt_headers_warning
-
 HEADERS += \
     $$PWD/gghostglobal.h \
     $$PWD/gghostevent.h \
