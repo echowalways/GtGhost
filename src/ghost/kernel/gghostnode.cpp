@@ -217,7 +217,7 @@ void GGhostNodePrivate::setStatus(Ghost::Status status)
         this->status = status;
         emit q->statusChanged(status);
 
-        if (parentNode && masterTree
+        if (masterTree
                 && (Ghost::Invalid != status)
                 && (Ghost::StandBy != status)
                 && (Ghost::Running != status)) {
