@@ -128,4 +128,6 @@ void GActionNodePrivate::terminate()
     }
 
     emit q->terminate();
+
+    setStatus(Ghost::Stopped);
 }
