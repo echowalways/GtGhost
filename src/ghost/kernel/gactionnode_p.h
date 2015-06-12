@@ -14,6 +14,12 @@ public:
     explicit GActionNode(QObject *parent = 0);
 
 Q_SIGNALS:
+    void timeoutChanged(int value);
+public:
+    void setTimeout(int value);
+    int timeout() const;
+
+Q_SIGNALS:
     void reset();
     void execute();
     void terminate();
@@ -22,12 +28,6 @@ public Q_SLOTS:
     void setSuccessStatus();
     void setFailureStatus();
     void setStoppedStatus();
-
-Q_SIGNALS:
-    void timeoutChanged(int value);
-public:
-    void setTimeout(int value);
-    int timeout() const;
 };
 
 #endif // GACTIONNODE_P_H

@@ -8,11 +8,8 @@ TestCase {
     GhostTree {
         id: ghostTree
 
-        RepeaterNode {
-            loopCount: 5
-            ActionNode {
-                onExecute: setSuccessStatus()
-            }
+        ActionNode {
+            onExecute: setSuccessStatus()
         }
     }
 
@@ -21,5 +18,7 @@ TestCase {
 
     Component.onCompleted: {
         ghostTree.start()
+
+        wait(1000)
     }
 }

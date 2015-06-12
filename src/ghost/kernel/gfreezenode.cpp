@@ -76,8 +76,8 @@ void GFreezeNodePrivate::execute()
 
         QObject::connect(timer.data(), &QTimer::timeout,
                          [this]() {
-            Q_ASSERT(Ghost::Running == this->status);
-            this->setStatus(Ghost::Success);
+            Q_ASSERT(Ghost::Running == status);
+            setStatus(Ghost::Success);
         });
     }
 

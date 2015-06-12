@@ -12,6 +12,28 @@ GActionNode::GActionNode(QObject *parent)
 {
 }
 
+void GActionNode::setTimeout(int value)
+{
+    Q_D(GActionNode);
+
+    if (value < 0) {
+        qCWarning(qlcActionNode)
+                << "Value is too small, reset to 0.";
+        value = 0;
+    }
+
+    if (value != d->timeout) {
+        d->timeout = value;
+        emit timeoutChanged(value);
+    }
+}
+
+int GActionNode::timeout() const
+{
+    Q_D(const GActionNode);
+    return d->timeout;
+}
+
 void GActionNode::setSuccessStatus()
 {
     Q_D(GActionNode);
@@ -43,28 +65,6 @@ void GActionNode::setStoppedStatus()
     }
 
     d->setStatus(Ghost::Stopped);
-}
-
-void GActionNode::setTimeout(int value)
-{
-    Q_D(GActionNode);
-
-    if (value < 0) {
-        qCWarning(qlcActionNode)
-                << "Value is too small, reset to 0.";
-        value = 0;
-    }
-
-    if (value != d->timeout) {
-        d->timeout = value;
-        emit timeoutChanged(value);
-    }
-}
-
-int GActionNode::timeout() const
-{
-    Q_D(const GActionNode);
-    return d->timeout;
 }
 
 // class GActionNodePrivate
