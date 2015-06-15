@@ -75,7 +75,6 @@ public:
 
 class GGhostTree;
 class GGhostNode;
-class GGhostData;
 
 typedef QList<GGhostNode *> GGhostNodeList;
 

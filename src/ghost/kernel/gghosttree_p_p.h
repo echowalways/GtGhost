@@ -56,12 +56,6 @@ public:
 public:
     GGhostNodeList childNodes;
 
-    // 扩展数据
-public:
-    GGhostData *_q_data() const;
-public:
-    GGhostData *extraData;
-
     //
 public:
     bool initialize();
@@ -86,11 +80,6 @@ inline const GGhostTreePrivate *GGhostTreePrivate::cast(const GGhostTree *tree)
 inline QQmlListProperty<GGhostNode> GGhostTreePrivate::_q_childNodes()
 {
     return QQmlListProperty<GGhostNode>(q_func(), childNodes);
-}
-
-inline GGhostData *GGhostTreePrivate::_q_data() const
-{
-    return extraData;
 }
 
 #endif // GGHOSTTREE_P_P_H

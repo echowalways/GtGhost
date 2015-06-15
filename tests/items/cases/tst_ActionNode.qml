@@ -187,6 +187,8 @@ TestCase {
 
             onExecute: {
                 // nothing to do.
+
+                Blackboard.set("fff", "33")
             }
         }
     }

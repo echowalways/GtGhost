@@ -14,3 +14,6 @@ SOURCES += tst_itemstest.cpp
 
 OTHER_FILES += \
     cases/tst_ActionNode.qml
+
+DISTFILES += \
+    cases/tst_Blackboard.qml

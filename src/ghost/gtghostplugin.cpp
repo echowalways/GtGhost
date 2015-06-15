@@ -3,9 +3,9 @@
 #include <QtQml/QtQml>
 
 #include "gghostglobal.h"
-#include "gghostnode_p.h"
 #include "gghosttree_p.h"
-#include "gghostdata_p.h"
+#include "gblackboard_p.h"
+#include "gghostnode_p.h"
 #include "gcompositenode_p.h"
 #include "gdecoratornode_p.h"
 #include "gleafnode_p.h"
@@ -36,9 +36,11 @@ void GtGhostPlugin::registerTypes(const char *uri)
 
     qRegisterMetaType<Ghost::Status>("Ghost::Status");
 
+    qmlRegisterType<GBlackboardAttached>();
+    qmlRegisterUncreatableType<GBlackboard>(uri, 1, 0, "Blackboard", "Blackboard is an abstract class.");
+
     qmlRegisterUncreatableType<Ghost>(uri, 1, 0, "Ghost", "Ghost is an abstract class.");
     qmlRegisterUncreatableType<GGhostNode>(uri, 1, 0, "GhostNode", "GhostNode is an abstract class.");
-    qmlRegisterUncreatableType<GGhostData>(uri, 1, 0, "GhostData", "GhostData is an abstract class.");
     qmlRegisterUncreatableType<GCompositeNode>(uri, 1, 0, "CompositeNode", "CompositeNode is an abstract class.");
     qmlRegisterUncreatableType<GDecoratorNode>(uri, 1, 0, "DecoratorNode", "DecoratorNode is an abstract class.");
     qmlRegisterUncreatableType<GLeafNode>(uri, 1, 0, "LeafNode", "LeafNode is an abstract class.");
