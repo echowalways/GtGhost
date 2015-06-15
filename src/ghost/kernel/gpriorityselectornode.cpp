@@ -30,6 +30,17 @@ Ghost::UpdateMode GPrioritySelectorNode::updateMode() const
     return d->updateMode;
 }
 
+void GPrioritySelectorNode::componentComplete()
+{
+    Q_D(GPrioritySelectorNode);
+
+    GCompositeNode::componentComplete();
+
+    if (Ghost::StandBy == d->status) {
+        d->resortChildNodes();
+    }
+}
+
 // class GPrioritySelectorNodePrivate
 
 GPrioritySelectorNodePrivate::GPrioritySelectorNodePrivate()
@@ -57,20 +68,6 @@ void GPrioritySelectorNodePrivate::confirmEvent(GGhostConfirmEvent *event)
             executeNextChildNode();
         }
     }
-}
-
-bool GPrioritySelectorNodePrivate::initialize()
-{
-    sortedChildNodes = childNodes;
-
-    resortChildNodes();
-
-    if (GGhostNodePrivate::initialize(sortedChildNodes)) {
-        setStatus(Ghost::StandBy);
-        return true;
-    }
-
-    return false;
 }
 
 void GPrioritySelectorNodePrivate::reset()

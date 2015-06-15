@@ -46,6 +46,17 @@ Ghost::RandomMode GRandomSequenceNode::randomMode() const
     return d->randomMode;
 }
 
+void GRandomSequenceNode::componentComplete()
+{
+    Q_D(GRandomSequenceNode);
+
+    GCompositeNode::componentComplete();
+
+    if (Ghost::StandBy == d->status) {
+        d->resortChildNodes();
+    }
+}
+
 // class GRandomSequenceNodePrivate
 
 GRandomSequenceNodePrivate::GRandomSequenceNodePrivate()
@@ -74,20 +85,6 @@ void GRandomSequenceNodePrivate::confirmEvent(GGhostConfirmEvent *event)
             executeNextChildNode();
         }
     }
-}
-
-bool GRandomSequenceNodePrivate::initialize()
-{
-    sortedChildNodes = childNodes;
-
-    resortChildNodes();
-
-    if (GGhostNodePrivate::initialize(sortedChildNodes)) {
-        setStatus(Ghost::StandBy);
-        return true;
-    }
-
-    return false;
 }
 
 void GRandomSequenceNodePrivate::reset()

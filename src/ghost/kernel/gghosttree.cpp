@@ -81,15 +81,29 @@ void GGhostTree::reset()
 void GGhostTree::classBegin()
 {
     theGhostStack->push(this);
+
+    qsrand(QDateTime::currentMSecsSinceEpoch());
 }
 
 void GGhostTree::componentComplete()
 {
     Q_D(GGhostTree);
 
-    qsrand(QDateTime::currentMSecsSinceEpoch());
+    bool hasError = false;
 
-    if (d->initialize()) {
+    foreach (GGhostNode *childNode, d->childNodes) {
+        if (Ghost::Invalid == childNode->status()) {
+            hasError = true;
+        }
+    }
+
+    if (d->childNodes.count() != 1) {
+        qCWarning(qlcGhostTree)
+                << "Allows only one child node.";
+        hasError = true;
+    }
+
+    if (!hasError) {
         d->setStatus(Ghost::StandBy);
     }
 
@@ -256,26 +270,6 @@ void GGhostTreePrivate::setStatus(Ghost::Status status)
         this->status = status;
         emit q->statusChanged(status);
     }
-}
-
-bool GGhostTreePrivate::initialize()
-{
-    bool hasError = false;
-
-    foreach (GGhostNode *childNode, childNodes) {
-        GGhostNodePrivate *childptr = cast(childNode);
-        if (!childptr->initialize()) {
-            hasError = true;
-        }
-    }
-
-    if (childNodes.count() != 1) {
-        qCWarning(qlcGhostTree)
-                << "Allows only one child node.";
-        hasError = true;
-    }
-
-    return !hasError;
 }
 
 void GGhostTreePrivate::reset()

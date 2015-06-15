@@ -58,9 +58,6 @@ public:
 
     //
 public:
-    bool initialize();
-
-public:
     void reset();
     void execute();
     void terminate();

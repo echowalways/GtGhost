@@ -18,6 +18,9 @@ Q_SIGNALS:
 public:
     void setUpdateMode(Ghost::UpdateMode value);
     Ghost::UpdateMode updateMode() const;
+
+private:
+    virtual void componentComplete() Q_DECL_FINAL;
 };
 
 #endif // GPRIORITYSEQUENCENODE_P_H

@@ -76,15 +76,9 @@ public:
 
     //
 public:
-    virtual bool initialize();
-
-public:
     virtual void reset() = 0;
     virtual void execute() = 0;
     virtual void terminate() = 0;
-
-public:
-    bool initialize(const GGhostNodeList &childNodes);
 };
 
 inline GGhostNodePrivate *GGhostNodePrivate::cast(GGhostNode *node)

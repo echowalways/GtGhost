@@ -110,6 +110,41 @@ void GGhostNode::classBegin()
 
 void GGhostNode::componentComplete()
 {
+    Q_D(GGhostNode);
+
+    bool hasError = false;
+
+    foreach (GGhostNode *childNode, d->childNodes) {
+        if (Ghost::Invalid == childNode->status()) {
+            hasError = true;
+        }
+    }
+
+    if (Ghost::CompositeNode == d->baseType) {
+        if (d->childNodes.isEmpty()) {
+            qCWarning(qlcGhostNode)
+                    << "Must have at least one child item.";
+            hasError = true;
+        }
+    } else if (Ghost::DecoratorNode == d->baseType) {
+        if (d->childNodes.count() != 1) {
+            qCWarning(qlcGhostNode)
+                    << "Allows only one child node.";
+            hasError = true;
+        }
+    } else if (Ghost::LeafNode == d->baseType) {
+        if (!d->childNodes.isEmpty()) {
+            qCWarning(qlcGhostNode)
+                    << "Does not allow any child items.";
+            hasError = true;
+        }
+    } else {
+        Q_UNREACHABLE();
+    }
+
+    if (!hasError) {
+        d->setStatus(Ghost::StandBy);
+    }
 }
 
 // class GGhostNodePrivate
@@ -336,51 +371,6 @@ bool GGhostNodePrivate::greatThan(GGhostNode *leftChildNode, GGhostNode *rightCh
 void GGhostNodePrivate::sort(GGhostNodeList &childNodes)
 {
     std::sort(childNodes.begin(), childNodes.end(), &GGhostNodePrivate::greatThan);
-}
-
-bool GGhostNodePrivate::initialize()
-{
-    bool r = initialize(childNodes);
-    if (r) {
-        setStatus(Ghost::StandBy);
-    }
-    return r;
-}
-
-bool GGhostNodePrivate::initialize(const GGhostNodeList &childNodes)
-{
-    bool hasError = false;
-
-    foreach (GGhostNode *childNode, childNodes) {
-        GGhostNodePrivate *childptr = cast(childNode);
-        if (!childptr->initialize()) {
-            hasError = true;
-        }
-    }
-
-    if (Ghost::CompositeNode == baseType) {
-        if (childNodes.isEmpty()) {
-            qCWarning(qlcGhostNode)
-                    << "Must have at least one child item.";
-            hasError = true;
-        }
-    } else if (Ghost::DecoratorNode == baseType) {
-        if (childNodes.count() != 1) {
-            qCWarning(qlcGhostNode)
-                    << "Allows only one child node.";
-            hasError = true;
-        }
-    } else if (Ghost::LeafNode == baseType) {
-        if (!childNodes.isEmpty()) {
-            qCWarning(qlcGhostNode)
-                    << "Does not allow any child items.";
-            hasError = true;
-        }
-    } else {
-        Q_UNREACHABLE();
-    }
-
-    return !hasError;
 }
 
 // moc_gghostnode_p.cpp
