@@ -264,7 +264,6 @@ bool GGhostTreePrivate::initialize()
         GGhostNodePrivate *childptr = cast(childNode);
         // 初始化子节点数据
         childptr->masterTree = q;
-        childptr->extraData = extraData;
         // 开始初始化子节点
         if (!childptr->initialize()) {
             hasError = true;
