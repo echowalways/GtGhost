@@ -64,7 +64,7 @@ void GtGhostPlugin::registerTypes(const char *uri)
     qmlRegisterType<GConditionNode>(uri, 1, 0, "ConditionNode");
     qmlRegisterType<GFreezeNode>(uri, 1, 0, "FreezeNode");
 
-    qmlRegisterType<GGhostInspector>("GtGhost.UnitTest", 1, 0, "GhostInspector");
+    qmlRegisterType<GGhostInspector>(uri, 1, 0, "GhostInspector");
 }
 
 

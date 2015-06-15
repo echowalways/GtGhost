@@ -24,6 +24,18 @@ Q_SIGNALS:
 private:
     void setTarget(GGhostTree *value);
     GGhostTree *target() const;
+
+public:
+    Q_INVOKABLE void reset();
+    Q_INVOKABLE int count() const;
+    Q_INVOKABLE void clear();
+
+public:
+    Q_INVOKABLE bool done() const;
+private:
+    void onObjectStatusChanged(Ghost::Status status);
+public:
+    Q_INVOKABLE bool nextStatus(QObject *object, Ghost::Status status);
 };
 
 #endif // GGHOSTINSPECTOR_P_H
