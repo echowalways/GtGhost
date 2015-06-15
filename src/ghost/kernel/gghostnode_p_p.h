@@ -58,19 +58,16 @@ private:
     QJSValue precondition;
     QJSValue weight;
 
-    // 扩展数据
-public:
-    GGhostData *_q_data() const;
-public:
-    GGhostData *extraData;
-    QString comment;
-
     // 节点排序
 public:
     static bool greatThan(GGhostNode *leftChildNode, GGhostNode *rightChildNode);
     static void sort(GGhostNodeList &childNodes);
 public:
     uint sortIndex;
+
+    // 扩展数据
+public:
+    QString comment;
 
     //
 public:
@@ -100,11 +97,6 @@ inline const GGhostNodePrivate *GGhostNodePrivate::cast(const GGhostNode *node)
 inline QQmlListProperty<GGhostNode> GGhostNodePrivate::_q_childNodes()
 {
     return QQmlListProperty<GGhostNode>(q_func(), childNodes);
-}
-
-inline GGhostData *GGhostNodePrivate::_q_data() const
-{
-    return extraData;
 }
 
 #endif // GGHOSTNODE_P_P_H

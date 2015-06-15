@@ -3,6 +3,8 @@
 
 #include "gghostglobal.h"
 
+class GBlackboard;
+
 class GGhostTreePrivate;
 class GGhostTree : public QObject, public QQmlParserStatus
 {
@@ -10,7 +12,6 @@ class GGhostTree : public QObject, public QQmlParserStatus
     Q_DECLARE_PRIVATE(GGhostTree)
     Q_PROPERTY(Ghost::Status status READ status NOTIFY statusChanged)
     Q_PRIVATE_PROPERTY(d_func(), QQmlListProperty<GGhostNode> childNodes READ _q_childNodes CONSTANT DESIGNABLE false)
-    Q_PRIVATE_PROPERTY(d_func(), GGhostData* Data READ _q_data CONSTANT)
     Q_CLASSINFO("DefaultProperty", "childNodes")
     Q_INTERFACES(QQmlParserStatus)
 

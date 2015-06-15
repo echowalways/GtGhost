@@ -17,7 +17,6 @@ class GGhostNode : public QObject, public QQmlParserStatus
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
     Q_PROPERTY(QJSValue precondition READ precondition WRITE setPrecondition NOTIFY preconditionChanged)
     Q_PROPERTY(QJSValue weight READ weight WRITE setWeight NOTIFY weightChanged)
-    Q_PRIVATE_PROPERTY(d_func(), GGhostData* data READ _q_data CONSTANT)
     Q_CLASSINFO("DefaultProperty", "childNodes")
     Q_INTERFACES(QQmlParserStatus)
 

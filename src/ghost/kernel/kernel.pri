@@ -5,10 +5,10 @@ HEADERS += \
     $$PWD/gghostevent.h \
     $$PWD/gghosttree_p.h \
     $$PWD/gghosttree_p_p.h \
+    $$PWD/gblackboard_p.h \
+    $$PWD/gblackboard_p_p.h \
     $$PWD/gghostnode_p.h \
     $$PWD/gghostnode_p_p.h \
-    $$PWD/gghostdata_p.h \
-    $$PWD/gghostdata_p_p.h \
     $$PWD/gcompositenode_p.h \
     $$PWD/gcompositenode_p_p.h \
     $$PWD/gdecoratornode_p.h \
@@ -52,8 +52,8 @@ SOURCES += \
     $$PWD/gghostglobal.cpp \
     $$PWD/gghostevent.cpp \
     $$PWD/gghosttree.cpp \
+    $$PWD/gblackboard.cpp \
     $$PWD/gghostnode.cpp \
-    $$PWD/gghostdata.cpp \
     $$PWD/gcompositenode.cpp \
     $$PWD/gdecoratornode.cpp \
     $$PWD/gleafnode.cpp \

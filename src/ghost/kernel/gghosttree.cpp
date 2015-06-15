@@ -7,7 +7,6 @@
 #include "gghostevent.h"
 #include "gghostnode_p.h"
 #include "gghostnode_p_p.h"
-#include "gghostdata_p.h"
 
 Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
 
@@ -16,10 +15,6 @@ Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
 GGhostTree::GGhostTree(QObject *parent)
     : QObject(*new GGhostTreePrivate(), parent)
 {
-    Q_D(GGhostTree);
-
-    d->extraData = new GGhostData(this);
-
     connect(this, &GGhostTree::statusChanged,
             [this](Ghost::Status status) {
         switch (status) {
@@ -296,9 +291,6 @@ void GGhostTreePrivate::reset()
     Q_ASSERT(Ghost::StandBy != status);
     Q_ASSERT(Ghost::Running != status);
 
-    if (extraData) {
-        extraData->reset();
-    }
     cast(childNodes[0])->reset();
 
     setStatus(Ghost::StandBy);

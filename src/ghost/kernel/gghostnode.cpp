@@ -116,7 +116,6 @@ GGhostNodePrivate::GGhostNodePrivate(Ghost::BaseType baseType, Ghost::NodeType n
     , parentNode(0)
     , baseType(baseType)
     , nodeType(nodeType)
-    , extraData(0)
     , sortIndex(0)
 {
 }
