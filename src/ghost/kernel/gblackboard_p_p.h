@@ -28,6 +28,15 @@ public:
 private:
     GGhostTree *masterTree;
     GGhostNode *targetNode;
+
+private:
+    GBlackboardAttached *sharedBlackboard(bool create = true) const;
+    GBlackboardAttached *scopedBlackboard(bool create = true) const;
+private:
+    static QHash<QQmlEngine *, QPointer<GBlackboardAttached> > sharedBlackboards;
+private:
+    GBlackboardAttached *sharedBlackboardAttached;
+    GBlackboardAttached *scopedBlackboardAttached;
 };
 
 #endif // GBLACKBOARD_P_P_H

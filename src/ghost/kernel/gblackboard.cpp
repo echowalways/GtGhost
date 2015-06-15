@@ -8,6 +8,9 @@
 
 Q_LOGGING_CATEGORY(qlcBlackboard, "GtGhost.Blackboard")
 
+typedef QHash<QQmlEngine *, QPointer<GBlackboardAttached> > GlobalBlackboard;
+Q_GLOBAL_STATIC(GlobalBlackboard, theGlobalBlackboard2)
+
 // class GBlackboard
 
 GBlackboard::GBlackboard(QObject *parent)
@@ -96,26 +99,45 @@ GBlackboardAttached::GBlackboardAttached(QObject *parent)
 
 void GBlackboardAttached::clearg()
 {
+    Q_D(GBlackboardAttached);
+
+    GBlackboardAttached *blackboard = d->sharedBlackboard(false);
+    if (blackboard) {
+        blackboard->clear();
+    }
 }
 
 bool GBlackboardAttached::hasg(const QString &key) const
 {
-    Q_UNUSED(key);
-    Q_UNREACHABLE();
+    Q_D(const GBlackboardAttached);
+
+    GBlackboardAttached *blackboard = d->sharedBlackboard(false);
+    if (blackboard) {
+        return blackboard->has(key);
+    }
+
     return false;
 }
 
 void GBlackboardAttached::setg(const QString &key, const QJSValue &value)
 {
-    Q_UNUSED(key);
-    Q_UNUSED(value);
-    Q_UNREACHABLE();
+    Q_D(const GBlackboardAttached);
+
+    GBlackboardAttached *blackboard = d->sharedBlackboard();
+    if (blackboard) {
+        blackboard->set(key, value);
+    }
 }
 
 QJSValue GBlackboardAttached::getg(const QString &key) const
 {
-    Q_UNUSED(key);
-    Q_UNREACHABLE();
+    Q_D(const GBlackboardAttached);
+
+    GBlackboardAttached *blackboard = d->sharedBlackboard(false);
+    if (blackboard) {
+        return blackboard->get(key);
+    }
+
     return QJSValue();
 }
 
@@ -123,19 +145,9 @@ void GBlackboardAttached::cleart()
 {
     Q_D(GBlackboardAttached);
 
-    if (!d->masterTree) {
-        qCWarning(qlcBlackboard)
-                << "Master tree is empty.";
-        return;
-    }
-
-    QObject *attached = qmlAttachedPropertiesObject<GBlackboard>(d->masterTree, false);
-    if (attached) {
-        GBlackboardAttached *blackboard
-                = qobject_cast<GBlackboardAttached *>(attached);
-        if (blackboard) {
-            blackboard->clear();
-        }
+    GBlackboardAttached *blackboard = d->scopedBlackboard(false);
+    if (blackboard) {
+        blackboard->clear();
     }
 }
 
@@ -143,19 +155,9 @@ bool GBlackboardAttached::hast(const QString &key) const
 {
     Q_D(const GBlackboardAttached);
 
-    if (!d->masterTree) {
-        qCWarning(qlcBlackboard)
-                << "Master tree is empty.";
-        return false;
-    }
-
-    QObject *attached = qmlAttachedPropertiesObject<GBlackboard>(d->masterTree, false);
-    if (attached) {
-        GBlackboardAttached *blackboard
-                = qobject_cast<GBlackboardAttached *>(attached);
-        if (blackboard) {
-            return blackboard->has(key);
-        }
+    GBlackboardAttached *blackboard = d->scopedBlackboard(false);
+    if (blackboard) {
+        return blackboard->has(key);
     }
 
     return false;
@@ -165,19 +167,9 @@ void GBlackboardAttached::sett(const QString &key, const QJSValue &value)
 {
     Q_D(const GBlackboardAttached);
 
-    if (!d->masterTree) {
-        qCWarning(qlcBlackboard)
-                << "Master tree is empty.";
-        return;
-    }
-
-    QObject *attached = qmlAttachedPropertiesObject<GBlackboard>(d->masterTree);
-    if (attached) {
-        GBlackboardAttached *blackboard
-                = qobject_cast<GBlackboardAttached *>(attached);
-        if (blackboard) {
-            blackboard->set(key, value);
-        }
+    GBlackboardAttached *blackboard = d->scopedBlackboard();
+    if (blackboard) {
+        blackboard->set(key, value);
     }
 }
 
@@ -185,19 +177,9 @@ QJSValue GBlackboardAttached::gett(const QString &key) const
 {
     Q_D(const GBlackboardAttached);
 
-    if (!d->masterTree) {
-        qCWarning(qlcBlackboard)
-                << "Master tree is empty.";
-        return QJSValue();
-    }
-
-    QObject *attached = qmlAttachedPropertiesObject<GBlackboard>(d->masterTree, false);
-    if (attached) {
-        GBlackboardAttached *blackboard
-                = qobject_cast<GBlackboardAttached *>(attached);
-        if (blackboard) {
-            return blackboard->get(key);
-        }
+    GBlackboardAttached *blackboard = d->scopedBlackboard(false);
+    if (blackboard) {
+        return blackboard->get(key);
     }
 
     return QJSValue();
@@ -206,11 +188,62 @@ QJSValue GBlackboardAttached::gett(const QString &key) const
 // class GBlackboardAttachedPrivate
 
 GBlackboardAttachedPrivate::GBlackboardAttachedPrivate()
-    : masterTree(0)
-    , targetNode(0)
+    : masterTree(nullptr)
+    , targetNode(nullptr)
+    , sharedBlackboardAttached(nullptr)
+    , scopedBlackboardAttached(nullptr)
 {
 }
 
 GBlackboardAttachedPrivate::~GBlackboardAttachedPrivate()
 {
+}
+
+GBlackboardAttached *GBlackboardAttachedPrivate::sharedBlackboard(bool create) const
+{
+    if (sharedBlackboardAttached) {
+        return sharedBlackboardAttached;
+    }
+
+    QQmlContext *context = qmlContext(parent);
+    if (!context) {
+        Q_CHECK_PTR(context);
+        return nullptr;
+    }
+
+    QQmlEngine *engine = context->engine();
+    if (!engine) {
+        Q_CHECK_PTR(engine);
+        return nullptr;
+    }
+
+    QPointer<GBlackboardAttached> blackboard = theGlobalBlackboard2()->value(engine);
+    if (blackboard.isNull() && create) {
+        blackboard = new GBlackboardAttached(engine);
+        theGlobalBlackboard2()->insert(engine, blackboard);
+    }
+
+    GBlackboardAttachedPrivate *_this = const_cast<GBlackboardAttachedPrivate *>(this);
+    _this->sharedBlackboardAttached = blackboard.data();
+    return sharedBlackboardAttached;
+}
+
+GBlackboardAttached *GBlackboardAttachedPrivate::scopedBlackboard(bool create) const
+{
+    if (scopedBlackboardAttached) {
+        return scopedBlackboardAttached;
+    }
+
+    if (!masterTree) {
+        qCWarning(qlcBlackboard)
+                << "Master tree is null.";
+        return nullptr;
+    }
+
+    QObject *attached = qmlAttachedPropertiesObject<GBlackboard>(masterTree, create);
+    if (attached) {
+        GBlackboardAttachedPrivate *_this = const_cast<GBlackboardAttachedPrivate *>(this);
+        _this->scopedBlackboardAttached = qobject_cast<GBlackboardAttached *>(attached);
+    }
+    return scopedBlackboardAttached;
 }
