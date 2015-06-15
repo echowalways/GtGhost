@@ -52,6 +52,12 @@ QJSValue GBlackboard::get(const QString &key) const
     return d->datas.value(key);
 }
 
+void GBlackboard::remove(const QString &key)
+{
+    Q_D(GBlackboard);
+    d->datas.remove(key);
+}
+
 GBlackboardAttached *GBlackboard::qmlAttachedProperties(QObject *target)
 {
     return new GBlackboardAttached(target);
@@ -141,6 +147,16 @@ QJSValue GBlackboardAttached::getg(const QString &key) const
     return QJSValue();
 }
 
+void GBlackboardAttached::removeg(const QString &key)
+{
+    Q_D(GBlackboardAttached);
+
+    GBlackboardAttached *blackboard = d->sharedBlackboard(false);
+    if (blackboard) {
+        return blackboard->remove(key);
+    }
+}
+
 void GBlackboardAttached::cleart()
 {
     Q_D(GBlackboardAttached);
@@ -183,6 +199,16 @@ QJSValue GBlackboardAttached::gett(const QString &key) const
     }
 
     return QJSValue();
+}
+
+void GBlackboardAttached::removet(const QString &key)
+{
+    Q_D(GBlackboardAttached);
+
+    GBlackboardAttached *blackboard = d->scopedBlackboard();
+    if (blackboard) {
+        blackboard->remove(key);
+    }
 }
 
 // class GBlackboardAttachedPrivate

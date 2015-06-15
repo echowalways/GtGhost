@@ -36,6 +36,8 @@ void GtGhostPlugin::registerTypes(const char *uri)
 
     qRegisterMetaType<Ghost::Status>("Ghost::Status");
 
+    qmlRegisterType<GGhostTree>(uri, 1, 0, "GhostTree");
+
     qmlRegisterType<GBlackboardAttached>();
     qmlRegisterUncreatableType<GBlackboard>(uri, 1, 0, "Blackboard", "Blackboard is an abstract class.");
 
@@ -44,8 +46,6 @@ void GtGhostPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<GCompositeNode>(uri, 1, 0, "CompositeNode", "CompositeNode is an abstract class.");
     qmlRegisterUncreatableType<GDecoratorNode>(uri, 1, 0, "DecoratorNode", "DecoratorNode is an abstract class.");
     qmlRegisterUncreatableType<GLeafNode>(uri, 1, 0, "LeafNode", "LeafNode is an abstract class.");
-
-    qmlRegisterType<GGhostTree>(uri, 1, 0, "GhostTree");
 
     qmlRegisterType<GSequenceNode>(uri, 1, 0, "SequenceNode");
     qmlRegisterType<GSelectorNode>(uri, 1, 0, "SelectorNode");

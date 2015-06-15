@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE bool has(const QString &key) const;
     Q_INVOKABLE void set(const QString &key, const QJSValue &value);
     Q_INVOKABLE QJSValue get(const QString &key) const;
+    Q_INVOKABLE void remove(const QString &key);
 
 public:
     static GBlackboardAttached *qmlAttachedProperties(QObject *target);
@@ -42,11 +43,13 @@ public:
     Q_INVOKABLE bool hasg(const QString &key) const;
     Q_INVOKABLE void setg(const QString &key, const QJSValue &value);
     Q_INVOKABLE QJSValue getg(const QString &key) const;
+    Q_INVOKABLE void removeg(const QString &key);
 
     Q_INVOKABLE void cleart();
     Q_INVOKABLE bool hast(const QString &key) const;
     Q_INVOKABLE void sett(const QString &key, const QJSValue &value);
     Q_INVOKABLE QJSValue gett(const QString &key) const;
+    Q_INVOKABLE void removet(const QString &key);
 };
 
 #endif // GBLACKBOARD_P_H

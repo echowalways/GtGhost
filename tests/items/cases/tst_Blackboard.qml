@@ -20,6 +20,8 @@ TestCase {
                     Blackboard.set("1", 5)
                     verify(Blackboard.has("1"))
                     verify(Blackboard.get("1") === 5)
+                    Blackboard.remove("1")
+                    verify(!Blackboard.has("1"))
 
                     // ghost tree blackboard
                     verify(!Blackboard.hast("1"))
@@ -125,13 +127,7 @@ TestCase {
 
     function test_blackboard_0() {
         tree0.start()
-
-        wait(100)
-
         tree1.start()
-
-        wait(100)
-
         tree0.reset()
         tree0.start()
     }
