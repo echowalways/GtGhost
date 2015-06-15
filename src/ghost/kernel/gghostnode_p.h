@@ -28,8 +28,6 @@ Q_SIGNALS:
 public:
     Ghost::Status status() const;
 
-Q_SIGNALS:
-    void initialized();
 public:
     GGhostTree *masterTree() const;
     GGhostNode *parentNode() const;

@@ -5,6 +5,7 @@
 #include <QtCore/QLoggingCategory>
 
 #include "gghostevent.h"
+#include "gghoststack_p.h"
 #include "gghostnode_p.h"
 #include "gghostnode_p_p.h"
 
@@ -79,6 +80,7 @@ void GGhostTree::reset()
 
 void GGhostTree::classBegin()
 {
+    theGhostStack->push(this);
 }
 
 void GGhostTree::componentComplete()
@@ -90,6 +92,8 @@ void GGhostTree::componentComplete()
     if (d->initialize()) {
         d->setStatus(Ghost::StandBy);
     }
+
+    theGhostStack->pop(this);
 }
 
 // class GGhostTreePrivate
@@ -256,15 +260,10 @@ void GGhostTreePrivate::setStatus(Ghost::Status status)
 
 bool GGhostTreePrivate::initialize()
 {
-    Q_Q(GGhostTree);
-
     bool hasError = false;
 
     foreach (GGhostNode *childNode, childNodes) {
         GGhostNodePrivate *childptr = cast(childNode);
-        // 初始化子节点数据
-        childptr->masterTree = q;
-        // 开始初始化子节点
         if (!childptr->initialize()) {
             hasError = true;
         }
@@ -274,10 +273,6 @@ bool GGhostTreePrivate::initialize()
         qCWarning(qlcGhostTree)
                 << "Allows only one child node.";
         hasError = true;
-    }
-
-    if (!hasError) {
-        emit q->initialized();
     }
 
     return !hasError;

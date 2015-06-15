@@ -44,6 +44,11 @@ public:
     // 核心数据
 public:
     QQmlListProperty<GGhostNode> _q_childNodes();
+private:
+    static void childNodes_append(QQmlListProperty<GGhostNode> *prop, GGhostNode *v);
+    static GGhostNode *childNodes_at(QQmlListProperty<GGhostNode> *prop, int i);
+    static void childNodes_clear(QQmlListProperty<GGhostNode> *prop);
+    static int childNodes_count(QQmlListProperty<GGhostNode> *prop);
 public:
     GGhostTree *masterTree;
     GGhostNode *parentNode;
@@ -96,7 +101,11 @@ inline const GGhostNodePrivate *GGhostNodePrivate::cast(const GGhostNode *node)
 
 inline QQmlListProperty<GGhostNode> GGhostNodePrivate::_q_childNodes()
 {
-    return QQmlListProperty<GGhostNode>(q_func(), childNodes);
+    return QQmlListProperty<GGhostNode>(q_func(), &childNodes,
+                                        &GGhostNodePrivate::childNodes_append,
+                                        &GGhostNodePrivate::childNodes_count,
+                                        &GGhostNodePrivate::childNodes_at,
+                                        &GGhostNodePrivate::childNodes_clear);
 }
 
 #endif // GGHOSTNODE_P_P_H

@@ -4,6 +4,7 @@
 #include <QtCore/QLoggingCategory>
 
 #include "gghostevent.h"
+#include "gghoststack_p.h"
 #include "gghosttree_p.h"
 #include "gghosttree_p_p.h"
 
@@ -102,6 +103,9 @@ QJSValue GGhostNode::weight() const
 
 void GGhostNode::classBegin()
 {
+    Q_D(GGhostNode);
+
+    d->masterTree = theGhostStack->current();
 }
 
 void GGhostNode::componentComplete()
@@ -251,6 +255,37 @@ void GGhostNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     Q_UNUSED(event);
 }
 
+void GGhostNodePrivate::childNodes_append(QQmlListProperty<GGhostNode> *prop, GGhostNode *v)
+{
+    GGhostNodeList *childNodes
+            = reinterpret_cast<GGhostNodeList *>(prop->data);
+    childNodes->append(v);
+
+    GGhostNodePrivate *dptr = cast(v);
+    dptr->parentNode = static_cast<GGhostNode *>(prop->object);
+}
+
+GGhostNode *GGhostNodePrivate::childNodes_at(QQmlListProperty<GGhostNode> *prop, int i)
+{
+    GGhostNodeList *childNodes
+            = reinterpret_cast<GGhostNodeList *>(prop->data);
+    return childNodes->at(i);
+}
+
+void GGhostNodePrivate::childNodes_clear(QQmlListProperty<GGhostNode> *prop)
+{
+    GGhostNodeList *childNodes
+            = reinterpret_cast<GGhostNodeList *>(prop->data);
+    childNodes->clear();
+}
+
+int GGhostNodePrivate::childNodes_count(QQmlListProperty<GGhostNode> *prop)
+{
+    GGhostNodeList *childNodes
+            = reinterpret_cast<GGhostNodeList *>(prop->data);
+    return childNodes->count();
+}
+
 bool GGhostNodePrivate::callPrecondition()
 {
     if (precondition.isUndefined()) {
@@ -314,16 +349,10 @@ bool GGhostNodePrivate::initialize()
 
 bool GGhostNodePrivate::initialize(const GGhostNodeList &childNodes)
 {
-    Q_Q(GGhostNode);
-
     bool hasError = false;
 
     foreach (GGhostNode *childNode, childNodes) {
         GGhostNodePrivate *childptr = cast(childNode);
-        // 初始化子节点数据
-        childptr->masterTree = masterTree;
-        childptr->parentNode = q;
-        // 开始初始化子节点
         if (!childptr->initialize()) {
             hasError = true;
         }
@@ -349,10 +378,6 @@ bool GGhostNodePrivate::initialize(const GGhostNodeList &childNodes)
         }
     } else {
         Q_UNREACHABLE();
-    }
-
-    if (!hasError) {
-        emit q->initialized();
     }
 
     return !hasError;

@@ -3,12 +3,14 @@ INCLUDEPATH += $$PWD
 HEADERS += \
     $$PWD/gghostglobal.h \
     $$PWD/gghostevent.h \
+    $$PWD/gghoststack_p.h \
+    $$PWD/gghoststack_p_p.h \
     $$PWD/gghosttree_p.h \
     $$PWD/gghosttree_p_p.h \
-    $$PWD/gblackboard_p.h \
-    $$PWD/gblackboard_p_p.h \
     $$PWD/gghostnode_p.h \
     $$PWD/gghostnode_p_p.h \
+    $$PWD/gblackboard_p.h \
+    $$PWD/gblackboard_p_p.h \
     $$PWD/gcompositenode_p.h \
     $$PWD/gcompositenode_p_p.h \
     $$PWD/gdecoratornode_p.h \
@@ -51,9 +53,10 @@ HEADERS += \
 SOURCES += \
     $$PWD/gghostglobal.cpp \
     $$PWD/gghostevent.cpp \
+    $$PWD/gghoststack.cpp \
     $$PWD/gghosttree.cpp \
-    $$PWD/gblackboard.cpp \
     $$PWD/gghostnode.cpp \
+    $$PWD/gblackboard.cpp \
     $$PWD/gcompositenode.cpp \
     $$PWD/gdecoratornode.cpp \
     $$PWD/gleafnode.cpp \
