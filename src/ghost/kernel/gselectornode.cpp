@@ -1,6 +1,8 @@
 #include "gselectornode_p.h"
 #include "gselectornode_p_p.h"
 
+#include "gghostevent.h"
+
 // class GSelectorNode
 
 /*!
@@ -28,17 +30,15 @@ GSelectorNodePrivate::~GSelectorNodePrivate()
 {
 }
 
-void GSelectorNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GSelectorNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    Ghost::Status sourceStatus = event->status();
 
-    Ghost::Status childStatus = childNode->status();
-
-    if (Ghost::Stopped == childStatus) {
+    if (Ghost::Stopped == sourceStatus) {
         setStatus(Ghost::Stopped);
-    } else if (Ghost::Failure == childStatus) {
+    } else if (Ghost::Failure == sourceStatus) {
         executeNextChildNode();
-    } else if (Ghost::Success == childStatus) {
+    } else if (Ghost::Success == sourceStatus) {
         if (++unmatchCounter >= unmatchCount) {
             setStatus(Ghost::Success);
         } else {
@@ -98,7 +98,7 @@ void GSelectorNodePrivate::executeNextChildNode()
         GGhostNodePrivate *dptr = cast(childNode);
         if (dptr->callPrecondition()) {
             ++executeCounter;
-            dptr->execute();
+            postExecuteEvent(childNode);
             r = false;
             break;
         }

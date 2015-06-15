@@ -1,6 +1,8 @@
 #include "gforcefailurenode_p.h"
 #include "gforcefailurenode_p_p.h"
 
+#include "gghostevent.h"
+
 // class GForceFailureNode
 
 /*!
@@ -28,14 +30,11 @@ GForceFailureNodePrivate::~GForceFailureNodePrivate()
 {
 }
 
-void GForceFailureNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GForceFailureNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
     Q_ASSERT(Ghost::Invalid != status);
 
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(childNode == childNodes[0]);
-
-    Ghost::Status childStatus = childNode->status();
+    Ghost::Status childStatus = event->status();
 
     if (Ghost::Stopped == childStatus) {
         setStatus(Ghost::Stopped);

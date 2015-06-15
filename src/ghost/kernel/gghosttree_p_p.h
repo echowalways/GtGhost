@@ -1,14 +1,20 @@
 #ifndef GGHOSTTREE_P_P_H
 #define GGHOSTTREE_P_P_H
 
+#include <private/qobject_p.h>
+
+#include <QtCore/QQueue>
 #include <QtQml/QQmlListProperty>
 
-#include "gghostsourcenode_p_p.h"
 #include "gghosttree_p.h"
-#include "gghostnode_p.h"
-#include "gghostnode_p_p.h"
 
-class GGhostTreePrivate : public GGhostSourceNodePrivate
+class GGhostNodePrivate;
+
+class GGhostEvent;
+class GGhostExecuteEvent;
+class GGhostConfirmEvent;
+
+class GGhostTreePrivate : public QObjectPrivate
 {
     Q_DECLARE_PUBLIC(GGhostTree)
 
@@ -16,40 +22,64 @@ public:
     GGhostTreePrivate();
     virtual ~GGhostTreePrivate();
 
+    // 快捷转换方法
 public:
-    static GGhostNodePrivate *cast(GGhostNode *node) { return GGhostNodePrivate::cast(node); }
-    static const GGhostNodePrivate *cast(const GGhostNode *node) { return GGhostNodePrivate::cast(node); }
+    static GGhostTreePrivate *cast(GGhostTree *tree);
+    static const GGhostTreePrivate *cast(const GGhostTree *tree);
+    static GGhostNodePrivate *cast(GGhostNode *node);
+    static const GGhostNodePrivate *cast(const GGhostNode *node);
 
-    virtual void onChildStatusChanged(GGhostSourceNode *childNode) Q_DECL_FINAL;
+    // 状态
+public:
+    void setStatus(Ghost::Status status);
+public:
+    Ghost::Status status;
+
+    // 事件队列
+private:
+    void postEvent(GGhostEvent *event);
+    void _q_processEvents();
+private:
+    QQueue<GGhostEvent *> eventQueue;
+    bool eventsProcessing;
 
 public:
-    virtual bool initialize() Q_DECL_FINAL;
+    void postExecuteEvent(GGhostNode *target);
+    void postConfirmEvent(GGhostNode *source);
+private:
+    void processExecuteEvent(GGhostExecuteEvent *event);
+    void processConfirmEvent(GGhostConfirmEvent *event);
 
-    virtual void reset() Q_DECL_FINAL;
-    virtual void execute() Q_DECL_FINAL;
-    virtual void terminate() Q_DECL_FINAL;
-
-    // core datas
+    // 核心数据
 public:
     QQmlListProperty<GGhostNode> _q_childNodes();
 public:
     GGhostNodeList childNodes;
 
-    // extra datas
+    //
 public:
-    GGhostData *_q_data() const;
-public:
-    GGhostData *extraData;
+    bool initialize();
+
+    void reset();
+    void execute();
+    void terminate();
 };
+
+inline GGhostTreePrivate *GGhostTreePrivate::cast(GGhostTree *tree)
+{
+    Q_CHECK_PTR(tree);
+    return tree->d_func();
+}
+
+inline const GGhostTreePrivate *GGhostTreePrivate::cast(const GGhostTree *tree)
+{
+    Q_CHECK_PTR(tree);
+    return tree->d_func();
+}
 
 inline QQmlListProperty<GGhostNode> GGhostTreePrivate::_q_childNodes()
 {
     return QQmlListProperty<GGhostNode>(q_func(), childNodes);
-}
-
-inline GGhostData *GGhostTreePrivate::_q_data() const
-{
-    return extraData;
 }
 
 #endif // GGHOSTTREE_P_P_H

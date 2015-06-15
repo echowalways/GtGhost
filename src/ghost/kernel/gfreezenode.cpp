@@ -19,7 +19,7 @@ Q_LOGGING_CATEGORY(qlcFreezeNode, "GtGhost.FreezeNode")
 GFreezeNode::GFreezeNode(QObject *parent)
     : GLeafNode(*new GFreezeNodePrivate(), parent)
 {
-    connect(this, &GGhostSourceNode::statusChanged,
+    connect(this, &GGhostNode::statusChanged,
             [this](Ghost::Status status) {
         if (Ghost::Running == status) {
             emit started();
@@ -33,10 +33,10 @@ void GFreezeNode::setDuration(int value)
 {
     Q_D(GFreezeNode);
 
-    if (value < 1) {
+    if (value < 0) {
         qCWarning(qlcFreezeNode)
-                << "Value is too small, reset to 1.";
-        value = 1;
+                << "Value is too small, reset to 0.";
+        value = 0;
     }
 
     if (value != d->duration) {
@@ -79,21 +79,26 @@ void GFreezeNodePrivate::execute()
     Q_ASSERT(Ghost::Invalid != status);
     Q_ASSERT(Ghost::Running != status);
 
-    if (!timer) {
-        timer = new QTimer(q);
-        timer->setSingleShot(true);
+    if (duration > 0) {
+        if (!timer) {
+            timer = new QTimer(q);
+            timer->setSingleShot(true);
 
-        QObject::connect(timer.data(), &QTimer::timeout,
-                         [this]() {
-            Q_ASSERT(Ghost::Running == this->status);
-            this->setStatus(Ghost::Success);
-        });
+            QObject::connect(timer.data(), &QTimer::timeout,
+                             [this]() {
+                Q_ASSERT(Ghost::Running == status);
+                setStatus(Ghost::Success);
+            });
+        }
+
+        timer->setInterval(duration);
+        timer->start();
+
+        setStatus(Ghost::Running);
+    } else {
+        setStatus(Ghost::Running);
+        setStatus(Ghost::Success);
     }
-
-    timer->setInterval(duration);
-    timer->start();
-
-    setStatus(Ghost::Running);
 }
 
 void GFreezeNodePrivate::terminate()

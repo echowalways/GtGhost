@@ -29,7 +29,7 @@ void GCompositeNode::setBreakStatus(Ghost::Status value)
             || (Ghost::StandBy == value)
             || (Ghost::Running == value)) {
         qCWarning(qlcCompositeNode)
-                << "Invalid break status: " << d->toString(value);
+                << "Invalid break status: " << Ghost::toString(value);
         return;
     }
 

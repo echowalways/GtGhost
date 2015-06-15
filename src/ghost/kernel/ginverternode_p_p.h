@@ -12,8 +12,8 @@ public:
     GInverterNodePrivate();
     virtual ~GInverterNodePrivate();
 
-protected:
-    virtual void onChildStatusChanged(GGhostSourceNode *childNode) Q_DECL_FINAL;
+private:
+    virtual void confirmEvent(GGhostConfirmEvent *event) Q_DECL_FINAL;
 };
 
 #endif // GINVERTERNODE_P_P_H

@@ -3,6 +3,8 @@
 
 #include <QtCore/QLoggingCategory>
 
+#include "gghostevent.h"
+
 Q_LOGGING_CATEGORY(qlcRepeaterNode, "GtGhost.RepeaterNode")
 
 // class GRepeaterNode
@@ -56,19 +58,17 @@ GRepeaterNodePrivate::~GRepeaterNodePrivate()
 {
 }
 
-void GRepeaterNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GRepeaterNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    Q_CHECK_PTR(event->source());
+    Q_ASSERT(event->source() == childNodes[0]);
 
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(childNode == childNodes[0]);
+    Ghost::Status sourceStatus = event->status();
 
-    Ghost::Status childStatus = childNode->status();
-
-    if (Ghost::Stopped == childStatus) {
+    if (Ghost::Stopped == sourceStatus) {
         setStatus(Ghost::Stopped);
-    } else if ((Ghost::Success == childStatus)
-               || (Ghost::Failure == childStatus)) {
+    } else if ((Ghost::Success == sourceStatus)
+               || (Ghost::Failure == sourceStatus)) {
         if ((++loopCounter >= loopCount) && (0 != loopCount)) {
             setStatus(Ghost::Success);
             return;
@@ -76,7 +76,7 @@ void GRepeaterNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
 
         GGhostNodePrivate *childptr = cast(childNodes[0]);
         if (childptr->callPrecondition()) {
-            childptr->execute();
+            postExecuteEvent(childNodes[0]);
         } else {
             setStatus(breakStatus);
         }

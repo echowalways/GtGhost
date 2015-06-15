@@ -1,6 +1,8 @@
 #include "gforcesuccessnode_p.h"
 #include "gforcesuccessnode_p_p.h"
 
+#include "gghostevent.h"
+
 // class GForceSuccessNode
 
 /*!
@@ -28,14 +30,12 @@ GForceSuccessNodePrivate::~GForceSuccessNodePrivate()
 {
 }
 
-void GForceSuccessNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GForceSuccessNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    Q_CHECK_PTR(event->source());
+    Q_ASSERT(event->source() == childNodes[0]);
 
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(childNode == childNodes[0]);
-
-    Ghost::Status childStatus = childNode->status();
+    Ghost::Status childStatus = event->status();
 
     if (Ghost::Stopped == childStatus) {
         setStatus(Ghost::Stopped);

@@ -12,8 +12,8 @@ public:
     GSequenceNodePrivate();
     virtual ~GSequenceNodePrivate();
 
-protected:
-    virtual void onChildStatusChanged(GGhostSourceNode *childNode) Q_DECL_FINAL;
+private:
+    virtual void confirmEvent(GGhostConfirmEvent *event) Q_DECL_FINAL;
 
 public:
     virtual void reset() Q_DECL_FINAL;

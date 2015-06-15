@@ -15,7 +15,7 @@
 GConditionNode::GConditionNode(QObject *parent)
     : GLeafNode(*new GConditionNodePrivate(), parent)
 {
-    connect(this, &GGhostSourceNode::statusChanged,
+    connect(this, &GGhostNode::statusChanged,
             [this](Ghost::Status status) {
         if (Ghost::Success == status) {
             emit passed();

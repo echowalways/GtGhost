@@ -1,18 +1,20 @@
-#ifndef GGHOSTNAMESPACE_H
-#define GGHOSTNAMESPACE_H
+#ifndef GGHOSTGLOBAL_H
+#define GGHOSTGLOBAL_H
 
-#include <QtCore/QObject>
+#include <QtCore>
+#include <QtQml>
 
 class Ghost : public QObject
 {
     Q_OBJECT
     Q_ENUMS(Status)
-    Q_ENUMS(UpdateMode)
-    Q_ENUMS(RandomMode)
     Q_ENUMS(BaseType)
     Q_ENUMS(NodeType)
+    Q_ENUMS(UpdateMode)
+    Q_ENUMS(RandomMode)
 
 public:
+    // 节点状态
     enum Status {
         Invalid,
         StandBy,
@@ -22,22 +24,14 @@ public:
         Stopped
     };
 
-    enum UpdateMode {
-        ResetOnly,
-        Everytime
-    };
-
-    enum RandomMode {
-        Parity,
-        Weight
-    };
-
+    // 节点基本类型
     enum BaseType {
         CompositeNode,
         DecoratorNode,
         LeafNode
     };
 
+    // 节点类型
     enum NodeType {
         SequenceNode,
         SelectorNode,
@@ -60,6 +54,28 @@ public:
         ConditionNode,
         FreezeNode
     };
+
+    // 子节点更新模式
+    enum UpdateMode {
+        ResetOnly,
+        Everytime
+    };
+
+    // 子节点随机模式
+    enum RandomMode {
+        Parity,
+        Weight
+    };
+
+public:
+    static const char *toString(Ghost::Status status);
 };
 
-#endif // GGHOSTNAMESPACE_H
+// 基本类型的前置定义
+
+class GGhostTree;
+class GGhostNode;
+
+typedef QList<GGhostNode *> GGhostNodeList;
+
+#endif // GGHOSTGLOBAL_H

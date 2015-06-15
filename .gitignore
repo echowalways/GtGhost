@@ -36,3 +36,6 @@ Makefile*
 bin/
 qml/
 doc/
+
+# temp files
+*~

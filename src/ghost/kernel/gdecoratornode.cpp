@@ -29,7 +29,7 @@ void GDecoratorNode::setBreakStatus(Ghost::Status value)
             || (Ghost::Running == value)
             || (Ghost::Stopped == value)) {
         qCWarning(qlcDecoratorNode)
-                << "Invalid break status: " << d->toString(value);
+                << "Invalid break status: " << Ghost::toString(value);
         return;
     }
 

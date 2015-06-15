@@ -3,6 +3,8 @@
 
 #include <QtCore/QLoggingCategory>
 
+#include "gghostevent.h"
+
 Q_LOGGING_CATEGORY(qlcRandomSelectorNode, "GtGhost.RandomSelectorNode")
 
 // class GRandomSelectorNode
@@ -66,17 +68,15 @@ GRandomSelectorNodePrivate::~GRandomSelectorNodePrivate()
 {
 }
 
-void GRandomSelectorNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GRandomSelectorNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    Ghost::Status sourceStatus = event->status();
 
-    Ghost::Status childStatus = childNode->status();
-
-    if (Ghost::Stopped == childStatus) {
+    if (Ghost::Stopped == sourceStatus) {
         setStatus(Ghost::Stopped);
-    } else if (Ghost::Failure == childStatus) {
+    } else if (Ghost::Failure == sourceStatus) {
         executeNextChildNode();
-    } else if (Ghost::Success == childStatus) {
+    } else if (Ghost::Success == sourceStatus) {
         if (++unmatchCounter >= unmatchCount) {
             setStatus(Ghost::Success);
         } else {
@@ -156,7 +156,7 @@ void GRandomSelectorNodePrivate::executeNextChildNode()
         GGhostNodePrivate *dptr = cast(childNode);
         if (dptr->callPrecondition()) {
             ++executeCounter;
-            dptr->execute();
+            postExecuteEvent(childNode);
             r = false;
             break;
         }

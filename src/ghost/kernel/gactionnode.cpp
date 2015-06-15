@@ -21,6 +21,28 @@ GActionNode::GActionNode(QObject *parent)
 {
 }
 
+void GActionNode::setDuration(int value)
+{
+    Q_D(GActionNode);
+
+    if (value < 0) {
+        qCWarning(qlcActionNode)
+                << "Value is too small, reset to 0.";
+        value = 0;
+    }
+
+    if (value != d->duration) {
+        d->duration = value;
+        emit durationChanged(value);
+    }
+}
+
+int GActionNode::duration() const
+{
+    Q_D(const GActionNode);
+    return d->duration;
+}
+
 void GActionNode::setSuccessStatus()
 {
     Q_D(GActionNode);
@@ -54,33 +76,11 @@ void GActionNode::setStoppedStatus()
     d->setStatus(Ghost::Stopped);
 }
 
-void GActionNode::setTimeout(int value)
-{
-    Q_D(GActionNode);
-
-    if (value < 0) {
-        qCWarning(qlcActionNode)
-                << "Value is too small, reset to 0.";
-        value = 0;
-    }
-
-    if (value != d->timeout) {
-        d->timeout = value;
-        emit timeoutChanged(value);
-    }
-}
-
-int GActionNode::timeout() const
-{
-    Q_D(const GActionNode);
-    return d->timeout;
-}
-
 // class GActionNodePrivate
 
 GActionNodePrivate::GActionNodePrivate()
     : GLeafNodePrivate(Ghost::ActionNode)
-    , timeout(0)
+    , duration(0)
 {
 }
 
@@ -110,7 +110,7 @@ void GActionNodePrivate::execute()
 
     setStatus(Ghost::Running);
 
-    if (timeout > 0) {
+    if (duration > 0) {
         if (!timer) {
             timer = new QTimer(q);
             timer->setSingleShot(true);
@@ -119,7 +119,7 @@ void GActionNodePrivate::execute()
                              q, &GActionNode::setFailureStatus);
         }
 
-        timer->setInterval(timeout);
+        timer->setInterval(duration);
         timer->start();
     }
 
@@ -137,4 +137,6 @@ void GActionNodePrivate::terminate()
     }
 
     emit q->terminate();
+
+    setStatus(Ghost::Stopped);
 }

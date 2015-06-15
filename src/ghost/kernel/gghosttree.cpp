@@ -5,20 +5,18 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QLoggingCategory>
 
-#include "gghostdata_p.h"
+#include "gghostevent.h"
+#include "gghostnode_p.h"
+#include "gghostnode_p_p.h"
 
 Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
 
 // class GGhostTree
 
 GGhostTree::GGhostTree(QObject *parent)
-    : GGhostSourceNode(*new GGhostTreePrivate(), parent)
+    : QObject(*new GGhostTreePrivate(), parent)
 {
-    Q_D(GGhostTree);
-
-    d->extraData = new GGhostData(this);
-
-    connect(this, &GGhostSourceNode::statusChanged,
+    connect(this, &GGhostTree::statusChanged,
             [this](Ghost::Status status) {
         switch (status) {
         case Ghost::Invalid:
@@ -36,6 +34,12 @@ GGhostTree::GGhostTree(QObject *parent)
             break;
         }
     });
+}
+
+Ghost::Status GGhostTree::status() const
+{
+    Q_D(const GGhostTree);
+    return d->status;
 }
 
 GGhostNodeList GGhostTree::childNodes() const
@@ -92,6 +96,8 @@ void GGhostTree::componentComplete()
 // class GGhostTreePrivate
 
 GGhostTreePrivate::GGhostTreePrivate()
+    : status(Ghost::Invalid)
+    , eventsProcessing(false)
 {
 }
 
@@ -99,19 +105,153 @@ GGhostTreePrivate::~GGhostTreePrivate()
 {
 }
 
-void GGhostTreePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+GGhostNodePrivate *GGhostTreePrivate::cast(GGhostNode *node)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    return GGhostNodePrivate::cast(node);
+}
 
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(childNode == childNodes[0]);
+const GGhostNodePrivate *GGhostTreePrivate::cast(const GGhostNode *node)
+{
+    return GGhostNodePrivate::cast(node);
+}
 
-    Ghost::Status childStatus = childNode->status();
+void GGhostTreePrivate::postEvent(GGhostEvent *event)
+{
+    eventQueue.enqueue(event);
 
-    if ((Ghost::Success == childStatus)
-            || (Ghost::Failure == childStatus)
-            || (Ghost::Stopped == childStatus)) {
-        setStatus(childStatus);
+    if (!eventsProcessing) {
+        _q_processEvents();
+    }
+}
+
+void GGhostTreePrivate::_q_processEvents()
+{
+    eventsProcessing = true;
+    while (!eventQueue.isEmpty()) {
+        GGhostEvent *event = eventQueue.dequeue();
+        if (event->type() == GGhostEvent::Execute) {
+            processExecuteEvent(static_cast<GGhostExecuteEvent *>(event));
+        } else if (event->type() == GGhostEvent::Confirm) {
+            processConfirmEvent(static_cast<GGhostConfirmEvent *>(event));
+        } else {
+            Q_UNREACHABLE();
+        }
+    }
+    eventsProcessing = false;
+}
+
+void GGhostTreePrivate::postExecuteEvent(GGhostNode *target)
+{
+    Q_CHECK_PTR(target);
+    if (target) {
+        postEvent(new GGhostExecuteEvent(target));
+    }
+}
+
+void GGhostTreePrivate::postConfirmEvent(GGhostNode *source)
+{
+    Q_CHECK_PTR(source);
+    if (source) {
+        postEvent(new GGhostConfirmEvent(source, source->status()));
+    }
+}
+
+void GGhostTreePrivate::processExecuteEvent(GGhostExecuteEvent *event)
+{
+    Q_CHECK_PTR(event->target());
+    cast(event->target())->executeEvent(event);
+}
+
+void GGhostTreePrivate::processConfirmEvent(GGhostConfirmEvent *event)
+{
+    Q_ASSERT(Ghost::Invalid != event->status());
+    Q_ASSERT(Ghost::StandBy != event->status());
+    Q_ASSERT(Ghost::Running != event->status());
+
+    Q_CHECK_PTR(event->source());
+    GGhostNode *sourceNode = event->source();
+    GGhostNode *parentNode = sourceNode->parentNode();
+
+    if (parentNode) {
+        cast(parentNode)->confirmEvent(event);
+    } else {
+        setStatus(event->status());
+    }
+}
+
+void GGhostTreePrivate::setStatus(Ghost::Status status)
+{
+    Q_Q(GGhostTree);
+
+#if !defined(QT_NO_DEBUG)
+
+    switch (this->status) {
+    case Ghost::Invalid:
+        switch (status) {
+        case Ghost::StandBy:
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        break;
+    case Ghost::StandBy:
+        switch (status) {
+        case Ghost::Running:
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        break;
+    case Ghost::Running:
+        switch (status) {
+        case Ghost::Success:
+        case Ghost::Failure:
+        case Ghost::Stopped:
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        break;
+    case Ghost::Success:
+        switch (status) {
+        case Ghost::StandBy:
+        case Ghost::Running:
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        break;
+    case Ghost::Failure:
+        switch (status) {
+        case Ghost::StandBy:
+        case Ghost::Running:
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        break;
+    case Ghost::Stopped:
+        switch (status) {
+        case Ghost::StandBy:
+        case Ghost::Running:
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        break;
+    }
+
+    qCDebug(qlcGhostTree,
+            "Status: '%s' ==> '%s' : %s %s(%p)",
+            Ghost::toString(this->status), Ghost::toString(status),
+            ((Ghost::Running == status) ? "-->" : "<--"),
+            q->metaObject()->className(), q);
+
+#endif // QT_NO_DEBUG
+
+    if (status != this->status) {
+        this->status = status;
+        emit q->statusChanged(status);
     }
 }
 
@@ -127,9 +267,7 @@ bool GGhostTreePrivate::initialize()
         childptr->masterTree = q;
         childptr->extraData = extraData;
         // 开始初始化子节点
-        if (childptr->initialize()) {
-            childptr->parentSourceNode = q;
-        } else {
+        if (!childptr->initialize()) {
             hasError = true;
         }
     }
@@ -154,9 +292,6 @@ void GGhostTreePrivate::reset()
     Q_ASSERT(Ghost::StandBy != status);
     Q_ASSERT(Ghost::Running != status);
 
-    if (extraData) {
-        extraData->reset();
-    }
     cast(childNodes[0])->reset();
 
     setStatus(Ghost::StandBy);
@@ -172,7 +307,7 @@ void GGhostTreePrivate::execute()
 
     GGhostNodePrivate *rootptr = cast(childNodes[0]);
     if (rootptr->callPrecondition()) {
-        rootptr->execute();
+        postExecuteEvent(childNodes[0]);
     } else {
         setStatus(Ghost::Failure);
     }

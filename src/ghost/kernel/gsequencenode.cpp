@@ -1,6 +1,10 @@
 #include "gsequencenode_p.h"
 #include "gsequencenode_p_p.h"
 
+#include <QtDebug>
+
+#include "gghostevent.h"
+
 // class GSequenceNode
 
 /*!
@@ -28,11 +32,9 @@ GSequenceNodePrivate::~GSequenceNodePrivate()
 {
 }
 
-void GSequenceNodePrivate::onChildStatusChanged(GGhostSourceNode *childNode)
+void GSequenceNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
-
-    Ghost::Status childStatus = childNode->status();
+    Ghost::Status childStatus = event->status();
 
     if (Ghost::Stopped == childStatus) {
         setStatus(Ghost::Stopped);
@@ -98,7 +100,7 @@ void GSequenceNodePrivate::executeNextChildNode()
         GGhostNodePrivate *dptr = cast(childNode);
         if (dptr->callPrecondition()) {
             ++executeCounter;
-            dptr->execute();
+            postExecuteEvent(childNode);
             r = false;
             break;
         }
