@@ -5,6 +5,8 @@
 
 #include "gblackboard_p.h"
 
+// class GBlackboardPrivate
+
 class GBlackboardPrivate : public QObjectPrivate
 {
     Q_DECLARE_PUBLIC(GBlackboard)
@@ -16,6 +18,8 @@ public:
 private:
     QHash<QString, QJSValue> datas;
 };
+
+// class GBlackboardAttachedPrivate
 
 class GBlackboardAttachedPrivate : public GBlackboardPrivate
 {
@@ -33,10 +37,23 @@ private:
     GBlackboardAttached *sharedBlackboard(bool create = true) const;
     GBlackboardAttached *scopedBlackboard(bool create = true) const;
 private:
-    static QHash<QQmlEngine *, QPointer<GBlackboardAttached> > sharedBlackboards;
-private:
     GBlackboardAttached *sharedBlackboardAttached;
     GBlackboardAttached *scopedBlackboardAttached;
+};
+
+// class GBlackboardGlobalPrivate
+
+class GBlackboardGlobalPrivate : public QObjectPrivate
+{
+    Q_DECLARE_PUBLIC(GBlackboardGlobal)
+
+public:
+    GBlackboardGlobalPrivate();
+    virtual ~GBlackboardGlobalPrivate();
+
+private:
+    typedef QPointer<GBlackboardAttached> Blackboard;
+    QHash<QQmlEngine *, Blackboard> blackboards;
 };
 
 #endif // GBLACKBOARD_P_P_H

@@ -8,9 +8,6 @@
 
 Q_LOGGING_CATEGORY(qlcBlackboard, "GtGhost.Blackboard")
 
-typedef QHash<QQmlEngine *, QPointer<GBlackboardAttached> > GlobalBlackboard;
-Q_GLOBAL_STATIC(GlobalBlackboard, theGlobalBlackboard2)
-
 // class GBlackboard
 
 GBlackboard::GBlackboard(QObject *parent)
@@ -231,26 +228,9 @@ GBlackboardAttached *GBlackboardAttachedPrivate::sharedBlackboard(bool create) c
         return sharedBlackboardAttached;
     }
 
-    QQmlContext *context = qmlContext(parent);
-    if (!context) {
-        Q_CHECK_PTR(context);
-        return nullptr;
-    }
-
-    QQmlEngine *engine = context->engine();
-    if (!engine) {
-        Q_CHECK_PTR(engine);
-        return nullptr;
-    }
-
-    QPointer<GBlackboardAttached> blackboard = theGlobalBlackboard2()->value(engine);
-    if (blackboard.isNull() && create) {
-        blackboard = new GBlackboardAttached(engine);
-        theGlobalBlackboard2()->insert(engine, blackboard);
-    }
-
     GBlackboardAttachedPrivate *_this = const_cast<GBlackboardAttachedPrivate *>(this);
-    _this->sharedBlackboardAttached = blackboard.data();
+    auto blackboard = GBlackboardGlobal::instance()->blackboard(parent, create);
+    _this->sharedBlackboardAttached = blackboard;
     return sharedBlackboardAttached;
 }
 
@@ -272,4 +252,51 @@ GBlackboardAttached *GBlackboardAttachedPrivate::scopedBlackboard(bool create) c
         _this->scopedBlackboardAttached = qobject_cast<GBlackboardAttached *>(attached);
     }
     return scopedBlackboardAttached;
+}
+
+// class GBlackboardGlobal
+
+GBlackboardGlobal::GBlackboardGlobal(QObject *parent)
+    : QObject(*new GBlackboardGlobalPrivate(), parent)
+{
+}
+
+GBlackboardGlobal *GBlackboardGlobal::instance()
+{
+    return 0;
+}
+
+GBlackboardAttached *GBlackboardGlobal::blackboard(QObject *target, bool create)
+{
+    Q_D(GBlackboardGlobal);
+
+    QQmlContext *context = qmlContext(target);
+    if (!context) {
+        Q_CHECK_PTR(context);
+        return nullptr;
+    }
+
+    QQmlEngine *engine = context->engine();
+    if (!engine) {
+        Q_CHECK_PTR(engine);
+        return nullptr;
+    }
+
+    auto blackboard = d->blackboards.value(engine);
+    if (blackboard.isNull() && create) {
+        blackboard = new GBlackboardAttached(engine);
+        d->blackboards.insert(engine, blackboard);
+    }
+
+    return blackboard.data();
+}
+
+// class GBlackboardGlobalPrivate
+
+GBlackboardGlobalPrivate::GBlackboardGlobalPrivate()
+{
+}
+
+GBlackboardGlobalPrivate::~GBlackboardGlobalPrivate()
+{
 }
