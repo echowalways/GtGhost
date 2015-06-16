@@ -79,17 +79,11 @@ GActionNodePrivate::~GActionNodePrivate()
 {
 }
 
-void GActionNodePrivate::reset()
+bool GActionNodePrivate::reset()
 {
-    Q_Q(GActionNode);
+    emit q_func()->reset();
 
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    emit q->reset();
-
-    setStatus(Ghost::StandBy);
+    return GLeafNodePrivate::reset();
 }
 
 void GActionNodePrivate::execute()

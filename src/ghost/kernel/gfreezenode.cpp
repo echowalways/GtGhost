@@ -54,15 +54,6 @@ GFreezeNodePrivate::~GFreezeNodePrivate()
 {
 }
 
-void GFreezeNodePrivate::reset()
-{
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    setStatus(Ghost::StandBy);
-}
-
 void GFreezeNodePrivate::execute()
 {
     Q_Q(GFreezeNode);

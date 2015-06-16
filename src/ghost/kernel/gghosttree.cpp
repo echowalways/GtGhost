@@ -90,9 +90,50 @@ void GGhostTree::reset()
         return;
     }
 
-    d->cast(d->childNodes[0])->reset();
+    QStack<GGhostNode *> ghostNodes;
+    QSet<GGhostNode *> visitedGhostNodes;
 
-    d->setStatus(Ghost::StandBy);
+    // 加载树的一级子节点
+    QListIterator<GGhostNode *> i(d->childNodes);
+    while (i.hasNext()) {
+        GGhostNode *node = i.next();
+        if (Ghost::StandBy != node->status()) {
+            ghostNodes.push(node);
+        }
+    }
+
+    bool hasError = false;
+
+    // 处理子节点状态
+    while (!ghostNodes.isEmpty()) {
+        GGhostNode *node = ghostNodes.pop();
+        GGhostNodePrivate *nodedptr = d->cast(node);
+
+        if (visitedGhostNodes.contains(node)
+                || nodedptr->childNodes.isEmpty()) {
+            if (nodedptr->reset()) {
+                nodedptr->setStatus(Ghost::StandBy);
+            } else {
+                hasError = true;
+                break;
+            }
+        } else {
+            ghostNodes.push(node);
+            visitedGhostNodes.insert(node);
+
+            QListIterator<GGhostNode *> i(nodedptr->childNodes);
+            while (i.hasNext()) {
+                GGhostNode *node = i.next();
+                if (Ghost::StandBy != node->status()) {
+                    ghostNodes.push(node);
+                }
+            }
+        }
+    }
+
+    if (!hasError) {
+        d->setStatus(Ghost::StandBy);
+    }
 }
 
 void GGhostTree::classBegin()

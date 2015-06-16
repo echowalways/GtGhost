@@ -373,5 +373,10 @@ void GGhostNodePrivate::sort(GGhostNodeList &childNodes)
     std::sort(childNodes.begin(), childNodes.end(), &GGhostNodePrivate::greatThan);
 }
 
+bool GGhostNodePrivate::reset()
+{
+    return true;
+}
+
 // moc_gghostnode_p.cpp
 #include "moc_gghostnode_p.cpp"

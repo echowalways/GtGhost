@@ -48,18 +48,6 @@ GDecoratorNodePrivate::~GDecoratorNodePrivate()
 {
 }
 
-void GDecoratorNodePrivate::reset()
-{
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    cast(childNodes[0])->reset();
-
-    setStatus(Ghost::StandBy);
-}
-
 void GDecoratorNodePrivate::execute()
 {
     Q_CHECK_PTR(childNodes[0]);

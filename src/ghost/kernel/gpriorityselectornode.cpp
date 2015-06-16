@@ -70,25 +70,11 @@ void GPrioritySelectorNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
-void GPrioritySelectorNodePrivate::reset()
+bool GPrioritySelectorNodePrivate::reset()
 {
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
     resortChildNodes();
 
-    QListIterator<GGhostNode *> i(sortedChildNodes);
-
-    i.toBack();
-    while (i.hasPrevious()) {
-        GGhostNode *childNode = i.previous();
-        if (Ghost::StandBy != cast(childNode)->status) {
-            cast(childNode)->reset();
-        }
-    }
-
-    setStatus(Ghost::StandBy);
+    return GCompositeNodePrivate::reset();
 }
 
 void GPrioritySelectorNodePrivate::execute()

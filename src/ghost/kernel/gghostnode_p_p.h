@@ -76,7 +76,7 @@ public:
 
     //
 public:
-    virtual void reset() = 0;
+    virtual bool reset();
     virtual void execute() = 0;
     virtual void terminate() = 0;
 };
