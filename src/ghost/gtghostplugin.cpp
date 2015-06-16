@@ -38,7 +38,6 @@ void GtGhostPlugin::registerTypes(const char *uri)
 
     qmlRegisterType<GGhostTree>(uri, 1, 0, "GhostTree");
 
-    qmlRegisterType<GBlackboardAttached>();
     qmlRegisterUncreatableType<GBlackboard>(uri, 1, 0, "Blackboard", "Blackboard is an abstract class.");
 
     qmlRegisterUncreatableType<Ghost>(uri, 1, 0, "Ghost", "Ghost is an abstract class.");
