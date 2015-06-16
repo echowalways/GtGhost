@@ -1,9 +1,10 @@
 #include "gghoststack_p.h"
 #include "gghoststack_p_p.h"
 
-#include <QtCore/QThreadStorage>
-
-QThreadStorage<GGhostStack *> g_ghostStacks;
+namespace GtGhostPrivate
+{
+QThreadStorage<GGhostStack *> ghostStacks;
+}
 
 // class GGhostStack
 
@@ -14,12 +15,14 @@ GGhostStack::GGhostStack(QObject *parent)
 
 GGhostStack *GGhostStack::instance()
 {
+    using namespace GtGhostPrivate;
+
     GGhostStack *ghostStack
-            = g_ghostStacks.localData();
+            = ghostStacks.localData();
 
     if (nullptr == ghostStack) {
         ghostStack = new GGhostStack();
-        g_ghostStacks.setLocalData(ghostStack);
+        ghostStacks.setLocalData(ghostStack);
     }
 
     return ghostStack;

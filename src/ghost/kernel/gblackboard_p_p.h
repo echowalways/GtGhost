@@ -16,44 +16,14 @@ public:
     virtual ~GBlackboardPrivate();
 
 private:
-    QHash<QString, QJSValue> datas;
-};
-
-// class GBlackboardAttachedPrivate
-
-class GBlackboardAttachedPrivate : public GBlackboardPrivate
-{
-    Q_DECLARE_PUBLIC(GBlackboardAttached)
-
-public:
-    GBlackboardAttachedPrivate();
-    virtual ~GBlackboardAttachedPrivate();
-
-private:
     GGhostTree *masterTree;
     GGhostNode *targetNode;
 
-private:
-    GBlackboardAttached *sharedBlackboard(bool create = true) const;
-    GBlackboardAttached *scopedBlackboard(bool create = true) const;
-private:
-    GBlackboardAttached *sharedBlackboardAttached;
-    GBlackboardAttached *scopedBlackboardAttached;
-};
-
-// class GBlackboardGlobalPrivate
-
-class GBlackboardGlobalPrivate : public QObjectPrivate
-{
-    Q_DECLARE_PUBLIC(GBlackboardGlobal)
-
-public:
-    GBlackboardGlobalPrivate();
-    virtual ~GBlackboardGlobalPrivate();
+    GBlackboard *globalBlackboard;
+    GBlackboard *sharedBlackboard;
 
 private:
-    typedef QPointer<GBlackboardAttached> Blackboard;
-    QHash<QQmlEngine *, Blackboard> blackboards;
+    QHash<QString, QJSValue> datas;
 };
 
 #endif // GBLACKBOARD_P_P_H
