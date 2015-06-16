@@ -55,12 +55,6 @@ public:
     QQmlListProperty<GGhostNode> _q_childNodes();
 public:
     GGhostNodeList childNodes;
-
-    //
-public:
-    void reset();
-    void execute();
-    void terminate();
 };
 
 inline GGhostTreePrivate *GGhostTreePrivate::cast(GGhostTree *tree)

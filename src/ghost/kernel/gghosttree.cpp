@@ -16,6 +16,8 @@ Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
 GGhostTree::GGhostTree(QObject *parent)
     : QObject(*new GGhostTreePrivate(), parent)
 {
+    qsrand(QDateTime::currentMSecsSinceEpoch());
+
     connect(this, &GGhostTree::statusChanged,
             [this](Ghost::Status status) {
         switch (status) {
@@ -52,9 +54,18 @@ void GGhostTree::start()
 {
     Q_D(GGhostTree);
 
-    if ((Ghost::Invalid != d->status)
-            && (Ghost::Running != d->status)) {
-        d->execute();
+    if ((Ghost::Invalid == d->status)
+            || (Ghost::Running == d->status)) {
+        return;
+    }
+
+    d->setStatus(Ghost::Running);
+
+    GGhostNodePrivate *rootptr = d->cast(d->childNodes[0]);
+    if (rootptr->callPrecondition()) {
+        d->postExecuteEvent(d->childNodes[0]);
+    } else {
+        d->setStatus(Ghost::Failure);
     }
 }
 
@@ -62,27 +73,31 @@ void GGhostTree::stop()
 {
     Q_D(GGhostTree);
 
-    if (Ghost::Running == d->status) {
-        d->terminate();
+    if (Ghost::Running != d->status) {
+        return;
     }
+
+    d->cast(d->childNodes[0])->terminate();
 }
 
 void GGhostTree::reset()
 {
     Q_D(GGhostTree);
 
-    if ((Ghost::Success == d->status)
-            || (Ghost::Failure == d->status)
-            || (Ghost::Stopped == d->status)) {
-        d->reset();
+    if ((Ghost::Invalid == d->status)
+            || (Ghost::StandBy == d->status)
+            || (Ghost::Running == d->status)) {
+        return;
     }
+
+    d->cast(d->childNodes[0])->reset();
+
+    d->setStatus(Ghost::StandBy);
 }
 
 void GGhostTree::classBegin()
 {
     theGhostStack->push(this);
-
-    qsrand(QDateTime::currentMSecsSinceEpoch());
 }
 
 void GGhostTree::componentComplete()
@@ -270,42 +285,6 @@ void GGhostTreePrivate::setStatus(Ghost::Status status)
         this->status = status;
         emit q->statusChanged(status);
     }
-}
-
-void GGhostTreePrivate::reset()
-{
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    cast(childNodes[0])->reset();
-
-    setStatus(Ghost::StandBy);
-}
-
-void GGhostTreePrivate::execute()
-{
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    setStatus(Ghost::Running);
-
-    GGhostNodePrivate *rootptr = cast(childNodes[0]);
-    if (rootptr->callPrecondition()) {
-        postExecuteEvent(childNodes[0]);
-    } else {
-        setStatus(Ghost::Failure);
-    }
-}
-
-void GGhostTreePrivate::terminate()
-{
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Running == status);
-
-    cast(childNodes[0])->terminate();
 }
 
 // moc_gghosttree_p.cpp

@@ -70,7 +70,7 @@ void GDecoratorNodePrivate::execute()
 
     GGhostNodePrivate *childptr = cast(childNodes[0]);
     if (childptr->callPrecondition()) {
-        childptr->execute();
+        postExecuteEvent(childNodes[0]);
     } else {
         setStatus(breakStatus);
     }
