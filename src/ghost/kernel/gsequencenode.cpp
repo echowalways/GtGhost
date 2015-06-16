@@ -40,6 +40,11 @@ void GSequenceNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
+bool GSequenceNodePrivate::reset()
+{
+    return true;
+}
+
 void GSequenceNodePrivate::execute()
 {
     Q_ASSERT(Ghost::Invalid != status);
@@ -54,13 +59,9 @@ void GSequenceNodePrivate::execute()
     executeNextChildNode();
 }
 
-void GSequenceNodePrivate::terminate()
+bool GSequenceNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    GGhostNode *childNode
-            = childNodes.at(executeIndex);
-    cast(childNode)->terminate();
+    return true;
 }
 
 void GSequenceNodePrivate::executeNextChildNode()

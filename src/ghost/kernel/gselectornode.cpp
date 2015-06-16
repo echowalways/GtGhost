@@ -38,6 +38,11 @@ void GSelectorNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
+bool GSelectorNodePrivate::reset()
+{
+    return true;
+}
+
 void GSelectorNodePrivate::execute()
 {
     Q_ASSERT(Ghost::Invalid != status);
@@ -52,13 +57,9 @@ void GSelectorNodePrivate::execute()
     executeNextChildNode();
 }
 
-void GSelectorNodePrivate::terminate()
+bool GSelectorNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    GGhostNode *childNode
-            = childNodes.at(executeIndex);
-    cast(childNode)->terminate();
+    return true;
 }
 
 void GSelectorNodePrivate::executeNextChildNode()

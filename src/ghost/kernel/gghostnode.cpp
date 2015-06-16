@@ -256,9 +256,8 @@ void GGhostNodePrivate::setStatus(Ghost::Status status)
         emit q->statusChanged(status);
 
         if (masterTree
-                && (Ghost::Invalid != status)
-                && (Ghost::StandBy != status)
-                && (Ghost::Running != status)) {
+                && ((Ghost::Success == status)
+                    || (Ghost::Failure == status))) {
             cast(masterTree)->postConfirmEvent(q);
         }
     }
@@ -371,11 +370,6 @@ bool GGhostNodePrivate::greatThan(GGhostNode *leftChildNode, GGhostNode *rightCh
 void GGhostNodePrivate::sort(GGhostNodeList &childNodes)
 {
     std::sort(childNodes.begin(), childNodes.end(), &GGhostNodePrivate::greatThan);
-}
-
-bool GGhostNodePrivate::reset()
-{
-    return true;
 }
 
 // moc_gghostnode_p.cpp

@@ -43,6 +43,11 @@ GConditionNodePrivate::~GConditionNodePrivate()
 {
 }
 
+bool GConditionNodePrivate::reset()
+{
+    return true;
+}
+
 void GConditionNodePrivate::execute()
 {
     Q_ASSERT(Ghost::Invalid != status);
@@ -57,9 +62,9 @@ void GConditionNodePrivate::execute()
     }
 }
 
-void GConditionNodePrivate::terminate()
+bool GConditionNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
+    return true;
 }
 
 bool GConditionNodePrivate::callCondition()

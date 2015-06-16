@@ -15,8 +15,9 @@ public:
     virtual ~GFreezeNodePrivate();
 
 public:
+    virtual bool reset() Q_DECL_FINAL;
     virtual void execute() Q_DECL_FINAL;
-    virtual void terminate() Q_DECL_FINAL;
+    virtual bool terminate() Q_DECL_FINAL;
 
 public:
     int duration;

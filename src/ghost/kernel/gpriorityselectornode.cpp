@@ -74,7 +74,7 @@ bool GPrioritySelectorNodePrivate::reset()
 {
     resortChildNodes();
 
-    return GCompositeNodePrivate::reset();
+    return true;
 }
 
 void GPrioritySelectorNodePrivate::execute()
@@ -95,13 +95,9 @@ void GPrioritySelectorNodePrivate::execute()
     executeNextChildNode();
 }
 
-void GPrioritySelectorNodePrivate::terminate()
+bool GPrioritySelectorNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    GGhostNode *childNode
-            = sortedChildNodes.at(executeIndex);
-    cast(childNode)->terminate();
+    return true;
 }
 
 void GPrioritySelectorNodePrivate::executeNextChildNode()

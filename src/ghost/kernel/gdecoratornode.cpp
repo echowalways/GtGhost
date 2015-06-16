@@ -48,6 +48,11 @@ GDecoratorNodePrivate::~GDecoratorNodePrivate()
 {
 }
 
+bool GDecoratorNodePrivate::reset()
+{
+    return true;
+}
+
 void GDecoratorNodePrivate::execute()
 {
     Q_CHECK_PTR(childNodes[0]);
@@ -64,10 +69,7 @@ void GDecoratorNodePrivate::execute()
     }
 }
 
-void GDecoratorNodePrivate::terminate()
+bool GDecoratorNodePrivate::terminate()
 {
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Running == status);
-
-    cast(childNodes[0])->terminate();
+    return true;
 }

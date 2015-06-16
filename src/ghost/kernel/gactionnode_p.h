@@ -27,7 +27,6 @@ Q_SIGNALS:
 public Q_SLOTS:
     void setSuccessStatus();
     void setFailureStatus();
-    void setStoppedStatus();
 };
 
 #endif // GACTIONNODE_P_H

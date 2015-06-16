@@ -91,7 +91,7 @@ bool GRandomSelectorNodePrivate::reset()
 {
     resortChildNodes();
 
-    return GCompositeNodePrivate::reset();
+    return true;
 }
 
 void GRandomSelectorNodePrivate::execute()
@@ -112,13 +112,9 @@ void GRandomSelectorNodePrivate::execute()
     executeNextChildNode();
 }
 
-void GRandomSelectorNodePrivate::terminate()
+bool GRandomSelectorNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    GGhostNode *childNode
-            = sortedChildNodes.at(executeIndex);
-    cast(childNode)->terminate();
+    return true;
 }
 
 void GRandomSelectorNodePrivate::executeNextChildNode()

@@ -56,17 +56,6 @@ void GActionNode::setFailureStatus()
     d->setStatus(Ghost::Failure);
 }
 
-void GActionNode::setStoppedStatus()
-{
-    Q_D(GActionNode);
-
-    if (d->timer) {
-        d->timer->stop();
-    }
-
-    d->setStatus(Ghost::Stopped);
-}
-
 // class GActionNodePrivate
 
 GActionNodePrivate::GActionNodePrivate()
@@ -83,7 +72,7 @@ bool GActionNodePrivate::reset()
 {
     emit q_func()->reset();
 
-    return GLeafNodePrivate::reset();
+    return true;
 }
 
 void GActionNodePrivate::execute()
@@ -111,17 +100,13 @@ void GActionNodePrivate::execute()
     emit q->execute();
 }
 
-void GActionNodePrivate::terminate()
+bool GActionNodePrivate::terminate()
 {
-    Q_Q(GActionNode);
-
-    Q_ASSERT(Ghost::Running == status);
-
     if (timer) {
         timer->stop();
     }
 
-    emit q->terminate();
+    emit q_func()->terminate();
 
-    setStatus(Ghost::Stopped);
+    return true;
 }

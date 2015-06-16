@@ -76,9 +76,9 @@ public:
 
     //
 public:
-    virtual bool reset();
+    virtual bool reset() = 0;
     virtual void execute() = 0;
-    virtual void terminate() = 0;
+    virtual bool terminate() = 0;
 };
 
 inline GGhostNodePrivate *GGhostNodePrivate::cast(GGhostNode *node)

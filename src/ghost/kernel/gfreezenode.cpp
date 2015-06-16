@@ -54,6 +54,11 @@ GFreezeNodePrivate::~GFreezeNodePrivate()
 {
 }
 
+bool GFreezeNodePrivate::reset()
+{
+    return true;
+}
+
 void GFreezeNodePrivate::execute()
 {
     Q_Q(GFreezeNode);
@@ -83,13 +88,11 @@ void GFreezeNodePrivate::execute()
     }
 }
 
-void GFreezeNodePrivate::terminate()
+bool GFreezeNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
     if (timer) {
         timer->stop();
     }
 
-    setStatus(Ghost::Stopped);
+    return true;
 }

@@ -101,35 +101,35 @@ TestCase {
     }
 
     // 测试 Stopped 状态
-    GhostTree {
-        id: tree3
+//    GhostTree {
+//        id: tree3
 
-        ActionNode {
-            id: node3
+//        ActionNode {
+//            id: node3
 
-            onExecute: setStoppedStatus()
-        }
-    }
+//            onExecute: setStoppedStatus()
+//        }
+//    }
 
-    GhostInspector {
-        id: inspector3
-        target: tree3
-    }
+//    GhostInspector {
+//        id: inspector3
+//        target: tree3
+//    }
 
-    function test_synchronous_3() {
-        tree3.start()
+//    function test_synchronous_3() {
+//        tree3.start()
 
-        wait(100)
+//        wait(100)
 
-        verify(inspector3.nextStatus(node3, Ghost.StandBy))
-        verify(inspector3.nextStatus(tree3, Ghost.StandBy))
-        verify(inspector3.nextStatus(tree3, Ghost.Running))
-        verify(inspector3.nextStatus(node3, Ghost.Running))
-        verify(inspector3.nextStatus(node3, Ghost.Stopped))
-        verify(inspector3.nextStatus(tree3, Ghost.Stopped))
+//        verify(inspector3.nextStatus(node3, Ghost.StandBy))
+//        verify(inspector3.nextStatus(tree3, Ghost.StandBy))
+//        verify(inspector3.nextStatus(tree3, Ghost.Running))
+//        verify(inspector3.nextStatus(node3, Ghost.Running))
+//        verify(inspector3.nextStatus(node3, Ghost.Stopped))
+//        verify(inspector3.nextStatus(tree3, Ghost.Stopped))
 
-        verify(inspector3.done())
-    }
+//        verify(inspector3.done())
+//    }
 
     /// 验证异步执行
 
@@ -369,7 +369,7 @@ TestCase {
 
         ActionNode {
             id: node9
-            duration: 190
+            duration: 150
 
             onExecute: { }
         }

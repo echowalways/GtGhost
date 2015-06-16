@@ -40,6 +40,11 @@ void GParallelNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
+bool GParallelNodePrivate::reset()
+{
+    return true;
+}
+
 void GParallelNodePrivate::execute()
 {
     Q_ASSERT(Ghost::Invalid != status);
@@ -72,15 +77,7 @@ void GParallelNodePrivate::execute()
     }
 }
 
-void GParallelNodePrivate::terminate()
+bool GParallelNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    terminateState = true;
-    foreach (GGhostNode *childNode, childNodes) {
-        GGhostNodePrivate *dptr = cast(childNode);
-        if (Ghost::Running == dptr->status) {
-            dptr->terminate();
-        }
-    }
+    return true;
 }
