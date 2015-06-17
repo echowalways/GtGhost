@@ -1,7 +1,7 @@
 #include "gforcefailurenode_p.h"
 #include "gforcefailurenode_p_p.h"
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GForceFailureNode
 

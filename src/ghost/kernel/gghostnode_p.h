@@ -28,8 +28,6 @@ Q_SIGNALS:
 public:
     Ghost::Status status() const;
 
-Q_SIGNALS:
-    void initialized();
 public:
     GGhostTree *masterTree() const;
     GGhostNode *parentNode() const;
@@ -49,9 +47,9 @@ public:
     QJSValue precondition() const;
     QJSValue weight() const;
 
-private:
-    virtual void classBegin() Q_DECL_FINAL;
-    virtual void componentComplete() Q_DECL_FINAL;
+protected:
+    virtual void classBegin() Q_DECL_OVERRIDE;
+    virtual void componentComplete() Q_DECL_OVERRIDE;
 };
 
 #endif // GGHOSTNODE_P_H

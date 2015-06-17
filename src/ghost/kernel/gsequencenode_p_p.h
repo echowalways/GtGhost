@@ -16,9 +16,9 @@ private:
     virtual void confirmEvent(GGhostConfirmEvent *event) Q_DECL_FINAL;
 
 public:
-    virtual void reset() Q_DECL_FINAL;
+    virtual bool reset() Q_DECL_FINAL;
     virtual void execute() Q_DECL_FINAL;
-    virtual void terminate() Q_DECL_FINAL;
+    virtual bool terminate() Q_DECL_FINAL;
 
 private:
     void executeNextChildNode();

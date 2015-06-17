@@ -3,8 +3,6 @@
 
 #include "gghostglobal.h"
 
-class GBlackboard;
-
 class GGhostTreePrivate;
 class GGhostTree : public QObject, public QQmlParserStatus
 {
@@ -23,8 +21,6 @@ Q_SIGNALS:
 public:
     Ghost::Status status() const;
 
-Q_SIGNALS:
-    void initialized();
 public:
     GGhostNodeList childNodes() const;
 

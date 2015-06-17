@@ -1,7 +1,7 @@
 #include "ginverternode_p.h"
 #include "ginverternode_p_p.h"
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GInverterNode
 

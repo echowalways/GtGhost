@@ -3,7 +3,7 @@
 
 #include <QtDebug>
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GSequenceNode
 
@@ -49,23 +49,9 @@ void GSequenceNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
-void GSequenceNodePrivate::reset()
+bool GSequenceNodePrivate::reset()
 {
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    QListIterator<GGhostNode *> i(childNodes);
-
-    i.toBack();
-    while (i.hasPrevious()) {
-        GGhostNode *childNode = i.previous();
-        if (Ghost::StandBy != cast(childNode)->status) {
-            cast(childNode)->reset();
-        }
-    }
-
-    setStatus(Ghost::StandBy);
+    return true;
 }
 
 void GSequenceNodePrivate::execute()
@@ -82,13 +68,9 @@ void GSequenceNodePrivate::execute()
     executeNextChildNode();
 }
 
-void GSequenceNodePrivate::terminate()
+bool GSequenceNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    GGhostNode *childNode
-            = childNodes.at(executeIndex);
-    cast(childNode)->terminate();
+    return true;
 }
 
 void GSequenceNodePrivate::executeNextChildNode()
@@ -110,7 +92,7 @@ void GSequenceNodePrivate::executeNextChildNode()
         if (executeCounter) {
             setStatus(Ghost::Success);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }

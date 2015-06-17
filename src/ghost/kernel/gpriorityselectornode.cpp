@@ -3,7 +3,7 @@
 
 #include <QtCore/QLoggingCategory>
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 Q_LOGGING_CATEGORY(qlcPrioritySelectorNode, "GtGhost.PrioritySelectorNode")
 
@@ -39,6 +39,17 @@ Ghost::UpdateMode GPrioritySelectorNode::updateMode() const
     return d->updateMode;
 }
 
+void GPrioritySelectorNode::componentComplete()
+{
+    Q_D(GPrioritySelectorNode);
+
+    GCompositeNode::componentComplete();
+
+    if (Ghost::StandBy == d->status) {
+        d->resortChildNodes();
+    }
+}
+
 // class GPrioritySelectorNodePrivate
 
 GPrioritySelectorNodePrivate::GPrioritySelectorNodePrivate()
@@ -68,39 +79,11 @@ void GPrioritySelectorNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
-bool GPrioritySelectorNodePrivate::initialize()
+bool GPrioritySelectorNodePrivate::reset()
 {
-    sortedChildNodes = childNodes;
-
     resortChildNodes();
 
-    if (GGhostNodePrivate::initialize(sortedChildNodes)) {
-        setStatus(Ghost::StandBy);
-        return true;
-    }
-
-    return false;
-}
-
-void GPrioritySelectorNodePrivate::reset()
-{
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    resortChildNodes();
-
-    QListIterator<GGhostNode *> i(sortedChildNodes);
-
-    i.toBack();
-    while (i.hasPrevious()) {
-        GGhostNode *childNode = i.previous();
-        if (Ghost::StandBy != cast(childNode)->status) {
-            cast(childNode)->reset();
-        }
-    }
-
-    setStatus(Ghost::StandBy);
+    return true;
 }
 
 void GPrioritySelectorNodePrivate::execute()
@@ -121,13 +104,9 @@ void GPrioritySelectorNodePrivate::execute()
     executeNextChildNode();
 }
 
-void GPrioritySelectorNodePrivate::terminate()
+bool GPrioritySelectorNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    GGhostNode *childNode
-            = sortedChildNodes.at(executeIndex);
-    cast(childNode)->terminate();
+    return true;
 }
 
 void GPrioritySelectorNodePrivate::executeNextChildNode()
@@ -149,7 +128,7 @@ void GPrioritySelectorNodePrivate::executeNextChildNode()
         if (executeCounter) {
             setStatus(Ghost::Failure);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }

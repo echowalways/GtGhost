@@ -43,7 +43,7 @@ int GActionNode::duration() const
     return d->duration;
 }
 
-void GActionNode::setSuccessStatus()
+void GActionNode::setSuccess()
 {
     Q_D(GActionNode);
 
@@ -54,7 +54,7 @@ void GActionNode::setSuccessStatus()
     d->setStatus(Ghost::Success);
 }
 
-void GActionNode::setFailureStatus()
+void GActionNode::setFailure()
 {
     Q_D(GActionNode);
 
@@ -63,17 +63,6 @@ void GActionNode::setFailureStatus()
     }
 
     d->setStatus(Ghost::Failure);
-}
-
-void GActionNode::setStoppedStatus()
-{
-    Q_D(GActionNode);
-
-    if (d->timer) {
-        d->timer->stop();
-    }
-
-    d->setStatus(Ghost::Stopped);
 }
 
 // class GActionNodePrivate
@@ -88,17 +77,11 @@ GActionNodePrivate::~GActionNodePrivate()
 {
 }
 
-void GActionNodePrivate::reset()
+bool GActionNodePrivate::reset()
 {
-    Q_Q(GActionNode);
+    emit q_func()->reset();
 
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    emit q->reset();
-
-    setStatus(Ghost::StandBy);
+    return true;
 }
 
 void GActionNodePrivate::execute()
@@ -116,7 +99,7 @@ void GActionNodePrivate::execute()
             timer->setSingleShot(true);
 
             QObject::connect(timer.data(), &QTimer::timeout,
-                             q, &GActionNode::setFailureStatus);
+                             q, &GActionNode::setFailure);
         }
 
         timer->setInterval(duration);
@@ -126,17 +109,13 @@ void GActionNodePrivate::execute()
     emit q->execute();
 }
 
-void GActionNodePrivate::terminate()
+bool GActionNodePrivate::terminate()
 {
-    Q_Q(GActionNode);
-
-    Q_ASSERT(Ghost::Running == status);
-
     if (timer) {
         timer->stop();
     }
 
-    emit q->terminate();
+    emit q_func()->terminate();
 
-    setStatus(Ghost::Stopped);
+    return true;
 }

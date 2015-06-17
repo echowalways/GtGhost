@@ -63,13 +63,9 @@ GFreezeNodePrivate::~GFreezeNodePrivate()
 {
 }
 
-void GFreezeNodePrivate::reset()
+bool GFreezeNodePrivate::reset()
 {
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    setStatus(Ghost::StandBy);
+    return true;
 }
 
 void GFreezeNodePrivate::execute()
@@ -101,13 +97,11 @@ void GFreezeNodePrivate::execute()
     }
 }
 
-void GFreezeNodePrivate::terminate()
+bool GFreezeNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
     if (timer) {
         timer->stop();
     }
 
-    setStatus(Ghost::Stopped);
+    return true;
 }

@@ -1,7 +1,7 @@
 #include "gselectornode_p.h"
 #include "gselectornode_p_p.h"
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GSelectorNode
 
@@ -47,23 +47,9 @@ void GSelectorNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
-void GSelectorNodePrivate::reset()
+bool GSelectorNodePrivate::reset()
 {
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    QListIterator<GGhostNode *> i(childNodes);
-
-    i.toBack();
-    while (i.hasPrevious()) {
-        GGhostNode *childNode = i.previous();
-        if (Ghost::StandBy != cast(childNode)->status) {
-            cast(childNode)->reset();
-        }
-    }
-
-    setStatus(Ghost::StandBy);
+    return true;
 }
 
 void GSelectorNodePrivate::execute()
@@ -80,13 +66,9 @@ void GSelectorNodePrivate::execute()
     executeNextChildNode();
 }
 
-void GSelectorNodePrivate::terminate()
+bool GSelectorNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    GGhostNode *childNode
-            = childNodes.at(executeIndex);
-    cast(childNode)->terminate();
+    return true;
 }
 
 void GSelectorNodePrivate::executeNextChildNode()
@@ -108,7 +90,7 @@ void GSelectorNodePrivate::executeNextChildNode()
         if (executeCounter) {
             setStatus(Ghost::Failure);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }

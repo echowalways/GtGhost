@@ -21,35 +21,34 @@ GDecoratorNode::GDecoratorNode(GDecoratorNodePrivate &dd, QObject *parent)
 {
 }
 
-void GDecoratorNode::setBreakStatus(Ghost::Status value)
+void GDecoratorNode::setBrokenStatus(Ghost::Status value)
 {
     Q_D(GDecoratorNode);
 
-    if ((Ghost::Invalid == value)
-            || (Ghost::Running == value)
-            || (Ghost::Stopped == value)) {
+    if ((Ghost::Success != value)
+            && (Ghost::Failure != value)) {
         qCWarning(qlcDecoratorNode)
-                << "Invalid break status: " << Ghost::toString(value);
+                << "Invalid broken status: " << Ghost::toString(value);
         return;
     }
 
-    if (value != d->breakStatus) {
-        d->breakStatus = value;
-        emit breakStatusChanged(value);
+    if (value != d->brokenStatus) {
+        d->brokenStatus = value;
+        emit brokenStatusChanged(value);
     }
 }
 
-Ghost::Status GDecoratorNode::breakStatus() const
+Ghost::Status GDecoratorNode::brokenStatus() const
 {
     Q_D(const GDecoratorNode);
-    return d->breakStatus;
+    return d->brokenStatus;
 }
 
 // class GDecoratorNodePrivate
 
 GDecoratorNodePrivate::GDecoratorNodePrivate(Ghost::NodeType nodeType)
     : GGhostNodePrivate(Ghost::DecoratorNode, nodeType)
-    , breakStatus(Ghost::Failure)
+    , brokenStatus(Ghost::Failure)
 {
 }
 
@@ -57,16 +56,9 @@ GDecoratorNodePrivate::~GDecoratorNodePrivate()
 {
 }
 
-void GDecoratorNodePrivate::reset()
+bool GDecoratorNodePrivate::reset()
 {
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    cast(childNodes[0])->reset();
-
-    setStatus(Ghost::StandBy);
+    return true;
 }
 
 void GDecoratorNodePrivate::execute()
@@ -79,16 +71,13 @@ void GDecoratorNodePrivate::execute()
 
     GGhostNodePrivate *childptr = cast(childNodes[0]);
     if (childptr->callPrecondition()) {
-        childptr->execute();
+        postExecuteEvent(childNodes[0]);
     } else {
-        setStatus(breakStatus);
+        setStatus(brokenStatus);
     }
 }
 
-void GDecoratorNodePrivate::terminate()
+bool GDecoratorNodePrivate::terminate()
 {
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Running == status);
-
-    cast(childNodes[0])->terminate();
+    return true;
 }

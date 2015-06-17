@@ -22,6 +22,9 @@ public:
     void setRandomMode(Ghost::RandomMode value);
     Ghost::UpdateMode updateMode() const;
     Ghost::RandomMode randomMode() const;
+
+private:
+    virtual void componentComplete() Q_DECL_FINAL;
 };
 
 #endif // GRANDOMSEQUENCENODE_P_H

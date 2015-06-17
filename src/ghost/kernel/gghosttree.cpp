@@ -2,10 +2,8 @@
 #include "gghosttree_p_p.h"
 #include "gghosttree.qdoc"
 
-#include <QtCore/QDateTime>
-#include <QtCore/QLoggingCategory>
-
-#include "gghostevent.h"
+#include "gghostevents.h"
+#include "gghoststack_p.h"
 #include "gghostnode_p.h"
 #include "gghostnode_p_p.h"
 
@@ -16,6 +14,8 @@ Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
 GGhostTree::GGhostTree(QObject *parent)
     : QObject(*new GGhostTreePrivate(), parent)
 {
+    qsrand(QDateTime::currentMSecsSinceEpoch());
+
     connect(this, &GGhostTree::statusChanged,
             [this](Ghost::Status status) {
         switch (status) {
@@ -52,9 +52,18 @@ void GGhostTree::start()
 {
     Q_D(GGhostTree);
 
-    if ((Ghost::Invalid != d->status)
-            && (Ghost::Running != d->status)) {
-        d->execute();
+    if ((Ghost::Invalid == d->status)
+            || (Ghost::Running == d->status)) {
+        return;
+    }
+
+    d->setStatus(Ghost::Running);
+
+    GGhostNodePrivate *rootptr = d->cast(d->childNodes[0]);
+    if (rootptr->callPrecondition()) {
+        d->postExecuteEvent(d->childNodes[0]);
+    } else {
+        d->setStatus(Ghost::Failure);
     }
 }
 
@@ -62,8 +71,53 @@ void GGhostTree::stop()
 {
     Q_D(GGhostTree);
 
-    if (Ghost::Running == d->status) {
-        d->terminate();
+    if (Ghost::Running != d->status) {
+        return;
+    }
+
+    QStack<GGhostNode *> ghostNodes;
+    QSet<GGhostNode *> visitedGhostNodes;
+
+    // 加载树的一级子节点
+    QListIterator<GGhostNode *> i(d->childNodes);
+    while (i.hasNext()) {
+        GGhostNode *node = i.next();
+        if (Ghost::Running == node->status()) {
+            ghostNodes.push(node);
+        }
+    }
+
+    bool hasError = false;
+
+    // 处理子节点状态
+    while (!ghostNodes.isEmpty()) {
+        GGhostNode *node = ghostNodes.pop();
+        GGhostNodePrivate *nodedptr = d->cast(node);
+
+        if (visitedGhostNodes.contains(node)
+                || nodedptr->childNodes.isEmpty()) {
+            if (nodedptr->terminate()) {
+                nodedptr->setStatus(Ghost::Stopped);
+            } else {
+                hasError = true;
+                break;
+            }
+        } else {
+            ghostNodes.push(node);
+            visitedGhostNodes.insert(node);
+
+            QListIterator<GGhostNode *> i(nodedptr->childNodes);
+            while (i.hasNext()) {
+                GGhostNode *node = i.next();
+                if (Ghost::Running == node->status()) {
+                    ghostNodes.push(node);
+                }
+            }
+        }
+    }
+
+    if (!hasError) {
+        d->setStatus(Ghost::Stopped);
     }
 }
 
@@ -71,26 +125,86 @@ void GGhostTree::reset()
 {
     Q_D(GGhostTree);
 
-    if ((Ghost::Success == d->status)
-            || (Ghost::Failure == d->status)
-            || (Ghost::Stopped == d->status)) {
-        d->reset();
+    if ((Ghost::Invalid == d->status)
+            || (Ghost::StandBy == d->status)
+            || (Ghost::Running == d->status)) {
+        return;
+    }
+
+    QStack<GGhostNode *> ghostNodes;
+    QSet<GGhostNode *> visitedGhostNodes;
+
+    // 加载树的一级子节点
+    QListIterator<GGhostNode *> i(d->childNodes);
+    while (i.hasNext()) {
+        GGhostNode *node = i.next();
+        if (Ghost::StandBy != node->status()) {
+            ghostNodes.push(node);
+        }
+    }
+
+    bool hasError = false;
+
+    // 处理子节点状态
+    while (!ghostNodes.isEmpty()) {
+        GGhostNode *node = ghostNodes.pop();
+        GGhostNodePrivate *nodedptr = d->cast(node);
+
+        if (visitedGhostNodes.contains(node)
+                || nodedptr->childNodes.isEmpty()) {
+            if (nodedptr->reset()) {
+                nodedptr->setStatus(Ghost::StandBy);
+            } else {
+                hasError = true;
+                break;
+            }
+        } else {
+            ghostNodes.push(node);
+            visitedGhostNodes.insert(node);
+
+            QListIterator<GGhostNode *> i(nodedptr->childNodes);
+            while (i.hasNext()) {
+                GGhostNode *node = i.next();
+                if (Ghost::StandBy != node->status()) {
+                    ghostNodes.push(node);
+                }
+            }
+        }
+    }
+
+    if (!hasError) {
+        d->setStatus(Ghost::StandBy);
     }
 }
 
 void GGhostTree::classBegin()
 {
+    theGhostStack->push(this);
 }
 
 void GGhostTree::componentComplete()
 {
     Q_D(GGhostTree);
 
-    qsrand(QDateTime::currentMSecsSinceEpoch());
+    bool hasError = false;
 
-    if (d->initialize()) {
+    foreach (GGhostNode *childNode, d->childNodes) {
+        if (Ghost::Invalid == childNode->status()) {
+            hasError = true;
+        }
+    }
+
+    if (d->childNodes.count() != 1) {
+        qCWarning(qlcGhostTree)
+                << "Allows only one child node.";
+        hasError = true;
+    }
+
+    if (!hasError) {
         d->setStatus(Ghost::StandBy);
     }
+
+    theGhostStack->pop(this);
 }
 
 // class GGhostTreePrivate
@@ -253,72 +367,6 @@ void GGhostTreePrivate::setStatus(Ghost::Status status)
         this->status = status;
         emit q->statusChanged(status);
     }
-}
-
-bool GGhostTreePrivate::initialize()
-{
-    Q_Q(GGhostTree);
-
-    bool hasError = false;
-
-    foreach (GGhostNode *childNode, childNodes) {
-        GGhostNodePrivate *childptr = cast(childNode);
-        // 初始化子节点数据
-        childptr->masterTree = q;
-        childptr->extraData = extraData;
-        // 开始初始化子节点
-        if (!childptr->initialize()) {
-            hasError = true;
-        }
-    }
-
-    if (childNodes.count() != 1) {
-        qCWarning(qlcGhostTree)
-                << "Allows only one child node.";
-        hasError = true;
-    }
-
-    if (!hasError) {
-        emit q->initialized();
-    }
-
-    return !hasError;
-}
-
-void GGhostTreePrivate::reset()
-{
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    cast(childNodes[0])->reset();
-
-    setStatus(Ghost::StandBy);
-}
-
-void GGhostTreePrivate::execute()
-{
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    setStatus(Ghost::Running);
-
-    GGhostNodePrivate *rootptr = cast(childNodes[0]);
-    if (rootptr->callPrecondition()) {
-        postExecuteEvent(childNodes[0]);
-    } else {
-        setStatus(Ghost::Failure);
-    }
-}
-
-void GGhostTreePrivate::terminate()
-{
-    Q_CHECK_PTR(childNodes[0]);
-    Q_ASSERT(Ghost::Running == status);
-
-    cast(childNodes[0])->terminate();
 }
 
 // moc_gghosttree_p.cpp

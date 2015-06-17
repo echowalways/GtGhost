@@ -8,131 +8,155 @@ TestCase {
     property int counter: 0
 
     GhostTree {
-        id: tree0
+        id: tree_0
 
         SequenceNode {
             ActionNode {
-                id: node0_0
-
                 onExecute: {
+                    // 验证节点域
                     verify(!Blackboard.has("1"))
                     verify(Blackboard.get("1") === undefined)
                     Blackboard.set("1", 5)
                     verify(Blackboard.has("1"))
                     verify(Blackboard.get("1") === 5)
+                    Blackboard.set("1", undefined)
+                    verify(!Blackboard.has("1"))
+                    Blackboard.set("1", 5)
+                    verify(Blackboard.has("1"))
+                    Blackboard.unset("1")
+                    verify(!Blackboard.has("1"))
 
-                    // ghost tree blackboard
-                    verify(!Blackboard.hast("1"))
-                    verify(Blackboard.gett("1") === undefined)
-                    Blackboard.sett("1", 5)
-                    verify(Blackboard.hast("1"))
-                    verify(Blackboard.gett("1") === 5)
+                    // 验证共享域
+                    verify(!Blackboard.shared.has("1"))
+                    verify(Blackboard.shared.get("1") === undefined)
+                    Blackboard.shared.set("1", 5)
+                    verify(Blackboard.shared.has("1"))
+                    verify(Blackboard.shared.get("1") === 5)
 
-                    setSuccessStatus()
+                    setSuccess()
                 }
             }
 
             ActionNode {
-                id: node0_1
-
                 onExecute: {
+                    // 验证节点域
                     verify(!Blackboard.has("1"))
                     verify(Blackboard.get("1") === undefined)
                     Blackboard.set("1", 5)
                     verify(Blackboard.has("1"))
                     verify(Blackboard.get("1") === 5)
+                    Blackboard.set("1", undefined)
+                    verify(!Blackboard.has("1"))
+                    Blackboard.set("1", 5)
+                    verify(Blackboard.has("1"))
+                    Blackboard.unset("1")
+                    verify(!Blackboard.has("1"))
 
-                    // ghost tree blackboard
-                    verify(Blackboard.hast("1"))
-                    verify(Blackboard.gett("1") === 5)
-                    Blackboard.sett("1", undefined)
-                    verify(!Blackboard.hast("1"))
-                    verify(Blackboard.gett("1") === undefined)
+                    // 验证共享域
+                    verify(Blackboard.shared.has("1"))
+                    verify(Blackboard.shared.get("1") === 5)
+                    Blackboard.shared.set("1", undefined)
+                    verify(!Blackboard.shared.has("1"))
+                    Blackboard.shared.set("1", 5)
+                    verify(Blackboard.shared.has("1"))
+                    Blackboard.shared.unset("1")
+                    verify(!Blackboard.shared.has("1"))
 
-                    // global blackboard
+                    // 验证全局域
                     if (testCase.counter === 0) {
-                        verify(!Blackboard.hasg("1"))
-                        verify(Blackboard.getg("1") === undefined)
-                        Blackboard.setg("1", 5)
-                        verify(Blackboard.hasg("1"))
-                        verify(Blackboard.getg("1") === 5)
+                        verify(!Blackboard.global.has("1"))
+                        verify(Blackboard.global.get("1") === undefined)
+                        Blackboard.global.set("1", 5)
+                        verify(Blackboard.global.has("1"))
+                        verify(Blackboard.global.get("1") === 5)
                     } else if (testCase.counter === 1) {
-                        verify(!Blackboard.hasg("1"))
-                        verify(Blackboard.getg("1") === undefined)
+                        verify(!Blackboard.global.has("1"))
+                        verify(Blackboard.global.get("1") === undefined)
+                        Blackboard.global.set("1", 5)
+                        verify(Blackboard.global.has("1"))
+                        Blackboard.global.unset("1")
+                        verify(!Blackboard.global.has("1"))
                     }
                     ++testCase.counter
 
-                    setSuccessStatus()
+                    setSuccess()
                 }
             }
         }
     }
 
     GhostTree {
-        id: tree1
+        id: tree_1
 
         SequenceNode {
             ActionNode {
-                id: node1_0
-
                 onExecute: {
+                    // 验证节点域
                     verify(!Blackboard.has("1"))
                     verify(Blackboard.get("1") === undefined)
                     Blackboard.set("1", 5)
                     verify(Blackboard.has("1"))
                     verify(Blackboard.get("1") === 5)
+                    Blackboard.set("1", undefined)
+                    verify(!Blackboard.has("1"))
+                    Blackboard.set("1", 5)
+                    verify(Blackboard.has("1"))
+                    Blackboard.unset("1")
+                    verify(!Blackboard.has("1"))
 
-                    // ghost tree blackboard
-                    verify(!Blackboard.hast("1"))
-                    verify(Blackboard.gett("1") === undefined)
-                    Blackboard.sett("1", 5)
-                    verify(Blackboard.hast("1"))
-                    verify(Blackboard.gett("1") === 5)
+                    // 验证共享域
+                    verify(!Blackboard.shared.has("1"))
+                    verify(Blackboard.shared.get("1") === undefined)
+                    Blackboard.shared.set("1", 5)
+                    verify(Blackboard.shared.has("1"))
+                    verify(Blackboard.shared.get("1") === 5)
 
-                    setSuccessStatus()
+                    setSuccess()
                 }
             }
 
             ActionNode {
-                id: node1_1
-
                 onExecute: {
+                    // 验证节点域
                     verify(!Blackboard.has("1"))
                     verify(Blackboard.get("1") === undefined)
                     Blackboard.set("1", 5)
                     verify(Blackboard.has("1"))
                     verify(Blackboard.get("1") === 5)
+                    Blackboard.set("1", undefined)
+                    verify(!Blackboard.has("1"))
+                    Blackboard.set("1", 5)
+                    verify(Blackboard.has("1"))
+                    Blackboard.unset("1")
+                    verify(!Blackboard.has("1"))
 
-                    // ghost tree blackboard
-                    verify(Blackboard.hast("1"))
-                    verify(Blackboard.gett("1") === 5)
-                    Blackboard.sett("1", undefined)
-                    verify(!Blackboard.hast("1"))
-                    verify(Blackboard.gett("1") === undefined)
+                    // 验证共享域
+                    verify(Blackboard.shared.has("1"))
+                    verify(Blackboard.shared.get("1") === 5)
+                    Blackboard.shared.set("1", undefined)
+                    verify(!Blackboard.shared.has("1"))
+                    Blackboard.shared.set("1", 5)
+                    verify(Blackboard.shared.has("1"))
+                    Blackboard.shared.unset("1")
+                    verify(!Blackboard.shared.has("1"))
 
-                    // global blackboard
-                    verify(Blackboard.hasg("1"))
-                    verify(Blackboard.getg("1") === 5)
-                    Blackboard.setg("1", undefined)
-                    verify(!Blackboard.hasg("1"))
-                    verify(Blackboard.getg("1") === undefined)
+                    // 验证全局域
+                    verify(Blackboard.global.has("1"))
+                    verify(Blackboard.global.get("1") === 5)
+                    Blackboard.global.set("1", undefined)
+                    verify(!Blackboard.global.has("1"))
+                    verify(Blackboard.global.get("1") === undefined)
 
-                    setSuccessStatus()
+                    setSuccess()
                 }
             }
         }
     }
 
     function test_blackboard_0() {
-        tree0.start()
-
-        wait(100)
-
-        tree1.start()
-
-        wait(100)
-
-        tree0.reset()
-        tree0.start()
+        tree_0.start()
+        tree_1.start()
+        tree_0.reset()
+        tree_0.start()
     }
 }

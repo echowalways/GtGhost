@@ -2,9 +2,8 @@
 #include "gghostnode_p_p.h"
 #include "gghostnode.qdoc"
 
-#include <QtCore/QLoggingCategory>
-
-#include "gghostevent.h"
+#include "gghostevents.h"
+#include "gghoststack_p.h"
 #include "gghosttree_p.h"
 #include "gghosttree_p_p.h"
 
@@ -103,10 +102,48 @@ QJSValue GGhostNode::weight() const
 
 void GGhostNode::classBegin()
 {
+    Q_D(GGhostNode);
+
+    d->masterTree = theGhostStack->current();
 }
 
 void GGhostNode::componentComplete()
 {
+    Q_D(GGhostNode);
+
+    bool hasError = false;
+
+    foreach (GGhostNode *childNode, d->childNodes) {
+        if (Ghost::Invalid == childNode->status()) {
+            hasError = true;
+        }
+    }
+
+    if (Ghost::CompositeNode == d->baseType) {
+        if (d->childNodes.isEmpty()) {
+            qCWarning(qlcGhostNode)
+                    << "Must have at least one child item.";
+            hasError = true;
+        }
+    } else if (Ghost::DecoratorNode == d->baseType) {
+        if (d->childNodes.count() != 1) {
+            qCWarning(qlcGhostNode)
+                    << "Allows only one child node.";
+            hasError = true;
+        }
+    } else if (Ghost::LeafNode == d->baseType) {
+        if (!d->childNodes.isEmpty()) {
+            qCWarning(qlcGhostNode)
+                    << "Does not allow any child items.";
+            hasError = true;
+        }
+    } else {
+        Q_UNREACHABLE();
+    }
+
+    if (!hasError) {
+        d->setStatus(Ghost::StandBy);
+    }
 }
 
 // class GGhostNodePrivate
@@ -218,9 +255,8 @@ void GGhostNodePrivate::setStatus(Ghost::Status status)
         emit q->statusChanged(status);
 
         if (masterTree
-                && (Ghost::Invalid != status)
-                && (Ghost::StandBy != status)
-                && (Ghost::Running != status)) {
+                && ((Ghost::Success == status)
+                    || (Ghost::Failure == status))) {
             cast(masterTree)->postConfirmEvent(q);
         }
     }
@@ -250,6 +286,37 @@ void GGhostNodePrivate::executeEvent(GGhostExecuteEvent *event)
 void GGhostNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
     Q_UNUSED(event);
+}
+
+void GGhostNodePrivate::childNodes_append(QQmlListProperty<GGhostNode> *prop, GGhostNode *v)
+{
+    GGhostNodeList *childNodes
+            = reinterpret_cast<GGhostNodeList *>(prop->data);
+    childNodes->append(v);
+
+    GGhostNodePrivate *dptr = cast(v);
+    dptr->parentNode = static_cast<GGhostNode *>(prop->object);
+}
+
+GGhostNode *GGhostNodePrivate::childNodes_at(QQmlListProperty<GGhostNode> *prop, int i)
+{
+    GGhostNodeList *childNodes
+            = reinterpret_cast<GGhostNodeList *>(prop->data);
+    return childNodes->at(i);
+}
+
+void GGhostNodePrivate::childNodes_clear(QQmlListProperty<GGhostNode> *prop)
+{
+    GGhostNodeList *childNodes
+            = reinterpret_cast<GGhostNodeList *>(prop->data);
+    childNodes->clear();
+}
+
+int GGhostNodePrivate::childNodes_count(QQmlListProperty<GGhostNode> *prop)
+{
+    GGhostNodeList *childNodes
+            = reinterpret_cast<GGhostNodeList *>(prop->data);
+    return childNodes->count();
 }
 
 bool GGhostNodePrivate::callPrecondition()
@@ -294,70 +361,11 @@ uint GGhostNodePrivate::callWeight()
     return 1u;
 }
 
-bool GGhostNodePrivate::greatThan(GGhostNode *leftChildNode, GGhostNode *rightChildNode)
-{
-    return cast(leftChildNode)->sortIndex > cast(rightChildNode)->sortIndex;
-}
-
 void GGhostNodePrivate::sort(GGhostNodeList &childNodes)
 {
-    std::sort(childNodes.begin(), childNodes.end(), &GGhostNodePrivate::greatThan);
-}
-
-bool GGhostNodePrivate::initialize()
-{
-    bool r = initialize(childNodes);
-    if (r) {
-        setStatus(Ghost::StandBy);
-    }
-    return r;
-}
-
-bool GGhostNodePrivate::initialize(const GGhostNodeList &childNodes)
-{
-    Q_Q(GGhostNode);
-
-    bool hasError = false;
-
-    foreach (GGhostNode *childNode, childNodes) {
-        GGhostNodePrivate *childptr = cast(childNode);
-        // 初始化子节点数据
-        childptr->masterTree = masterTree;
-        childptr->parentNode = q;
-        childptr->extraData = extraData;
-        // 开始初始化子节点
-        if (!childptr->initialize()) {
-            hasError = true;
-        }
-    }
-
-    if (Ghost::CompositeNode == baseType) {
-        if (childNodes.isEmpty()) {
-            qCWarning(qlcGhostNode)
-                    << "Must have at least one child item.";
-            hasError = true;
-        }
-    } else if (Ghost::DecoratorNode == baseType) {
-        if (childNodes.count() != 1) {
-            qCWarning(qlcGhostNode)
-                    << "Allows only one child node.";
-            hasError = true;
-        }
-    } else if (Ghost::LeafNode == baseType) {
-        if (!childNodes.isEmpty()) {
-            qCWarning(qlcGhostNode)
-                    << "Does not allow any child items.";
-            hasError = true;
-        }
-    } else {
-        Q_UNREACHABLE();
-    }
-
-    if (!hasError) {
-        emit q->initialized();
-    }
-
-    return !hasError;
+    std::sort(childNodes.begin(), childNodes.end(), [](GGhostNode *lhs, GGhostNode *rhs) {
+        return cast(lhs)->sortIndex > cast(rhs)->sortIndex;
+    });
 }
 
 // moc_gghostnode_p.cpp

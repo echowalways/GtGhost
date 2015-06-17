@@ -2,7 +2,6 @@
 #define GGHOSTNODE_P_P_H
 
 #include <private/qobject_p.h>
-#include <QtQml/QQmlListProperty>
 
 #include "gghostnode_p.h"
 
@@ -44,6 +43,11 @@ public:
     // 核心数据
 public:
     QQmlListProperty<GGhostNode> _q_childNodes();
+private:
+    static void childNodes_append(QQmlListProperty<GGhostNode> *prop, GGhostNode *v);
+    static GGhostNode *childNodes_at(QQmlListProperty<GGhostNode> *prop, int i);
+    static void childNodes_clear(QQmlListProperty<GGhostNode> *prop);
+    static int childNodes_count(QQmlListProperty<GGhostNode> *prop);
 public:
     GGhostTree *masterTree;
     GGhostNode *parentNode;
@@ -60,7 +64,6 @@ private:
 
     // 节点排序
 public:
-    static bool greatThan(GGhostNode *leftChildNode, GGhostNode *rightChildNode);
     static void sort(GGhostNodeList &childNodes);
 public:
     uint sortIndex;
@@ -71,15 +74,9 @@ public:
 
     //
 public:
-    virtual bool initialize();
-
-public:
-    virtual void reset() = 0;
+    virtual bool reset() = 0;
     virtual void execute() = 0;
-    virtual void terminate() = 0;
-
-public:
-    bool initialize(const GGhostNodeList &childNodes);
+    virtual bool terminate() = 0;
 };
 
 inline GGhostNodePrivate *GGhostNodePrivate::cast(GGhostNode *node)
@@ -96,7 +93,11 @@ inline const GGhostNodePrivate *GGhostNodePrivate::cast(const GGhostNode *node)
 
 inline QQmlListProperty<GGhostNode> GGhostNodePrivate::_q_childNodes()
 {
-    return QQmlListProperty<GGhostNode>(q_func(), childNodes);
+    return QQmlListProperty<GGhostNode>(q_func(), &childNodes,
+                                        &GGhostNodePrivate::childNodes_append,
+                                        &GGhostNodePrivate::childNodes_count,
+                                        &GGhostNodePrivate::childNodes_at,
+                                        &GGhostNodePrivate::childNodes_clear);
 }
 
 #endif // GGHOSTNODE_P_P_H

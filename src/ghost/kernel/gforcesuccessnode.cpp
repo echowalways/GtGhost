@@ -1,7 +1,7 @@
 #include "gforcesuccessnode_p.h"
 #include "gforcesuccessnode_p_p.h"
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GForceSuccessNode
 

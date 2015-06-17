@@ -1,7 +1,7 @@
 #include "gparallelnode_p.h"
 #include "gparallelnode_p_p.h"
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GParallelNode
 
@@ -49,23 +49,9 @@ void GParallelNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
-void GParallelNodePrivate::reset()
+bool GParallelNodePrivate::reset()
 {
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    QListIterator<GGhostNode *> i(childNodes);
-
-    i.toBack();
-    while (i.hasPrevious()) {
-        GGhostNode *childNode = i.previous();
-        if (Ghost::StandBy != cast(childNode)->status) {
-            cast(childNode)->reset();
-        }
-    }
-
-    setStatus(Ghost::StandBy);
+    return true;
 }
 
 void GParallelNodePrivate::execute()
@@ -94,21 +80,13 @@ void GParallelNodePrivate::execute()
     executeState = false;
 
     if (r) {
-        setStatus(breakStatus);
+        setStatus(brokenStatus);
     } else if (0 == executeCounter) {
         setStatus(Ghost::Success);
     }
 }
 
-void GParallelNodePrivate::terminate()
+bool GParallelNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    terminateState = true;
-    foreach (GGhostNode *childNode, childNodes) {
-        GGhostNodePrivate *dptr = cast(childNode);
-        if (Ghost::Running == dptr->status) {
-            dptr->terminate();
-        }
-    }
+    return true;
 }

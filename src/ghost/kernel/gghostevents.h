@@ -1,5 +1,5 @@
-#ifndef GGHOSTEVENT_H
-#define GGHOSTEVENT_H
+#ifndef GGHOSTEVENTS_H
+#define GGHOSTEVENTS_H
 
 #include "gghostglobal.h"
 
@@ -71,4 +71,4 @@ inline Ghost::Status GGhostConfirmEvent::status() const
     return ghostStatus;
 }
 
-#endif // GGHOSTEVENT_H
+#endif // GGHOSTEVENTS_H

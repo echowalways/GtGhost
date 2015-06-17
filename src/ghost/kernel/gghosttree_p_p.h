@@ -3,9 +3,6 @@
 
 #include <private/qobject_p.h>
 
-#include <QtCore/QQueue>
-#include <QtQml/QQmlListProperty>
-
 #include "gghosttree_p.h"
 
 class GGhostNodePrivate;
@@ -55,14 +52,6 @@ public:
     QQmlListProperty<GGhostNode> _q_childNodes();
 public:
     GGhostNodeList childNodes;
-
-    //
-public:
-    bool initialize();
-
-    void reset();
-    void execute();
-    void terminate();
 };
 
 inline GGhostTreePrivate *GGhostTreePrivate::cast(GGhostTree *tree)

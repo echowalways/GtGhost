@@ -3,7 +3,7 @@
 
 #include <QtCore/QLoggingCategory>
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 Q_LOGGING_CATEGORY(qlcRandomSequenceNode, "GtGhost.RandomSequenceNode")
 
@@ -55,6 +55,17 @@ Ghost::RandomMode GRandomSequenceNode::randomMode() const
     return d->randomMode;
 }
 
+void GRandomSequenceNode::componentComplete()
+{
+    Q_D(GRandomSequenceNode);
+
+    GCompositeNode::componentComplete();
+
+    if (Ghost::StandBy == d->status) {
+        d->resortChildNodes();
+    }
+}
+
 // class GRandomSequenceNodePrivate
 
 GRandomSequenceNodePrivate::GRandomSequenceNodePrivate()
@@ -85,39 +96,11 @@ void GRandomSequenceNodePrivate::confirmEvent(GGhostConfirmEvent *event)
     }
 }
 
-bool GRandomSequenceNodePrivate::initialize()
+bool GRandomSequenceNodePrivate::reset()
 {
-    sortedChildNodes = childNodes;
-
     resortChildNodes();
 
-    if (GGhostNodePrivate::initialize(sortedChildNodes)) {
-        setStatus(Ghost::StandBy);
-        return true;
-    }
-
-    return false;
-}
-
-void GRandomSequenceNodePrivate::reset()
-{
-    Q_ASSERT(Ghost::Invalid != status);
-    Q_ASSERT(Ghost::StandBy != status);
-    Q_ASSERT(Ghost::Running != status);
-
-    resortChildNodes();
-
-    QListIterator<GGhostNode *> i(sortedChildNodes);
-
-    i.toBack();
-    while (i.hasPrevious()) {
-        GGhostNode *childNode = i.previous();
-        if (Ghost::StandBy != cast(childNode)->status) {
-            cast(childNode)->reset();
-        }
-    }
-
-    setStatus(Ghost::StandBy);
+    return true;
 }
 
 void GRandomSequenceNodePrivate::execute()
@@ -138,13 +121,9 @@ void GRandomSequenceNodePrivate::execute()
     executeNextChildNode();
 }
 
-void GRandomSequenceNodePrivate::terminate()
+bool GRandomSequenceNodePrivate::terminate()
 {
-    Q_ASSERT(Ghost::Running == status);
-
-    GGhostNode *childNode
-            = sortedChildNodes.at(executeIndex);
-    cast(childNode)->terminate();
+    return true;
 }
 
 void GRandomSequenceNodePrivate::executeNextChildNode()
@@ -166,7 +145,7 @@ void GRandomSequenceNodePrivate::executeNextChildNode()
         if (executeCounter) {
             setStatus(Ghost::Success);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }
