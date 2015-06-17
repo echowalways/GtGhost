@@ -1,8 +1,6 @@
 #include "gghostnode_p.h"
 #include "gghostnode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
 #include "gghostevent.h"
 #include "gghoststack_p.h"
 #include "gghosttree_p.h"
@@ -362,14 +360,11 @@ uint GGhostNodePrivate::callWeight()
     return 1u;
 }
 
-bool GGhostNodePrivate::greatThan(GGhostNode *leftChildNode, GGhostNode *rightChildNode)
-{
-    return cast(leftChildNode)->sortIndex > cast(rightChildNode)->sortIndex;
-}
-
 void GGhostNodePrivate::sort(GGhostNodeList &childNodes)
 {
-    std::sort(childNodes.begin(), childNodes.end(), &GGhostNodePrivate::greatThan);
+    std::sort(childNodes.begin(), childNodes.end(), [](GGhostNode *lhs, GGhostNode *rhs) {
+        return cast(lhs)->sortIndex > cast(rhs)->sortIndex;
+    });
 }
 
 // moc_gghostnode_p.cpp

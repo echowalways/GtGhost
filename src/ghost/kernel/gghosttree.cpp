@@ -1,9 +1,6 @@
 #include "gghosttree_p.h"
 #include "gghosttree_p_p.h"
 
-#include <QtCore/QDateTime>
-#include <QtCore/QLoggingCategory>
-
 #include "gghostevent.h"
 #include "gghoststack_p.h"
 #include "gghostnode_p.h"

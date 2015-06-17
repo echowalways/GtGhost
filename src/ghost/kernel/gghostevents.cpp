@@ -1,4 +1,4 @@
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GGhostEvent
 

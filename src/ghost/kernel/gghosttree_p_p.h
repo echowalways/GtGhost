@@ -3,9 +3,6 @@
 
 #include <private/qobject_p.h>
 
-#include <QtCore/QQueue>
-#include <QtQml/QQmlListProperty>
-
 #include "gghosttree_p.h"
 
 class GGhostNodePrivate;

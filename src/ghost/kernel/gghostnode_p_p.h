@@ -2,7 +2,6 @@
 #define GGHOSTNODE_P_P_H
 
 #include <private/qobject_p.h>
-#include <QtQml/QQmlListProperty>
 
 #include "gghostnode_p.h"
 
@@ -65,7 +64,6 @@ private:
 
     // 节点排序
 public:
-    static bool greatThan(GGhostNode *leftChildNode, GGhostNode *rightChildNode);
     static void sort(GGhostNodeList &childNodes);
 public:
     uint sortIndex;

@@ -3,8 +3,6 @@
 
 #include "gghostglobal.h"
 
-class GBlackboard;
-
 class GGhostTreePrivate;
 class GGhostTree : public QObject, public QQmlParserStatus
 {

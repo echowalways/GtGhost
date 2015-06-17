@@ -13,7 +13,7 @@ DESTDIR  = $$PWD/../../bin
 SOURCES += tst_itemstest.cpp
 
 OTHER_FILES += \
-    cases/tst_ActionNode.qml
-
-DISTFILES += \
-    cases/tst_Blackboard.qml
+    cases/tst_ActionNode.qml \
+    cases/tst_Blackboard.qml \
+    cases/tst_GhostTree.qml \
+    cases/tst_GhostNode.qml
