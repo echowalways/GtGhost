@@ -19,8 +19,7 @@ OTHER_FILES += \
     cases/tst_CompositeNode.qml \
     cases/tst_DecoratorNode.qml \
     cases/tst_LeafNode.qml \
-    cases/tst_ActionNode.qml
-
-DISTFILES += \
+    cases/tst_ActionNode.qml \
     cases/tst_SequenceNode.qml \
-    cases/tst_SelectorNode.qml
+    cases/tst_SelectorNode.qml \
+    cases/tst_ParallelNode.qml
