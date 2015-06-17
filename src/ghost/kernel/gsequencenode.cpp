@@ -3,7 +3,7 @@
 
 #include <QtDebug>
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GSequenceNode
 
@@ -83,7 +83,7 @@ void GSequenceNodePrivate::executeNextChildNode()
         if (executeCounter) {
             setStatus(Ghost::Success);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }

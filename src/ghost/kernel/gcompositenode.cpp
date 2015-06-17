@@ -12,21 +12,20 @@ GCompositeNode::GCompositeNode(GCompositeNodePrivate &dd, QObject *parent)
 {
 }
 
-void GCompositeNode::setBreakStatus(Ghost::Status value)
+void GCompositeNode::setBrokenStatus(Ghost::Status value)
 {
     Q_D(GCompositeNode);
 
-    if ((Ghost::Invalid == value)
-            || (Ghost::StandBy == value)
-            || (Ghost::Running == value)) {
+    if ((Ghost::Success != value)
+            && (Ghost::Failure != value)) {
         qCWarning(qlcCompositeNode)
-                << "Invalid break status: " << Ghost::toString(value);
+                << "Invalid broken status: " << Ghost::toString(value);
         return;
     }
 
-    if (value != d->breakStatus) {
-        d->breakStatus = value;
-        emit breakStatusChanged(value);
+    if (value != d->brokenStatus) {
+        d->brokenStatus = value;
+        emit brokenStatusChanged(value);
     }
 }
 
@@ -46,10 +45,10 @@ void GCompositeNode::setUnmatchCount(int value)
     }
 }
 
-Ghost::Status GCompositeNode::breakStatus() const
+Ghost::Status GCompositeNode::brokenStatus() const
 {
     Q_D(const GCompositeNode);
-    return d->breakStatus;
+    return d->brokenStatus;
 }
 
 int GCompositeNode::unmatchCount() const
@@ -62,7 +61,7 @@ int GCompositeNode::unmatchCount() const
 
 GCompositeNodePrivate::GCompositeNodePrivate(Ghost::NodeType nodeType)
     : GGhostNodePrivate(Ghost::CompositeNode, nodeType)
-    , breakStatus(Ghost::Failure)
+    , brokenStatus(Ghost::Failure)
     , unmatchCount(1)
     , unmatchCounter(-1)
     , executeIndex(0)

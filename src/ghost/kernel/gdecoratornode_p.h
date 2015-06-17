@@ -8,16 +8,16 @@ class GDecoratorNode : public GGhostNode
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(GDecoratorNode)
-    Q_PROPERTY(Ghost::Status breakStatus READ breakStatus WRITE setBreakStatus NOTIFY breakStatusChanged)
+    Q_PROPERTY(Ghost::Status brokenStatus READ brokenStatus WRITE setBrokenStatus NOTIFY brokenStatusChanged)
 
 protected:
     GDecoratorNode(GDecoratorNodePrivate &dd, QObject *parent);
 
 Q_SIGNALS:
-    void breakStatusChanged(Ghost::Status value);
+    void brokenStatusChanged(Ghost::Status value);
 public:
-    void setBreakStatus(Ghost::Status value);
-    Ghost::Status breakStatus() const;
+    void setBrokenStatus(Ghost::Status value);
+    Ghost::Status brokenStatus() const;
 };
 
 #endif // GDECORATORNODE_P_H

@@ -1,7 +1,7 @@
 #include "gghosttree_p.h"
 #include "gghosttree_p_p.h"
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 #include "gghoststack_p.h"
 #include "gghostnode_p.h"
 #include "gghostnode_p_p.h"

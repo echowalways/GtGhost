@@ -3,7 +3,7 @@
 
 #include <QtCore/QLoggingCategory>
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 Q_LOGGING_CATEGORY(qlcPrioritySelectorNode, "GtGhost.PrioritySelectorNode")
 
@@ -119,7 +119,7 @@ void GPrioritySelectorNodePrivate::executeNextChildNode()
         if (executeCounter) {
             setStatus(Ghost::Failure);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }

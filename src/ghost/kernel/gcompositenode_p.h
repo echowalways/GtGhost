@@ -8,19 +8,19 @@ class GCompositeNode : public GGhostNode
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(GCompositeNode)
-    Q_PROPERTY(Ghost::Status breakStatus READ breakStatus WRITE setBreakStatus NOTIFY breakStatusChanged)
+    Q_PROPERTY(Ghost::Status brokenStatus READ brokenStatus WRITE setBrokenStatus NOTIFY brokenStatusChanged)
     Q_PROPERTY(int unmatchCount READ unmatchCount WRITE setUnmatchCount NOTIFY unmatchCountChanged)
 
 protected:
     GCompositeNode(GCompositeNodePrivate &dd, QObject *parent);
 
 Q_SIGNALS:
-    void breakStatusChanged(Ghost::Status value);
+    void brokenStatusChanged(Ghost::Status value);
     void unmatchCountChanged(int value);
 public:
-    void setBreakStatus(Ghost::Status value);
+    void setBrokenStatus(Ghost::Status value);
     void setUnmatchCount(int value);
-    Ghost::Status breakStatus() const;
+    Ghost::Status brokenStatus() const;
     int unmatchCount() const;
 };
 

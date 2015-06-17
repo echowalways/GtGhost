@@ -1,7 +1,7 @@
 #include "gparallelnode_p.h"
 #include "gparallelnode_p_p.h"
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GParallelNode
 
@@ -71,7 +71,7 @@ void GParallelNodePrivate::execute()
     executeState = false;
 
     if (r) {
-        setStatus(breakStatus);
+        setStatus(brokenStatus);
     } else if (0 == executeCounter) {
         setStatus(Ghost::Success);
     }

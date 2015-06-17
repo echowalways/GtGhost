@@ -12,35 +12,34 @@ GDecoratorNode::GDecoratorNode(GDecoratorNodePrivate &dd, QObject *parent)
 {
 }
 
-void GDecoratorNode::setBreakStatus(Ghost::Status value)
+void GDecoratorNode::setBrokenStatus(Ghost::Status value)
 {
     Q_D(GDecoratorNode);
 
-    if ((Ghost::Invalid == value)
-            || (Ghost::Running == value)
-            || (Ghost::Stopped == value)) {
+    if ((Ghost::Success != value)
+            && (Ghost::Failure != value)) {
         qCWarning(qlcDecoratorNode)
-                << "Invalid break status: " << Ghost::toString(value);
+                << "Invalid broken status: " << Ghost::toString(value);
         return;
     }
 
-    if (value != d->breakStatus) {
-        d->breakStatus = value;
-        emit breakStatusChanged(value);
+    if (value != d->brokenStatus) {
+        d->brokenStatus = value;
+        emit brokenStatusChanged(value);
     }
 }
 
-Ghost::Status GDecoratorNode::breakStatus() const
+Ghost::Status GDecoratorNode::brokenStatus() const
 {
     Q_D(const GDecoratorNode);
-    return d->breakStatus;
+    return d->brokenStatus;
 }
 
 // class GDecoratorNodePrivate
 
 GDecoratorNodePrivate::GDecoratorNodePrivate(Ghost::NodeType nodeType)
     : GGhostNodePrivate(Ghost::DecoratorNode, nodeType)
-    , breakStatus(Ghost::Failure)
+    , brokenStatus(Ghost::Failure)
 {
 }
 
@@ -65,7 +64,7 @@ void GDecoratorNodePrivate::execute()
     if (childptr->callPrecondition()) {
         postExecuteEvent(childNodes[0]);
     } else {
-        setStatus(breakStatus);
+        setStatus(brokenStatus);
     }
 }
 

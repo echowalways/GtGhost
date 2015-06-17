@@ -1,7 +1,7 @@
 #include "gselectornode_p.h"
 #include "gselectornode_p_p.h"
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 // class GSelectorNode
 
@@ -81,7 +81,7 @@ void GSelectorNodePrivate::executeNextChildNode()
         if (executeCounter) {
             setStatus(Ghost::Failure);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }

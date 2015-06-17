@@ -99,13 +99,13 @@ TestCase {
             ActionNode {
                 id: node_2_0_0
 
-                onExecute: setSuccessStatus()
+                onExecute: setSuccess()
             }
 
             ActionNode {
                 id: node_2_0_1
 
-                onExecute: setSuccessStatus()
+                onExecute: setSuccess()
             }
         }
     }
@@ -189,13 +189,13 @@ TestCase {
             ActionNode {
                 id: node_3_0_0
 
-                onExecute: setSuccessStatus()
+                onExecute: setSuccess()
             }
 
             ActionNode {
                 id: node_3_0_1
 
-                onExecute: setSuccessStatus()
+                onExecute: setSuccess()
             }
         }
     }
@@ -362,7 +362,7 @@ TestCase {
         verify(inspector_4.nextStatus(node_4_0_0, Ghost.Running))
         verify(inspector_4.done())
 
-        node_4_0_0.setSuccessStatus()
+        node_4_0_0.setSuccess()
 
         verify(spy_4_started.count === 1)
         verify(spy_4_finished.count === 0)
@@ -372,7 +372,7 @@ TestCase {
         verify(inspector_4.nextStatus(node_4_0_1, Ghost.Running))
         verify(inspector_4.done())
 
-        node_4_0_1.setSuccessStatus()
+        node_4_0_1.setSuccess()
 
         verify(spy_4_started.count === 1)
         verify(spy_4_finished.count === 1)
@@ -408,7 +408,7 @@ TestCase {
         verify(inspector_4.nextStatus(node_4_0_0, Ghost.Running))
         verify(inspector_4.done())
 
-        node_4_0_0.setFailureStatus()
+        node_4_0_0.setFailure()
 
         verify(spy_4_started.count === 1)
         verify(spy_4_finished.count === 1)
@@ -524,7 +524,7 @@ TestCase {
         verify(inspector_5.nextStatus(node_5_0_0, Ghost.Running))
         verify(inspector_5.done())
 
-        node_5_0_0.setSuccessStatus()
+        node_5_0_0.setSuccess()
 
         verify(spy_5_started.count === 1)
         verify(spy_5_finished.count === 0)

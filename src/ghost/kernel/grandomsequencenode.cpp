@@ -3,7 +3,7 @@
 
 #include <QtCore/QLoggingCategory>
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 Q_LOGGING_CATEGORY(qlcRandomSequenceNode, "GtGhost.RandomSequenceNode")
 
@@ -136,7 +136,7 @@ void GRandomSequenceNodePrivate::executeNextChildNode()
         if (executeCounter) {
             setStatus(Ghost::Success);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }

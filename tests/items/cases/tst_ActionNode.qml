@@ -31,7 +31,7 @@ TestCase {
         ActionNode {
             id: node_1
 
-            onExecute: setSuccessStatus()
+            onExecute: setSuccess()
         }
     }
 
@@ -59,7 +59,7 @@ TestCase {
         ActionNode {
             id: node_2
 
-            onExecute: setFailureStatus()
+            onExecute: setFailure()
         }
     }
 
@@ -105,7 +105,7 @@ TestCase {
         verify(inspector_3.nextStatus(node_3, Ghost.Running))
         verify(inspector_3.done())
 
-        node_3.setSuccessStatus()
+        node_3.setSuccess()
 
         verify(inspector_3.nextStatus(node_3, Ghost.Success))
         verify(inspector_3.nextStatus(tree_3, Ghost.Success))
@@ -138,7 +138,7 @@ TestCase {
         verify(inspector_4.nextStatus(node_4, Ghost.Running))
         verify(inspector_4.done())
 
-        node_4.setFailureStatus()
+        node_4.setFailure()
 
         verify(inspector_4.nextStatus(node_4, Ghost.Failure))
         verify(inspector_4.nextStatus(tree_4, Ghost.Failure))
@@ -186,7 +186,7 @@ TestCase {
         ActionNode {
             id: node_6
             precondition: true
-            onExecute: setSuccessStatus()
+            onExecute: setSuccess()
         }
     }
 
@@ -226,7 +226,7 @@ TestCase {
             precondition: function() {
                 return true
             }
-            onExecute: setSuccessStatus()
+            onExecute: setSuccess()
         }
     }
 
@@ -269,7 +269,7 @@ TestCase {
         ActionNode {
             id: node8
             precondition: blackboard_8.value < 7
-            onExecute: setSuccessStatus()
+            onExecute: setSuccess()
         }
     }
 

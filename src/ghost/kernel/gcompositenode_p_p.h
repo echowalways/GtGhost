@@ -13,7 +13,7 @@ public:
     virtual ~GCompositeNodePrivate();
 
 public:
-    Ghost::Status breakStatus;
+    Ghost::Status brokenStatus;
 
     int unmatchCount;
     int unmatchCounter;

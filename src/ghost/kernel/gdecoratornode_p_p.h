@@ -18,7 +18,7 @@ public:
     virtual bool terminate() Q_DECL_FINAL;
 
 public:
-    Ghost::Status breakStatus;
+    Ghost::Status brokenStatus;
 };
 
 #endif // GDECORATORNODE_P_P_H

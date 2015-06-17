@@ -3,7 +3,7 @@
 
 #include <QtCore/QLoggingCategory>
 
-#include "gghostevent.h"
+#include "gghostevents.h"
 
 Q_LOGGING_CATEGORY(qlcRepeatUntilSuccessNode, "GtGhost.RepeatUntilSuccessNode")
 
@@ -74,7 +74,7 @@ void GRepeatUntilSuccessNodePrivate::confirmEvent(GGhostConfirmEvent *event)
         if (childptr->callPrecondition()) {
             postExecuteEvent(childNodes[0]);
         } else {
-            setStatus(breakStatus);
+            setStatus(brokenStatus);
         }
     }
 }

@@ -33,7 +33,7 @@ TestCase {
                     verify(Blackboard.shared.has("1"))
                     verify(Blackboard.shared.get("1") === 5)
 
-                    setSuccessStatus()
+                    setSuccess()
                 }
             }
 
@@ -79,7 +79,7 @@ TestCase {
                     }
                     ++testCase.counter
 
-                    setSuccessStatus()
+                    setSuccess()
                 }
             }
         }
@@ -111,7 +111,7 @@ TestCase {
                     verify(Blackboard.shared.has("1"))
                     verify(Blackboard.shared.get("1") === 5)
 
-                    setSuccessStatus()
+                    setSuccess()
                 }
             }
 
@@ -147,7 +147,7 @@ TestCase {
                     verify(!Blackboard.global.has("1"))
                     verify(Blackboard.global.get("1") === undefined)
 
-                    setSuccessStatus()
+                    setSuccess()
                 }
             }
         }
