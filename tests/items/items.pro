@@ -22,4 +22,5 @@ OTHER_FILES += \
     cases/tst_ActionNode.qml
 
 DISTFILES += \
-    cases/tst_SequenceNode.qml
+    cases/tst_SequenceNode.qml \
+    cases/tst_SelectorNode.qml
