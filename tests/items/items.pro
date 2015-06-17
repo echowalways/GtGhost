@@ -20,3 +20,6 @@ OTHER_FILES += \
     cases/tst_DecoratorNode.qml \
     cases/tst_LeafNode.qml \
     cases/tst_ActionNode.qml
+
+DISTFILES += \
+    cases/tst_SequenceNode.qml
