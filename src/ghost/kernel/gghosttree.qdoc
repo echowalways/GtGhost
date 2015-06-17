@@ -7,33 +7,66 @@
  */
 
 /*!
+    \qmlproperty enumeration GtGhost::GhostTree::status
+
+    这个属性掌握着当前树的状态。
+
+    下面罗列出了所有可能的树状态：
+
+    \list
+    \li \c Ghost.Invalid - 此状态表明树无法使用。造成这种状态的原因是树初始化的某些条件不满足。
+    \li \c Ghost.StandBy - 此状态表明树正在待命。首次加载或重置树都会进入到此状态。
+    \li \c Ghost.Running - 此状态表明树正在运行。
+    \li \c Ghost.Success - 此状态表明树执行成功。
+    \li \c Ghost.Failure - 此状态表明树执行失败。
+    \li \c Ghost.Stopped - 此状态表明树已经停止。
+    \endlist
+
+    \note 这个属性是只读属性。
+    \sa GhostNode
+ */
+
+/*!
     \qmlproperty list<GhostNode> GtGhost::GhostTree::childNodes
  */
 
 /*!
     \qmlsignal GtGhost::GhostTree::started()
+
+    当树开始运行的时候将会触发此信号。
+
+    \sa GhostTree::start()
  */
 
 /*!
     \qmlsignal GtGhost::GhostTree::finished()
+
+    当树执行完成的时候将会触发此信号。
+
+    只有当树自身执行完毕，状态切换为 \c Ghost.Success 或 \c Ghost.Failure 才会触发此信号。调用 GhostTree::stop() 停止树是不会触发此信号的。
  */
 
 /*!
     \qmlsignal GtGhost::GhostTree::stopped()
+
+    当树执行完成，或被终止的时候将会触发此信号。
+    \sa GhostTree::stop()
  */
 
 /*!
     \qmlmethod void GtGhost::GhostTree::start()
+
+    此方法将开始树的执行。如果树正在运行中，此方法将什么也不做。
  */
 
 /*!
     \qmlmethod void GtGhost::GhostTree::stop()
+
+    此方法将停止树的执行。如果树并没有运行，此方法将什么也不做。
  */
 
 /*!
     \qmlmethod void GtGhost::GhostTree::reset()
- */
 
-/*!
-    \qmlproperty GhostData GtGhost::GhostTree::data
+    此方法将重置树和树的所有子节点。如果树正在运行中，此方法将什么也不做。
  */

@@ -9,6 +9,26 @@
  */
 
 /*!
+    \qmlproperty enumeration GtGhost::GhostNode::status
+
+    这个属性掌握着当前节点的状态。
+
+    下面罗列出了所有可能的节点状态：
+
+    \list
+    \li \c Ghost.Invalid - 此状态表明节点无法使用。造成这种状态的原因是节点初始化的某些条件不满足。
+    \li \c Ghost.StandBy - 此状态表明节点正在待命。首次加载或重置节点都会进入到此状态。
+    \li \c Ghost.Running - 此状态表明节点正在运行。
+    \li \c Ghost.Success - 此状态表明节点执行成功。
+    \li \c Ghost.Failure - 此状态表明节点执行失败。
+    \li \c Ghost.Stopped - 此状态表明节点已经停止。
+    \endlist
+
+    \note 这个属性是只读属性。
+    \sa GhostTree
+ */
+
+/*!
     \qmlproperty GhostTree GtGhost::GhostNode::masterTree
 
     这个属性掌握着当前节点所属的主灵魂树。
@@ -32,9 +52,9 @@
     在 Gt Ghost 中，节点可分为三种基本类型：
 
     \list
-    \li Ghost.CompositeNode - 组合型节点类型
-    \li Ghost.DecoratorNode - 修饰型节点类型
-    \li Ghost.LeafNode - 子叶型节点类型
+    \li \c Ghost.CompositeNode - 组合型节点类型
+    \li \c Ghost.DecoratorNode - 修饰型节点类型
+    \li \c Ghost.LeafNode - 子叶型节点类型
     \endlist
 
     \note 这个属性是只读属性。
@@ -48,24 +68,24 @@
     下面罗列出了所有可能的节点类型：
 
     \list
-    \li Ghost.SequenceNode
-    \li Ghost.SelectorNode
-    \li Ghost.ParallelNode
-    \li Ghost.PrioritySequenceNode
-    \li Ghost.PrioritySelectorNode
-    \li Ghost.RandomSequenceNode
-    \li Ghost.RandomSelectorNode
-    \li Ghost.ParallelSequenceNode
-    \li Ghost.ParallelSelectorNode
-    \li Ghost.InverterNode
-    \li Ghost.RepeaterNode
-    \li Ghost.ForceSuccessNode
-    \li Ghost.ForceFailureNode
-    \li Ghost.RepeatUntilSuccessNode
-    \li Ghost.RepeatUntilFailureNode
-    \li Ghost.ActionNode
-    \li Ghost.ConditionNode
-    \li Ghost.FreezeNode
+    \li \c Ghost.SequenceNode
+    \li \c Ghost.SelectorNode
+    \li \c Ghost.ParallelNode
+    \li \c Ghost.PrioritySequenceNode
+    \li \c Ghost.PrioritySelectorNode
+    \li \c Ghost.RandomSequenceNode
+    \li \c Ghost.RandomSelectorNode
+    \li \c Ghost.ParallelSequenceNode - \b 暂不支持
+    \li \c Ghost.ParallelSelectorNode - \b 暂不支持
+    \li \c Ghost.InverterNode
+    \li \c Ghost.RepeaterNode
+    \li \c Ghost.ForceSuccessNode
+    \li \c Ghost.ForceFailureNode
+    \li \c Ghost.RepeatUntilSuccessNode
+    \li \c Ghost.RepeatUntilFailureNode
+    \li \c Ghost.ActionNode
+    \li \c Ghost.ConditionNode
+    \li \c Ghost.FreezeNode
     \endlist
 
     \note 这个属性是只读属性。
@@ -75,6 +95,12 @@
     \qmlproperty list<GhostNode> GtGhost::GhostNode::childNodes
 
     这个属性掌握着子节点的列表。
+ */
+
+/*!
+    \qmlproperty string GtGhost::GhostNode::comment
+
+    这个属性掌握着子节点的注释。
  */
 
 /*!
@@ -186,8 +212,4 @@
     \sa PrioritySelectorNode, PrioritySequenceNode, RandomSelectorNode, RandomSequenceNode
 
     \note 当权重值的计算结果小于 1 的时候，结果将会被重置到 1。
- */
-
-/*!
-    \qmlproperty GhostData GtGhost::GhostNode::data
  */
