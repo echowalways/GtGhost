@@ -1,12 +1,8 @@
 #include "gblackboard_p.h"
 #include "gblackboard_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
 #include "gghosttree_p.h"
 #include "gghostnode_p.h"
-
-Q_LOGGING_CATEGORY(qlcBlackboard, "GtGhost.Blackboard")
 
 typedef QHash<QQmlEngine *, QPointer<GBlackboard> > GlobalBlackboards;
 Q_GLOBAL_STATIC(GlobalBlackboards, theGlobalBlackboards)
@@ -86,8 +82,7 @@ GBlackboard *GBlackboard::sharedBlackboard() const
     }
 
     if (!d->masterTree) {
-        qCWarning(qlcBlackboard)
-                << "Master tree is null.";
+        qWarning("GtGhost : Master tree is null.");
         return nullptr;
     }
 

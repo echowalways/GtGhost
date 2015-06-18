@@ -1,10 +1,6 @@
 #include "gdecoratornode_p.h"
 #include "gdecoratornode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
-Q_LOGGING_CATEGORY(qlcDecoratorNode, "GtGhost.DecoratorNode")
-
 // class GDecoratorNode
 
 GDecoratorNode::GDecoratorNode(GDecoratorNodePrivate &dd, QObject *parent)
@@ -18,8 +14,8 @@ void GDecoratorNode::setBrokenStatus(Ghost::Status value)
 
     if ((Ghost::Success != value)
             && (Ghost::Failure != value)) {
-        qCWarning(qlcDecoratorNode)
-                << "Invalid broken status: " << Ghost::toString(value);
+        qWarning("GtGhost : Invalid broken status: '%s'",
+                 Ghost::toString(value));
         return;
     }
 

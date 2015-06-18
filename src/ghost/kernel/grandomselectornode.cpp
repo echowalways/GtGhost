@@ -1,11 +1,7 @@
 #include "grandomselectornode_p.h"
 #include "grandomselectornode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
 #include "gghostevents.h"
-
-Q_LOGGING_CATEGORY(qlcRandomSelectorNode, "GtGhost.RandomSelectorNode")
 
 // class GRandomSelectorNode
 

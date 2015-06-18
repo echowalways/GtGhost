@@ -78,7 +78,7 @@ bool GConditionNodePrivate::callCondition()
     if (value.isBool()) {
         return value.toBool();
     } else if (value.isError()) {
-        // error
+        qDebug("GtGhost : %s", qPrintable(value.toString()));
     }
 
     return false;

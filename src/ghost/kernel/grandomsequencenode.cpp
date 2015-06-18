@@ -1,11 +1,7 @@
 #include "grandomsequencenode_p.h"
 #include "grandomsequencenode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
 #include "gghostevents.h"
-
-Q_LOGGING_CATEGORY(qlcRandomSequenceNode, "GtGhost.RandomSequenceNode")
 
 // class GRandomSequenceNode
 

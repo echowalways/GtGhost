@@ -56,7 +56,8 @@ void GParallelNodePrivate::execute()
     executeState = false;
     terminateState = false;
 
-    // executeAllChildNodes
+    // Execute All ChildNodes
+
     bool r = true;
 
     executeState = true;

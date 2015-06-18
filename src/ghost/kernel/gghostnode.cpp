@@ -6,8 +6,6 @@
 #include "gghosttree_p.h"
 #include "gghosttree_p_p.h"
 
-Q_LOGGING_CATEGORY(qlcGhostNode, "GtGhost.GhostNode")
-
 // class GGhostNode
 
 GGhostNode::GGhostNode(GGhostNodePrivate &dd, QObject *parent)
@@ -120,20 +118,17 @@ void GGhostNode::componentComplete()
 
     if (Ghost::CompositeNode == d->baseType) {
         if (d->childNodes.isEmpty()) {
-            qCWarning(qlcGhostNode)
-                    << "Must have at least one child item.";
+            qWarning("GtGhost : Must have at least one child item.");
             hasError = true;
         }
     } else if (Ghost::DecoratorNode == d->baseType) {
         if (d->childNodes.count() != 1) {
-            qCWarning(qlcGhostNode)
-                    << "Allows only one child node.";
+            qWarning("GtGhost : Allows only one child node.");
             hasError = true;
         }
     } else if (Ghost::LeafNode == d->baseType) {
         if (!d->childNodes.isEmpty()) {
-            qCWarning(qlcGhostNode)
-                    << "Does not allow any child items.";
+            qWarning("GtGhost : Does not allow any child items.");
             hasError = true;
         }
     } else {
@@ -234,14 +229,13 @@ void GGhostNodePrivate::setStatus(Ghost::Status status)
     }
 
     if (comment.isEmpty()) {
-        qCDebug(qlcGhostNode,
-                "Status: '%s' ==> '%s' : %s %s(%p)",
-                Ghost::toString(this->status), Ghost::toString(status),
-                ((Ghost::Running == status) ? "-->" : "<--"),
-                q->metaObject()->className(), q);
+        qDebug("GtGhost : StatusEvent: '%s' ==> '%s' : %s %s(%p)",
+               Ghost::toString(this->status), Ghost::toString(status),
+               ((Ghost::Running == status) ? "-->" : "<--"),
+               q->metaObject()->className(), q);
     } else {
-        qCDebug(qlcGhostNode).nospace()
-                << "Status: '" << Ghost::toString(this->status)
+        qDebug().nospace()
+                << "GtGhost : StatusEvent: '" << Ghost::toString(this->status)
                 << "' ==> '" << Ghost::toString(status)
                 << "' :" << ((Ghost::Running == status) ? " --> " : " <-- ")
                 << comment.toUtf8().constData();
@@ -333,7 +327,7 @@ bool GGhostNodePrivate::callPrecondition()
     if (value.isBool()) {
         return value.toBool();
     } else if (value.isError()) {
-        // error
+        qDebug("GtGhost : %s", qPrintable(value.toString()));
     }
 
     return false;
@@ -354,7 +348,7 @@ uint GGhostNodePrivate::callWeight()
     if (value.isNumber()) {
         return qMax(value.toUInt(), 1u);
     } else if (value.isError()) {
-        // error
+        qDebug("GtGhost : %s", qPrintable(value.toString()));
     }
 
     return 1u;

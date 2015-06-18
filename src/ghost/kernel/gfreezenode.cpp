@@ -1,10 +1,6 @@
 #include "gfreezenode_p.h"
 #include "gfreezenode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
-Q_LOGGING_CATEGORY(qlcFreezeNode, "GtGhost.FreezeNode")
-
 // class GFreezeNode
 
 GFreezeNode::GFreezeNode(QObject *parent)
@@ -25,8 +21,7 @@ void GFreezeNode::setDuration(int value)
     Q_D(GFreezeNode);
 
     if (value < 0) {
-        qCWarning(qlcFreezeNode)
-                << "Value is too small, reset to 0.";
+        qWarning("GtGhost : Value is too small, reset to 0.");
         value = 0;
     }
 

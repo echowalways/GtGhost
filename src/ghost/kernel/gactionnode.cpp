@@ -1,10 +1,6 @@
 #include "gactionnode_p.h"
 #include "gactionnode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
-Q_LOGGING_CATEGORY(qlcActionNode, "GtGhost.ActionNode")
-
 // class GActionNode
 
 GActionNode::GActionNode(QObject *parent)
@@ -17,8 +13,7 @@ void GActionNode::setDuration(int value)
     Q_D(GActionNode);
 
     if (value < 0) {
-        qCWarning(qlcActionNode)
-                << "Value is too small, reset to 0.";
+        qWarning("GtGhost : Value is too small, reset to 0.");
         value = 0;
     }
 

@@ -1,10 +1,6 @@
 #include "gcompositenode_p.h"
 #include "gcompositenode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
-Q_LOGGING_CATEGORY(qlcCompositeNode, "GtGhost.CompositeNode")
-
 // class GCompositeNode
 
 GCompositeNode::GCompositeNode(GCompositeNodePrivate &dd, QObject *parent)
@@ -18,8 +14,8 @@ void GCompositeNode::setBrokenStatus(Ghost::Status value)
 
     if ((Ghost::Success != value)
             && (Ghost::Failure != value)) {
-        qCWarning(qlcCompositeNode)
-                << "Invalid broken status: " << Ghost::toString(value);
+        qWarning("GtGhost : Invalid broken status: '%s'",
+                 Ghost::toString(value));
         return;
     }
 
@@ -34,8 +30,7 @@ void GCompositeNode::setUnmatchCount(int value)
     Q_D(GCompositeNode);
 
     if (value < 1) {
-        qCWarning(qlcCompositeNode)
-                << "Value is too small, reset to 1.";
+        qWarning("GtGhost : Value is too small, reset to 1.");
         value = 1;
     }
 

@@ -6,8 +6,6 @@
 #include "gghostnode_p.h"
 #include "gghostnode_p_p.h"
 
-Q_LOGGING_CATEGORY(qlcGhostTree, "GtGhost.GhostTree")
-
 // class GGhostTree
 
 GGhostTree::GGhostTree(QObject *parent)
@@ -194,8 +192,7 @@ void GGhostTree::componentComplete()
     }
 
     if (d->childNodes.count() != 1) {
-        qCWarning(qlcGhostTree)
-                << "Allows only one child node.";
+        qWarning("GtGhost : Allows only one child node.");
         hasError = true;
     }
 
@@ -240,6 +237,7 @@ void GGhostTreePrivate::postEvent(GGhostEvent *event)
 void GGhostTreePrivate::_q_processEvents()
 {
     eventsProcessing = true;
+
     while (!eventQueue.isEmpty()) {
         GGhostEvent *event = eventQueue.dequeue();
         if (event->type() == GGhostEvent::Execute) {
@@ -250,6 +248,7 @@ void GGhostTreePrivate::_q_processEvents()
             Q_UNREACHABLE();
         }
     }
+
     eventsProcessing = false;
 }
 
@@ -354,11 +353,10 @@ void GGhostTreePrivate::setStatus(Ghost::Status status)
         break;
     }
 
-    qCDebug(qlcGhostTree,
-            "Status: '%s' ==> '%s' : %s %s(%p)",
-            Ghost::toString(this->status), Ghost::toString(status),
-            ((Ghost::Running == status) ? "-->" : "<--"),
-            q->metaObject()->className(), q);
+    qDebug("GtGhost : StatusEvent: '%s' ==> '%s' : %s %s(%p)",
+           Ghost::toString(this->status), Ghost::toString(status),
+           ((Ghost::Running == status) ? "-->" : "<--"),
+           q->metaObject()->className(), q);
 
 #endif // QT_NO_DEBUG
 

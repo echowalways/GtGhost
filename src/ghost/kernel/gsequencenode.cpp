@@ -1,8 +1,6 @@
 #include "gsequencenode_p.h"
 #include "gsequencenode_p_p.h"
 
-#include <QtDebug>
-
 #include "gghostevents.h"
 
 // class GSequenceNode

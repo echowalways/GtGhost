@@ -1,11 +1,7 @@
 #include "grepeatuntilsuccessnode_p.h"
 #include "grepeatuntilsuccessnode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
 #include "gghostevents.h"
-
-Q_LOGGING_CATEGORY(qlcRepeatUntilSuccessNode, "GtGhost.RepeatUntilSuccessNode")
 
 // class GRepeatUntilSuccessNode
 
@@ -19,8 +15,7 @@ void GRepeatUntilSuccessNode::setLoopCount(int value)
     Q_D(GRepeatUntilSuccessNode);
 
     if (value < 0) {
-        qCWarning(qlcRepeatUntilSuccessNode)
-                << "Value is too small, reset to 0.";
+        qWarning("GtGhost : Value is too small, reset to 0.");
         value = 0;
     }
 

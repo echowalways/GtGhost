@@ -23,7 +23,8 @@ GForceFailureNodePrivate::~GForceFailureNodePrivate()
 
 void GForceFailureNodePrivate::confirmEvent(GGhostConfirmEvent *event)
 {
-    Q_ASSERT(Ghost::Invalid != status);
+    Q_CHECK_PTR(event->source());
+    Q_ASSERT(event->source() == childNodes[0]);
 
     Ghost::Status childStatus = event->status();
 

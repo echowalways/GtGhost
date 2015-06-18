@@ -1,11 +1,7 @@
 #include "gpriorityselectornode_p.h"
 #include "gpriorityselectornode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
 #include "gghostevents.h"
-
-Q_LOGGING_CATEGORY(qlcPrioritySelectorNode, "GtGhost.PrioritySelectorNode")
 
 // class GPrioritySelectorNode
 

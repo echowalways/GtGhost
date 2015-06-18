@@ -1,11 +1,7 @@
 #include "grepeatuntilfailurenode_p.h"
 #include "grepeatuntilfailurenode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
 #include "gghostevents.h"
-
-Q_LOGGING_CATEGORY(qlcRepeatUntilFailureNode, "GtGhost.RepeatUntilFailureNode")
 
 // class GRepeatUntilFailureNode
 
@@ -19,8 +15,7 @@ void GRepeatUntilFailureNode::setLoopCount(int value)
     Q_D(GRepeatUntilFailureNode);
 
     if (value < 0) {
-        qCWarning(qlcRepeatUntilFailureNode)
-                << "Value is too small, reset to 0.";
+        qWarning("GtGhost : Value is too small, reset to 0.");
         value = 0;
     }
 

@@ -1,11 +1,7 @@
 #include "gprioritysequencenode_p.h"
 #include "gprioritysequencenode_p_p.h"
 
-#include <QtCore/QLoggingCategory>
-
 #include "gghostevents.h"
-
-Q_LOGGING_CATEGORY(qlcPrioritySequenceNode, "GtGhost.PrioritySequenceNode")
 
 // class GPrioritySequenceNode
 
